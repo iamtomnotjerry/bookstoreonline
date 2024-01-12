@@ -3,8 +3,11 @@ import mongoose, { Schema, Document } from 'mongoose';
 interface Book extends Document {
   title: string;
   author: string;
+  price: number;
+  type: string;
   imageUrl: string;
   userEmail: string;
+  discription: string;
   pdfId: mongoose.Types.ObjectId;
 }
 
