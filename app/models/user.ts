@@ -1,18 +1,21 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IUser extends Document {
-    userId: mongoose.Types.ObjectId;
-    fullname: string;
-    username: string;
-    email: string;
-    password: string;
-    address: string;
-    phoneNumber: string;
-    ownedBooks: string[]; // bookId
-    cart: string[]; // bookId
-    isAdmin: boolean;
-    resetToken?: string;
-    resetTokenExpiration?: Date | number; // Allow both Date and number (timestamp)
+  userId: mongoose.Types.ObjectId;
+  fullname: string;
+  username: string;
+  email: string;
+  password: string;
+  address: string;
+  phoneNumber: string;
+  ownedBooks: string[]; // bookId
+  cart: [{
+    bookId: mongoose.Types.ObjectId; // bookId
+    quantity: number;
+  }];
+  isAdmin: boolean;
+  resetToken?: string;
+  resetTokenExpiration?: Date | number; // Allow both Date and number (timestamp)
 }
 
 const UserSchema = new Schema<IUser>({
@@ -49,8 +52,16 @@ const UserSchema = new Schema<IUser>({
     ref: 'Book',
   }],
   cart: [{
-    type: String,
-    ref: 'Book',
+    bookId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Book',
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      min: 1,
+      required: true,
+    }
   }],
   isAdmin:
   {
