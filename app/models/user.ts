@@ -6,8 +6,10 @@ interface IUser extends Document {
     username: string;
     email: string;
     password: string;
+    address: string;
     phoneNumber: string;
-    ownedBooks: string[];
+    ownedBooks: string[]; // bookId
+    cart: string[]; // bookId
     isAdmin: boolean;
     resetToken?: string;
     resetTokenExpiration?: Date | number; // Allow both Date and number (timestamp)
@@ -35,12 +37,18 @@ const UserSchema = new Schema<IUser>({
     type: String,
     required: true,
   },
+  address: {
+    type: String,
+  },
   phoneNumber: {
     type: String,
     required: true,
-    unique: true,
   },
   ownedBooks: [{
+    type: String,
+    ref: 'Book',
+  }],
+  cart: [{
     type: String,
     ref: 'Book',
   }],
