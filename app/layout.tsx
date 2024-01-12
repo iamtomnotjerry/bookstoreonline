@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-// import { ToastContainer } from 'react-toastify'
-// import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider } from '@/app/Provider'
 import { Roboto } from 'next/font/google'
 import Head from 'next/head'
@@ -38,7 +38,7 @@ export default function RootLayout({
             </div>
           </StoreProvider>
         </AuthProvider>
-        {/* <ToastContainer /> */}
+        <ToastContainer />
       </body>
     </html>
   )

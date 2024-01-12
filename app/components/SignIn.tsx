@@ -1,21 +1,63 @@
 import React, { useState } from 'react';
 import SignUp from './SignUp';
+import Reset from './Reset';
+import { SignInResponse, signIn } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
-const SignIn = ({ isOpen, onClose }) => {
+interface SignInProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const SignIn: React.FC<SignInProps> = ({ isOpen, onClose }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
   const [showSignIn, setShowSignIn] = useState(true);
+  const [showReset, setShowReset] = useState(false);
 
-  if (!isOpen) return null;
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res: SignInResponse | undefined = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+      if (res?.error) {
+        toast.error('Sign-in failed');
+      } else {
+        toast.success('Sign-in successful');
+        onClose();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('An error occurred');
+    }
+    setLoading(false);
+  };
 
   const handleSignUpClick = () => {
     setShowSignIn(false);
     setShowSignUp(true);
+    setShowReset(false);
+  };
+
+  const handleForgotPasswordClick = () => {
+    setShowSignIn(false);
+    setShowSignUp(false);
+    setShowReset(true);
   };
 
   const handleBackToSignInClick = () => {
     setShowSignIn(true);
     setShowSignUp(false);
+    setShowReset(false);
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-hidden">
@@ -39,8 +81,7 @@ const SignIn = ({ isOpen, onClose }) => {
         </div>
         <div className="px-6 py-8">
           {showSignIn && (
-            <form className="space-y-4">
-              {/* Sign In form content */}
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email address
@@ -51,6 +92,8 @@ const SignIn = ({ isOpen, onClose }) => {
                   type="email"
                   autoComplete="email"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="YourEmail@example.com"
                 />
@@ -65,6 +108,8 @@ const SignIn = ({ isOpen, onClose }) => {
                   type="password"
                   autoComplete="current-password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="********"
                 />
@@ -74,7 +119,7 @@ const SignIn = ({ isOpen, onClose }) => {
                   type="submit"
                   className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  Sign in
+                  {loading ? 'Signing in...' : 'Sign in'}
                 </button>
               </div>
               <div className="mt-4 text-sm text-center">
@@ -87,12 +132,19 @@ const SignIn = ({ isOpen, onClose }) => {
                     Sign Up
                   </button>
                 </p>
+                <p>
+                  <button
+                    onClick={handleForgotPasswordClick}
+                    className="text-indigo-600 hover:underline focus:outline-none"
+                  >
+                    Forgot Your Password?
+                  </button>
+                </p>
               </div>
             </form>
           )}
-          {showSignUp && (
-            <SignUp onClose={handleBackToSignInClick} />
-          )}
+          {showSignUp && <SignUp onClose={handleBackToSignInClick} />}
+          {showReset && <Reset onClose={handleBackToSignInClick} />}
         </div>
       </div>
     </div>
