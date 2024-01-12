@@ -7,13 +7,14 @@ import { useSession } from 'next-auth/react';
 
 import { 
   CubeTransparentIcon,
-  BookOpenIcon, 
+  BookOpenIcon, TruckIcon,
   CogIcon, UserIcon, ShoppingCartIcon
 } from "@heroicons/react/24/outline";
 
 const links = [
   { name: 'Books', href: '/', icon: BookOpenIcon },
   { name: 'Cart', href: '/cart', icon: ShoppingCartIcon },
+  { name: 'Track Order', href: '/track-order', icon: TruckIcon },
   { name: 'User', href: '/user', icon: UserIcon },
   { name: 'Admin', href: '/admin', icon: CubeTransparentIcon },
 ];
