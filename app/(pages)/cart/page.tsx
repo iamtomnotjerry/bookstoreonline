@@ -71,7 +71,7 @@ export default function page() {
       <div className="grid grid-cols-9 gap-4">
         <div className="col-span-full lg:col-span-6 rounded-xl">
           <div className="flex bg-white px-4 py-3 rounded-xl mb-4">
-            <div className="flex gap-2 basis-1/2">
+            <div className="flex gap-2 lg:basis-1/2">
               <Checkbox id="check-all" className="h-5 w-5 border-gray-500 border-opacity-80 data-[state=checked]:bg-ferra-700 rounded-sm" />
               <span className="text-sm">Chọn tất cả (%count%)</span>
             </div>
@@ -121,7 +121,7 @@ export default function page() {
           }
           </div>
         </div>
-        <div className="max-lg:sticky max-lg:left-0 max-lg:bottom-0 max-lg:bg-donkey-brown-100 max-h-40 bg-white col-span-full lg:col-span-3 px-4 py-3 rounded-xl">
+        <div className="sticky max-lg:left-0 max-lg:bottom-0 lg:top-20 max-lg:bg-donkey-brown-100 max-h-40 bg-white col-span-full lg:col-span-3 px-4 py-3 rounded-xl">
           <p className="font-semibold mb-2">Thanh toán</p>
           <hr className="mb-2" />
           <div className="relative">
