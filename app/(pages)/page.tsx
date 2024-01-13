@@ -6,6 +6,12 @@
 // import SearchBar from '@/app/components/SearchBar';
 // import { useSession } from 'next-auth/react';
 
+import Banner from '../pages-sections/home/Banner';
+import BooksByCategory from '../pages-sections/home/BooksByCategory';
+import CategoriesList from '../pages-sections/home/CategoriesList';
+import Discover from '../pages-sections/home/Discover';
+import FlashSale from '../pages-sections/home/FlashSale';
+
 // interface Book {
 //   _id: string; // assuming id is a string based on mongoose ObjectId
 //   title: string;
@@ -59,7 +65,14 @@
 // }
 
 export default function HomePage() {
-  return <main>
-    abc
-  </main>;
+  return (
+    <main className="space-y-12">
+      <Banner />
+      <FlashSale />
+      <CategoriesList />
+      <Discover />
+      <BooksByCategory />
+      <BooksByCategory />
+    </main>
+  );
 }

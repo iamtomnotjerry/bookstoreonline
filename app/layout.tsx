@@ -30,7 +30,7 @@ export default function RootLayout({
           <StoreProvider>
             <div>
               <Header />
-              <div className="container mt-6">{children}</div>
+              <div className="container mt-28 mb-48">{children}</div>
             </div>
           </StoreProvider>
         </AuthProvider>

@@ -8,7 +8,7 @@ export default function SearchBar() {
         placeholder="Tìm kiếm sách..."
         className="border-none bg-transparent outline-none flex-1 px-4"
       />
-      <Button size="sm" className="px-5">
+      <Button size="xs" className="px-5">
         <MagnifyingGlassIcon className="h-4" />
       </Button>
     </div>

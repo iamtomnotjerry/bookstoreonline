@@ -56,7 +56,7 @@ const categoriesList = [
 
 export default function Header() {
   return (
-    <header className="h-16 bg-white flex items-center">
+    <header className="h-16 fixed inset-x-0 top-0 z-50 bg-white flex items-center">
       <div className="container flex items-center justify-between">
         <Link href={routes.home} className="flex items-center">
           <Image
@@ -77,7 +77,7 @@ export default function Header() {
         </Link>
 
         <Popover>
-          <PopoverTrigger className="flex items-center text-gray-500">
+          <PopoverTrigger className="cursor-pointer flex items-center text-gray-500">
             <SquaresPlusIcon className="h-7" />
             <ChevronDownIcon className="h-4 ml-1.5" />
           </PopoverTrigger>
@@ -89,7 +89,10 @@ export default function Header() {
             <ul className="grid grid-cols-2 gap-4">
               {categoriesList.map(({ name }, index) => (
                 <li key={index}>
-                  <Link href={''} className="flex items-center">
+                  <Link
+                    href={''}
+                    className="flex items-center transition-all hover:text-primary-700 hover:font-semibold"
+                  >
                     <ChevronRightIcon className="h-5 mr-2" />
                     <span>{name}</span>
                   </Link>
