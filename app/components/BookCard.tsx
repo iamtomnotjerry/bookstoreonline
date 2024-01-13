@@ -75,7 +75,7 @@ export default function BookCard() {
         <div className="flex items-center justify-between mt-3">
           <span className="text-xs text-gray-700">Đã bán 245</span>
 
-          <Stars value={3.5} />
+          <Stars value={3.5} className='text-sm' />
         </div>
       </div>
     </div>
