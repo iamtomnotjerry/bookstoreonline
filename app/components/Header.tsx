@@ -1,20 +1,19 @@
 import { cn } from '@/lib/utils';
 import {
+  ArrowRightIcon,
   ChevronDownIcon,
-  MagnifyingGlassIcon,
+  ChevronRightIcon,
   ShoppingCartIcon,
   SquaresPlusIcon,
   UserCircleIcon,
-  ChevronRightIcon,
-  ArrowRightIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import fonts from '../configs/fonts';
 import routes from '../configs/routes';
-import { Button, buttonVariants } from './ui/Button';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import SearchBar from './SearchBar';
+import { buttonVariants } from './ui/Button';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 
 const categoriesList = [
   {
@@ -127,7 +126,6 @@ export default function Header() {
               0
             </span>
           </Link>
-          S
         </div>
       </div>
     </header>
