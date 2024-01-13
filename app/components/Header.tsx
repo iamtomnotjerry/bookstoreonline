@@ -3,13 +3,11 @@
 import { cn } from '@/lib/utils';
 import {
   ArrowLeftStartOnRectangleIcon,
-  ArrowRightEndOnRectangleIcon,
   DocumentTextIcon,
   IdentificationIcon,
   LockClosedIcon,
   ShoppingCartIcon,
   UserCircleIcon,
-  UserPlusIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,8 +15,10 @@ import fonts from '../configs/fonts';
 import routes from '../configs/routes';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import SearchBar from './SearchBar';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
+  const { push } = useRouter();
   return (
     <header className="lg:h-16 fixed inset-x-0 top-0 z-50 bg-white flex items-center flex-wrap">
       <Link href={routes.home} className="lg:hidden flex justify-center pt-2 basis-full">
@@ -83,10 +83,13 @@ export default function Header() {
                 Lịch sử mua hàng
               </div>
               <hr />
-              <div className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-casal-500 text-sm duration-300 text-gray-500 hover:text-white">
+              <Link
+                href="/admin/products"
+                className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-casal-500 text-sm duration-300 text-gray-500 hover:text-white"
+              >
                 <LockClosedIcon className="h-5" />
                 Quản lý
-              </div>
+              </Link>
               <hr />
               <div className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-red-400 text-sm duration-300 text-gray-500 hover:text-white rounded-bl-lg rounded-br-lg">
                 <ArrowLeftStartOnRectangleIcon className="h-5" />
