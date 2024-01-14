@@ -1,4 +1,5 @@
 import Book from "@/app/models/book";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(
   req: NextRequest,
@@ -11,7 +12,25 @@ export async function GET(
       return NextResponse.json({ error: 'Book not found' }, { status: 404 });
     }
 
-    return NextResponse.json( book , { status: 200 });
+    return NextResponse.json(book , { status: 200 });
+  } catch (error) {
+    console.error('Error fetching book:', error);
+    return NextResponse.json({ error: error }, { status: 500 });
+  }
+}
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string }})
+{
+  // !TODO: Authorize user here. Only admins
+  const id = params.id;
+  try {
+    const book = await Book.findByIdAndDelete(id);
+    if (!book) {
+      return NextResponse.json({ error: 'Book not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Deleted", book } , { status: 200 });
   } catch (error) {
     console.error('Error fetching book:', error);
     return NextResponse.json({ error: error }, { status: 500 });

@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
             },
         };
         const book = await Book.create(newBook);
-        return NextResponse.json(book, { status: 200 });
+        return NextResponse.json({ book }, { status: 200 });
     } catch (error) {
         console.error("Error fetching book:", error);
         return NextResponse.json(
