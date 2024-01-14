@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import BookCard from '@/app/components/BookCard';
+import BookCardsList from '@/app/components/BookCardsList';
 import { Button } from '@/app/components/ui/Button';
 import { FireIcon } from '@heroicons/react/24/outline';
 

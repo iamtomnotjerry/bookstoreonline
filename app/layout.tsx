@@ -1,6 +1,6 @@
 import { AuthProvider } from '@/app/Provider';
 import StoreProvider from '@/app/providerr';
-import { cn } from '@/lib/utils';
+import { cn } from '@/app/lib/utils';
 import type { Metadata } from 'next';
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';

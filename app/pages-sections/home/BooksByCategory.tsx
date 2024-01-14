@@ -1,4 +1,5 @@
 import BookCard from '@/app/components/BookCard';
+import BookCardsList from '@/app/components/BookCardsList';
 import { Button } from '@/app/components/ui/Button';
 import { ChevronRightIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -13,16 +14,17 @@ export default function BooksByCategory() {
           <div className="absolute h-[1.5px] bg-primary-700 rounded-full w-[90%] -bottom-0.5 left-10"></div>
         </h2>
 
-        <Link href={''} className="flex items-center text-sm font-medium transition hover:text-primary-700">
+        <Link
+          href={''}
+          className="flex items-center text-sm font-medium transition hover:text-primary-700"
+        >
           <span>Xem tất cả</span>
           <ArrowRightIcon className="h-3 ml-2" />
         </Link>
       </div>
 
-      <div className="grid grid-cols-5 gap-4 mt-4">
-        {Array.from(Array(5)).map((_, index) => (
-          <BookCard key={index} />
-        ))}
+      <div className="mt-4">
+        <BookCardsList />
       </div>
 
       <div className="flex justify-center mt-8">

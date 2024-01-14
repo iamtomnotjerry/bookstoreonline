@@ -7,21 +7,22 @@ import {
   AvatarImage,
 } from '@/app/components/ui/Avatar';
 import React from 'react';
+import { Separator } from '@/app/components/ui/Separator';
 
 export default function Profile() {
   return (
     <main className="bg-white rounded-[0.62rem] p-4 pb-8">
       <h2 className="mb-4 text-lg font-semibold text-primary-700">Hồ sơ</h2>
 
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-8">
+      <div className="grid xl:grid-cols-12 grid-cols-1 gap-4">
+        <div className="xl:col-span-8 xl:order-1 order-3 ">
           <table className="w-full">
             <tbody>
-              <tr>
-                <td className="font-medium py-5 text-right pr-16 w-56">
+              <tr className="md:table-row flex flex-col items-start">
+                <td className="font-medium md:py-5 md:my-0 mb-1 mt-4 text-right whitespace-nowrap lg:pr-12 md:pr-8 pr-3 lg:w-48">
                   Họ và tên:
                 </td>
-                <td>
+                <td className="w-full">
                   <Input
                     className="w-full"
                     placeholder="Nhập tên của bạn"
@@ -29,11 +30,11 @@ export default function Profile() {
                   />
                 </td>
               </tr>
-              <tr>
-                <td className="font-medium py-5 text-right pr-16 w-56">
+              <tr className="md:table-row flex flex-col items-start">
+                <td className="font-medium md:py-5 md:my-0 mb-1 mt-4 text-right whitespace-nowrap lg:pr-12 md:pr-8 pr-3 lg:w-48">
                   Số điện thoại:
                 </td>
-                <td>
+                <td className="w-full">
                   <Input
                     className="w-full"
                     placeholder="Nhập số điện thoại của bạn"
@@ -41,11 +42,11 @@ export default function Profile() {
                   />
                 </td>
               </tr>
-              <tr>
-                <td className="font-medium py-5 text-right pr-16 w-56">
+              <tr className="md:table-row flex flex-col items-start">
+                <td className="font-medium md:py-5 md:my-0 mb-1 mt-4 text-right whitespace-nowrap lg:pr-12 md:pr-8 pr-3 lg:w-48">
                   Email:
                 </td>
-                <td>
+                <td className="w-full">
                   <Input
                     className="w-full"
                     placeholder="Nhập số điện thoại của bạn"
@@ -54,11 +55,11 @@ export default function Profile() {
                   />
                 </td>
               </tr>
-              <tr>
-                <td className="font-medium py-5 text-right pr-16 w-56 align-top">
+              <tr className="md:table-row flex flex-col items-start">
+                <td className="font-medium md:py-5 md:my-0 mb-1 mt-4 text-right whitespace-nowrap lg:pr-12 md:pr-8 pr-3 lg:w-48 align-top">
                   Địa chỉ:
                 </td>
-                <td className="align-top">
+                <td className="align-top w-full lg:mt-0 mt-3">
                   <div className="flex items-center space-x-3">
                     <div className="grid w-full items-center gap-1.5">
                       <Label>Quốc gia:</Label>
@@ -78,9 +79,9 @@ export default function Profile() {
                 </td>
               </tr>
 
-              <tr>
+              <tr className="md:table-row flex flex-col items-start">
                 <td></td>
-                <td className='text-right pt-8'>
+                <td className="text-right w-full pt-8">
                   <Button>Lưu thay đổi</Button>
                 </td>
               </tr>
@@ -88,12 +89,13 @@ export default function Profile() {
           </table>
         </div>
 
-        <div className="col-span-4 flex flex-col items-center">
+        <Separator className="xl:hidden order-2" />
+
+        <div className="xl:col-span-4 xl:order-2 order-1 flex flex-col items-center">
           <Avatar className="w-36 h-36">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>VA</AvatarFallback>
           </Avatar>
-
           <Button variant="outline" size="sm" className="mt-8">
             Chọn hình ảnh
           </Button>

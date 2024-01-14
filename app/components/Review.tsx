@@ -6,13 +6,13 @@ import Stars from './Stars';
 
 export default function Review() {
   return (
-    <div className="flex items-start">
-      <div className="w-56">
+    <div className="flex items-start lg:flex-row flex-col">
+      <div className="lg:w-40 lg:block flex items-center">
         <div className="font-medium">Nguyễn Văn A</div>
-        <div className="text-sm text-gray-500">12/1/2024</div>
+        <div className="text-sm text-gray-500 lg:ml-0 ml-4">12/1/2024</div>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 lg:mt-0 mt-3">
         <Stars value={5} className="text-sm" />
 
         <p className="text-[0.9375rem] mt-2">

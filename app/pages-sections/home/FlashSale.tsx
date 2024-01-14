@@ -17,7 +17,7 @@ export default function FlashSale() {
           </div>
         </div>
 
-        <div className="grid grid-cols-5 mt-10 gap-5">
+        <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 mt-10 gap-4 lg:gap-5">
           <FlashSaleBookCard />
           <FlashSaleBookCard />
           <FlashSaleBookCard />

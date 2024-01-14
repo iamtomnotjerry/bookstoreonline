@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/app/lib/utils';
 import Image from 'next/image';
 import fonts from '../configs/fonts';
 import Link from 'next/link';
@@ -11,18 +11,18 @@ import {
 export default function Footer() {
   return (
     <footer className="w-screen relative left-[calc(-50vw+50%)] -mb-16 mt-32">
-      <div className="bg-banana-mania-100 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] relative -z-10 -mb-8">
-        <div className="bg-donkey-brown-400 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] absolute w-full -z-[-1] -bottom-2">
-          <div className="bg-eunry-400 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] absolute w-full -z-[-1] -bottom-2">
-            <div className="bg-primary-700 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] absolute w-full -z-[-1] -bottom-2"></div>
+      <div className="bg-banana-mania-100 w-full h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] [mask-size:100%] relative -z-10 -mb-8">
+        <div className="bg-donkey-brown-400 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] [mask-size:100%] absolute w-full -z-[-1] lg:-bottom-2 md:-bottom-1.5 -bottom-1">
+          <div className="bg-eunry-400 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] [mask-size:100%] absolute w-full -z-[-1] lg:-bottom-2 md:-bottom-1.5 -bottom-1">
+            <div className="bg-primary-700 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] [mask-size:100%] absolute w-full -z-[-1] lg:-bottom-2 md:-bottom-1.5 -bottom-1"></div>
           </div>
         </div>
       </div>
 
       <div className="bg-primary-700">
-        <div className="container pb-16 -mt-16 gap-4">
-          <div className="grid grid-cols-12">
-            <div className="col-span-5 -mt-6 flex flex-col items-center">
+        <div className="container pb-16 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12">
+            <div className="lg:col-span-5 lg:-mt-6 mt-6 flex flex-col items-center">
               <div className="bg-white rounded-full w-24 h-24 flex items-center justify-center">
                 <Image
                   alt="logo"
@@ -45,13 +45,13 @@ export default function Footer() {
               </h4>
             </div>
 
-            <div className="col-span-7">
-              <div className="grid grid-cols-3 gap-4">
-                <div>
+            <div className="lg:col-span-7 lg:mt-0 mt-8">
+              <div className="grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-4 gap-6 lg:justify-items-start justify-items-center">
+                <div className="grid lg:justify-items-start justify-items-center">
                   <h3 className="font-semibold text-banana-mania-100 text-lg">
                     Mua sách
                   </h3>
-                  <ul className="text-white mt-3 text-sm space-y-2">
+                  <ul className="text-white mt-3 text-sm space-y-2 grid lg:justify-items-start justify-items-center">
                     <li>
                       <Link
                         href={''}
@@ -79,11 +79,11 @@ export default function Footer() {
                   </ul>
                 </div>
 
-                <div>
+                <div className="grid lg:justify-items-start justify-items-center">
                   <h3 className="font-semibold text-banana-mania-100 text-lg">
                     Tài khoản
                   </h3>
-                  <ul className="text-white mt-3 text-sm space-y-2">
+                  <ul className="text-white mt-3 text-sm space-y-2 grid lg:justify-items-start justify-items-center">
                     <li>
                       <Link
                         href={''}
@@ -119,11 +119,11 @@ export default function Footer() {
                   </ul>
                 </div>
 
-                <div>
+                <div className="grid lg:justify-items-start justify-items-center">
                   <h3 className="font-semibold text-banana-mania-100 text-lg">
                     Liên hệ
                   </h3>
-                  <ul className="text-white mt-3 text-sm space-y-2">
+                  <ul className="text-white mt-3 text-sm space-y-2 grid lg:justify-items-start justify-items-center">
                     <li className="flex items-center space-x-3">
                       <PhoneIcon className="h-5" />
                       <Link
@@ -143,13 +143,12 @@ export default function Footer() {
                       </Link>
                     </li>
                     <li className="flex items-start space-x-3">
-                      <MapPinIcon className="h-9" />
+                      <MapPinIcon className="h-5" />
                       <Link
                         href={''}
                         className="transition hover:text-banana-mania-100"
                       >
-                        Webdev Studios - University of Information and
-                        Technology
+                        Webdev Studios - UIT
                       </Link>
                     </li>
                   </ul>

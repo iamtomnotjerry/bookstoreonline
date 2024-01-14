@@ -14,7 +14,7 @@ export default function Detail() {
           Chi tiết sản phẩm
         </h3>
 
-        <div className="pl-10 mt-3">
+        <div className="md:pl-10 sm:pl-6 mt-3">
           <table>
             <tbody>
               <tr>
@@ -74,7 +74,7 @@ export default function Detail() {
         </h3>
 
         <div
-          className="prose prose-sm max-w-none px-4 mt-3"
+          className="prose prose-sm max-w-none sm:px-2 md:px-4 mt-3"
           dangerouslySetInnerHTML={{
             __html: `         <p>Dragon Ball Z Vol. 7 (Vizbig Edition)</p>
           <p>
