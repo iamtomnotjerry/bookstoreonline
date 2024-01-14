@@ -40,7 +40,7 @@ export default function RootLayout({
                 showAtBottom={false}
               />
               <Header />
-              <div className="container mt-28 mb-48">{children}</div>
+              <div className="container mt-28 mb-12">{children}</div>
             </div>
           </StoreProvider>
         </AuthProvider>

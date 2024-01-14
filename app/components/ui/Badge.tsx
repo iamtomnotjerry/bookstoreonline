@@ -12,6 +12,7 @@ const badgeVariants = cva(
           'border-transparent bg-primary-700 text-primary-50 hover:bg-primary-700/80',
         secondary:
           'border-transparent bg-tower-gray-300 text-white hover:bg-primary-100/80',
+        outline: 'border-primary-700 bg-white text-primary-700'
       },
       size: {
         default: 'px-2.5 py-0.5',
