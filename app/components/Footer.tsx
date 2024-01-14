@@ -11,12 +11,11 @@ import {
 export default function Footer() {
   return (
     <footer className="w-screen relative left-[calc(-50vw+50%)] -mb-16 mt-32">
-      <div className="bg-banana-mania-100 w-full h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] [mask-size:100%] relative -z-10 -mb-8">
-        <div className="bg-donkey-brown-400 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] [mask-size:100%] absolute w-full -z-[-1] lg:-bottom-2 md:-bottom-1.5 -bottom-1">
-          <div className="bg-eunry-400 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] [mask-size:100%] absolute w-full -z-[-1] lg:-bottom-2 md:-bottom-1.5 -bottom-1">
-            <div className="bg-primary-700 h-[18vw] [mask:url(/footer-mask.svg)_no-repeat] [mask-size:100%] absolute w-full -z-[-1] lg:-bottom-2 md:-bottom-1.5 -bottom-1"></div>
-          </div>
-        </div>
+      <div className="relative -z-10 -mb-1">
+        <div className="bg-banana-mania-100 w-full h-[12.29166666667vw] [mask:url(/footer-mask.png)_no-repeat] [mask-size:100%_100%] absolute bottom-6"></div>
+        <div className="bg-donkey-brown-400 w-full h-[12.29166666667vw] [mask:url(/footer-mask.png)_no-repeat] [mask-size:100%_100%] absolute bottom-4"></div>
+        <div className="bg-eunry-400 w-full h-[12.29166666667vw] [mask:url(/footer-mask.png)_no-repeat] [mask-size:100%_100%] absolute bottom-2"></div>
+        <div className="bg-primary-700 w-full h-[12.29166666667vw] [mask:url(/footer-mask.png)_no-repeat] [mask-size:100%_100%]"></div>
       </div>
 
       <div className="bg-primary-700">
