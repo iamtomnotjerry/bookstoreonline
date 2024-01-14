@@ -50,6 +50,8 @@ const BookSchema = new Schema<IBook>({
   bookId: {
     type: Schema.Types.ObjectId,
     required: true,
+    index: true,
+    unique: true,
   },
   title: {
     type: String,
@@ -115,7 +117,7 @@ const BookSchema = new Schema<IBook>({
   ratings: {
     type: [RatingSchema]
   }
-});
+}, { _id: false });
 
 const BookModel = mongoose.models.Book as mongoose.Model<IBook> || mongoose.model<IBook>('Book', BookSchema);
 
