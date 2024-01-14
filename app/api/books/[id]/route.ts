@@ -36,3 +36,22 @@ export async function DELETE(
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string }})
+{
+  // !TODO: Authorize user here. Only admins
+  const id = params.id;
+  try {
+    const body = req.json();
+    const book = await Book.findByIdAndUpdate(id, body, { new: true });
+    if (!book) {
+      return NextResponse.json({ error: 'Book not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Updated", book } , { status: 200 });
+  } catch (error) {
+    console.error('Error fetching book:', error);
+    return NextResponse.json({ error: error }, { status: 500 });
+  }
+}
