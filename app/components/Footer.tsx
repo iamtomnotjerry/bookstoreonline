@@ -22,7 +22,7 @@ export default function Footer() {
       <div className="bg-primary-700">
         <div className="container pb-16 -mt-16 gap-4">
           <div className="grid grid-cols-12">
-            <div className="col-span-5 flex flex-col items-center">
+            <div className="col-span-5 -mt-6 flex flex-col items-center">
               <div className="bg-white rounded-full w-24 h-24 flex items-center justify-center">
                 <Image
                   alt="logo"
@@ -41,7 +41,7 @@ export default function Footer() {
                 BookStore
               </h3>
               <h4 className="text-white font-medium mt-1">
-                Sản phẩm của nhóm 1
+                Sản phẩm của nhóm #1
               </h4>
             </div>
 
