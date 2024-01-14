@@ -5,11 +5,33 @@ enum CoverType {
   Hard = "hard",
 }
 
+interface IRating extends Document {
+  authorId: mongoose.Types.ObjectId;
+  content: string;
+  starRating: number;
+}
+const RatingSchema = new Schema<IRating>({
+  authorId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  content: {
+    type: String,
+  },
+  starRating: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+  },
+}, { timestamps: true });
+
 interface IBook extends Document {
   bookId: mongoose.Types.ObjectId;
   title: string;
   author: string;
   price: number;
+  discountPrice: number;
   description: string;
   provider: string;
   publisher: string;
@@ -20,7 +42,8 @@ interface IBook extends Document {
   pageCount: number;
   coverType: CoverType;
   coverImageUrl: string;
-  tags: string[];
+  genres: string[];
+  ratings: [IRating];
 }
 
 const BookSchema = new Schema<IBook>({
@@ -39,6 +62,10 @@ const BookSchema = new Schema<IBook>({
   price: {
     type: Number,
     required: true,
+  },
+  discountPrice: {
+    type: Number,
+    required: false,
   },
   description: {
     type: String,
@@ -81,12 +108,15 @@ const BookSchema = new Schema<IBook>({
     type: String,
     required: true,
   },
-  tags: {
+  genres: {
     type: [String],
-    required: true,
+    ref: 'Genre'
   },
+  ratings: {
+    type: [RatingSchema]
+  }
 });
 
 const BookModel = mongoose.models.Book as mongoose.Model<IBook> || mongoose.model<IBook>('Book', BookSchema);
 
-export default { BookModel };
+export default BookModel;
