@@ -1,10 +1,7 @@
-"use client";
-
-import { ColumnDef } from "@tanstack/react-table"
-import { Checkbox } from "./ui/Checkbox"
-import { ArrowUpDown } from "lucide-react"
-import { DataTable } from "./ui/DataTable"
+import { ColumnDef } from "@tanstack/react-table";
+import { Checkbox } from "../components/ui/Checkbox";
 import Image from "next/image";
+import { ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 import { EyeIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
@@ -18,7 +15,17 @@ type Products = {
     imageUrl: string,
 }
 
-const columns: ColumnDef<Products>[] = [
+type Status = "pending" | "delivered" | "cancelled";
+
+type Orders = {
+    id: string,
+    quantity: number,
+    date: number,
+    sum_price: number,
+    status: Status,
+}
+
+export const product_columns: ColumnDef<Products>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -45,7 +52,7 @@ const columns: ColumnDef<Products>[] = [
     },
     {
         accessorKey: "imageUrl",
-        header: "Cover",
+        header: "Ảnh bìa",
         cell: ({ row }) => <Image alt="" width={80} height={80} src={row.getValue("imageUrl")} />,
     },
     {
@@ -56,7 +63,7 @@ const columns: ColumnDef<Products>[] = [
                 className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             >
-                Title
+                Tiêu đề
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </div>
             )
@@ -71,7 +78,7 @@ const columns: ColumnDef<Products>[] = [
                 className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             >
-                Stock
+                Có sẵn
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </div>
             )
@@ -85,7 +92,7 @@ const columns: ColumnDef<Products>[] = [
                 className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             >
-                Price
+                Đơn giá
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </div>
             )
@@ -109,7 +116,7 @@ const columns: ColumnDef<Products>[] = [
                 className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             >
-                Discount
+                Giảm giá
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </div>
             )
@@ -118,10 +125,10 @@ const columns: ColumnDef<Products>[] = [
     },
     {
         accessorKey: "action",
-        header: "Action",
+        header: "",
         cell: ({ row }) => {
             const product = row.original;
-
+  
             return (
                 <div className="flex items-center gap-2">
                     <Link href={`/books/${product.id}`}>
@@ -139,38 +146,115 @@ const columns: ColumnDef<Products>[] = [
     },
 ]
 
-const data = [
+export const order_columns: ColumnDef<Orders>[] = [
     {
-        id: 1,
-        title: "Dr.Stone - Tập 23: Động cơ của tương lai",
-        price: 23750,
-        discount: false,
-        discountPercent: 0,
-        quantity: 2,
-        imageUrl: "https://cdn0.fahasa.com/media/catalog/product/d/r/dr.-stone_bia_tap-23.jpg",
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox 
+                className="h-5 w-5 border-gray-500 border-opacity-80 data-[state=checked]:bg-ferra-700 rounded-sm"
+                checked={
+                    table.getIsAllPageRowsSelected() ||
+                    (table.getIsSomePageRowsSelected() && "indeterminate")
+                }
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Select all"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox 
+                className="h-5 w-5 border-gray-500 border-opacity-80 data-[state=checked]:bg-ferra-700 rounded-sm"
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+            />
+        ),
+        enableSorting: false,
+        enableHiding: false,
     },
     {
-        id: 2,
-        title: "Gửi Cậu Một Cái Ôm Vì Đã Không Bỏ Cuộc",
-        price: 96000,
-        discount: false,
-        discountPercent: 27,
-        quantity: 1,
-        imageUrl: "https://cdn0.fahasa.com/media/catalog/product/9/7/9786044784694.jpg",
+        accessorKey: "id",
+        header: "Mã đơn",
+        cell: ({ row }) => <div>{row.getValue("id")}</div>,
     },
     {
-        id: 3,
-        title: "Và Khi Lạc Lối - Còn Tình Thương Ở Lại",
-        price: 69000,
-        discount: true,
-        discountPercent: 10,
-        quantity: 1,
-        imageUrl: "https://cdn0.fahasa.com/media/catalog/product/9/7/9786043717549_1.jpg",
+        accessorKey: "quantity",
+        header: ({ column }) => {
+            return (
+            <div
+                className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Số lượng
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </div>
+            )
+        },
+        cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
     },
-  ]
-
-export default function ProductsTable() {
-    return (
-        <DataTable columns={columns} data={data} />
-    )
-}
+    {
+        accessorKey: "date",
+        header: ({ column }) => {
+            return (
+            <div
+                className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Ngày mua
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </div>
+            )
+        },
+        cell: ({ row }) => <div>{row.getValue("date")}</div>,
+    },
+    {
+        accessorKey: "sum_price",
+        header: ({ column }) => {
+            return (
+            <div
+                className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Thành tiền
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </div>
+            )
+        },
+        cell: ({ row }) => <div>{row.getValue("sum_price")}</div>,
+    },
+    {
+        accessorKey: "status",
+        header: ({ column }) => {
+            return (
+            <div
+                className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Trạng thái
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </div>
+            )
+        },
+        cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
+    },
+    {
+        accessorKey: "action",
+        header: "Action",
+        cell: ({ row }) => {
+            const product = row.original;
+  
+            return (
+                <div className="flex items-center gap-2">
+                    <Link href={`/books/${product.id}`}>
+                        <EyeIcon className="h-6 text-gray-500 hover:text-ferra-700" />
+                    </Link>
+                    <Link href={`/books/${product.id}`}>
+                        <PencilSquareIcon className="h-6 text-gray-500 hover:text-casal-700" />
+                    </Link>
+                    <Link href={`/books/${product.id}`}>
+                        <TrashIcon className="h-6 text-gray-500 hover:text-red-700" />
+                    </Link>
+                </div>
+            )
+        },
+    },
+]
