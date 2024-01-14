@@ -1,4 +1,5 @@
 import BookCard from '@/app/components/BookCard';
+import BookCardsList from '@/app/components/BookCardsList';
 import { Button } from '@/app/components/ui/Button';
 import { FireIcon } from '@heroicons/react/24/outline';
 
@@ -10,10 +11,8 @@ export default function Discover() {
         <span className="text-lg font-semibold">Khám phá</span>
       </h2>
 
-      <div className="grid grid-cols-5 gap-4 mt-4">
-        {Array.from(Array(15)).map((_, index) => (
-          <BookCard key={index} />
-        ))}
+      <div className="mt-4">
+        <BookCardsList />
       </div>
 
       <div className="flex justify-center mt-8">

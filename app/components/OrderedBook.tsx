@@ -3,7 +3,7 @@ import { Badge } from './ui/Badge';
 
 export default function OrderedBook() {
   return (
-    <div className="flex space-x-3 items-center">
+    <div className="flex space-x-1 items-center">
       <div className="flex items-start flex-1">
         <div className="w-28">
           <div className="w-full aspect-w-3 aspect-h-3">
@@ -18,7 +18,7 @@ export default function OrderedBook() {
         </div>
 
         <div className="flex-1">
-          <h4 className="font-semibold">
+          <h4 className="font-semibold line-clamp-2">
             Vạn Dặm Đường Từ Một Bước Chân - Tặng Kèm Bookmark
           </h4>
 

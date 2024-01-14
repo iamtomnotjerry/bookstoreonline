@@ -23,14 +23,17 @@ export default function Brief() {
 
   return (
     <section className="bg-white px-4 py-6 rounded-[0.625rem]">
-      <div className="flex space-x-4">
-        <Tabs defaultValue="0" className="flex items-start w-5/12">
-          <TabsList className="block h-auto w-[20%] bg-transparent space-y-2 px-3">
+      <div className="flex lg:flex-row flex-col lg:space-x-4 lg:space-y-0 space-y-6">
+        <Tabs
+          defaultValue="0"
+          className="flex xl:flex-row flex-col-reverse items-start lg:w-5/12"
+        >
+          <TabsList className="xl:block flex xl:justify-start justify-center w-full h-auto xl:w-[20%] bg-transparent xl:space-y-2 xl:space-x-0 space-x-2 xl:px-3 xl:py-0 py-6">
             {images.map((url, index) => (
               <TabsTrigger
                 key={index}
                 value={`${index}`}
-                className="block w-full p-2 data-[state=active]:shadow-none border rounded-[0.625rem] data-[state=active]:border-primary-500 transition hover:border-gray-100 border-transparent"
+                className="block xl:w-full w-20 p-2 data-[state=active]:shadow-none border rounded-[0.625rem] data-[state=active]:border-primary-500 transition hover:border-gray-100 border-transparent"
               >
                 <div className="aspect-w-5 aspect-h-6">
                   <Image
@@ -46,8 +49,8 @@ export default function Brief() {
           </TabsList>
 
           {images.map((url, index) => (
-            <TabsContent key={index} value={`${index}`} className="flex-1">
-              <div className="aspect-w-1 aspect-h-1">
+            <TabsContent key={index} value={`${index}`} className="xl:flex-1 w-full">
+              <div className="aspect-w-4 aspect-h-3">
                 <Image
                   alt=""
                   src={url}
@@ -65,7 +68,7 @@ export default function Brief() {
             Dragon Ball Z (Vizbig Edition) Vol. 7 (English Edition)
           </h2>
 
-          <div className="grid grid-cols-3 mt-6 gap-3">
+          <div className="hidden grid-cols-3 mt-6 gap-3 lg:grid">
             <div className="even:col-span-2">
               <span>Tác giả: </span>
               <span className="font-medium">Akira Toriyama</span>
@@ -84,7 +87,7 @@ export default function Brief() {
             </div>
           </div>
 
-          <div className="flex items-center mt-3">
+          <div className="items-center mt-3 lg:flex hidden">
             <span>Danh mục: </span>
             <div className="flex items-center space-x-2 ml-3">
               <Badge variant="secondary">Truyện tranh</Badge>

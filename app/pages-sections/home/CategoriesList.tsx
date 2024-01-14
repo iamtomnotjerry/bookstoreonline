@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 function CategoryItem() {
   return (
-    <div className='select-none'>
+    <div className="select-none">
       <div className="aspect-w-2 aspect-h-1">
         <Image
           alt=""
@@ -35,7 +35,10 @@ export default function CategoriesList() {
       <Carousel className="mt-6">
         <CarouselContent className="-mx-2">
           {Array.from(Array(25)).map((_, index) => (
-            <CarouselItem key={index} className="basis-[10%] px-2">
+            <CarouselItem
+              key={index}
+              className="lg:basis-[10%] md:basis-[20%] basis-[25%] px-2"
+            >
               <CategoryItem />
             </CarouselItem>
           ))}

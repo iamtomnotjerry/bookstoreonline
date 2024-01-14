@@ -11,25 +11,25 @@ export default function ChangePassword() {
       <div className="flex justify-center">
         <table>
           <tbody>
-            <tr>
-              <td className="pr-16 text-right py-6 font-semibold">
+            <tr className="md:table-row flex flex-col items-start">
+              <td className="md:pr-16 text-right md:py-6 pt-4 pb-1 whitespace-nowrap font-semibold">
                 Mật khẩu cũ:
               </td>
-              <td>
+              <td className="w-full">
                 <Input placeholder="Nhập mật khẩu cũ" className="w-96" />
               </td>
             </tr>
-            <tr>
-              <td className="pr-16 text-right py-6 font-semibold">
+            <tr className="md:table-row flex flex-col items-start">
+              <td className="md:pr-16 text-right md:py-6 pt-4 pb-1 whitespace-nowrap font-semibold">
                 Mật khẩu mới:
               </td>
-              <td>
+              <td className="w-full">
                 <Input placeholder="Nhập mật khẩu mới" className="w-96" />
               </td>
             </tr>
-            <tr>
+            <tr className="md:table-row flex flex-col items-start">
               <td></td>
-              <td className="text-right pt-6">
+              <td className="text-right pt-6 w-full">
                 <Button>Lưu thay đổi</Button>
               </td>
             </tr>
