@@ -1,8 +1,14 @@
 import Review from '@/app/components/Review';
 import Stars from '@/app/components/Stars';
-import { Button } from '@/app/components/ui/Button';
-import { Separator } from '@/app/components/ui/Separator';
-import { PencilIcon } from '@heroicons/react/24/outline';
+import { Button, buttonVariants } from '@/app/components/ui/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/app/components/ui/Dialog';
+import { Label } from '@/app/components/ui/Label';
 import {
   Pagination,
   PaginationContent,
@@ -12,6 +18,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/app/components/ui/Pagination';
+import { Separator } from '@/app/components/ui/Separator';
+import { Textarea } from '@/app/components/ui/Textarea';
+import { cn } from '@/lib/utils';
+import { PencilIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 export default function ReviewsAndRates() {
   return (
@@ -69,10 +80,53 @@ export default function ReviewsAndRates() {
         </div>
 
         <div className="flex-1 flex items-center justify-center">
-          <Button variant="outline" size="lg">
-            <PencilIcon className="h-5 mr-3" />
-            <span>Đánh giá ngay</span>
-          </Button>
+          <Dialog>
+            <DialogTrigger
+              className={cn(
+                buttonVariants({ variant: 'outline', size: 'lg' }),
+                'cursor-pointer',
+              )}
+            >
+              <PencilIcon className="h-5 mr-3" />
+              <span>Đánh giá ngay</span>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Nhận xét và đánh giá</DialogTitle>
+              </DialogHeader>
+
+              <div>
+                <div className="flex items-center">
+                  <Image
+                    alt=""
+                    src="https://cdn0.fahasa.com/media/catalog/product/i/m/image_183396.jpg"
+                    width={50}
+                    height={50}
+                    className="object-cover w-8 h-8"
+                  />
+                  <div className="line-clamp-1 text-sm ml-2">
+                    Vạn Dặm Đường Từ Một Bước Chân - Tặng Kèm Bookmark
+                  </div>
+                </div>
+                <Separator />
+                <div className="flex justify-center">
+                  <Stars value={5} changeable className="mx-auto text-2xl" />
+                </div>
+                <div className="grid w-full items-center gap-2 mt-6">
+                  <Label htmlFor="email">
+                    <span className="font-medium"> Nhận xét </span>
+                    <span className="text-xs text-gray-500 ml-1">
+                      (Tùy chọn)
+                    </span>
+                  </Label>
+                  <Textarea autoFocus placeholder="Viết nhận xét của bạn" />
+                </div>
+                <div className="flex justify-end mt-8">
+                  <Button>Đánh giá ngay</Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 

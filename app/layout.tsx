@@ -30,7 +30,7 @@ export default function RootLayout({
         <AuthProvider>
           <StoreProvider>
             <div>
-              <NextTopLoader 
+              <NextTopLoader
                 color="#508991"
                 height={4}
                 showSpinner={false}
@@ -40,7 +40,7 @@ export default function RootLayout({
                 showAtBottom={false}
               />
               <Header />
-              <div className="container mt-28 mb-12">{children}</div>
+              <div className="container mt-28 mb-16">{children}</div>
             </div>
           </StoreProvider>
         </AuthProvider>

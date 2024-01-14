@@ -12,6 +12,7 @@ import {
   UserIcon,
 } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
 
 export function Sidebar() {
   return (
@@ -24,14 +25,13 @@ export function Sidebar() {
 
         <div className="ml-3">
           <h3 className="font-semibold text-primary-700">Nguyễn Văn A</h3>
-          <ActiveLink
+          <Link
             href={routes.profile}
             className="flex items-center text-sm text-gray-500"
-            activeClassName="text-primary-700 font-semibold"
           >
             <PencilIcon className="h-3.5 mr-1" />
             Chỉnh sửa
-          </ActiveLink>
+          </Link>
         </div>
       </div>
 
