@@ -1,8 +1,41 @@
+'use client'
+import { useState, useEffect } from 'react';
 import BookCard from '@/app/components/BookCard';
 import { Button } from '@/app/components/ui/Button';
 import { FireIcon } from '@heroicons/react/24/outline';
 
+interface Book {
+  _id: string;
+  title: string;
+  author: string;
+  genre?: string;
+  description?: string;
+  price: number;
+  stock?: number;
+  imageUrl: string;
+}
+
 export default function Discover() {
+  const [books, setBooks] = useState<Book[] | null>(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/books');
+      const data = await response.json();
+      const booksArray = Array.isArray(data.books) ? data.books : [];
+      setBooks(booksArray);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (books === null) {
+    return <div>Loading...</div>;
+  }
   return (
     <section className="bg-white p-4 pb-6 rounded-[0.625rem]">
       <h2 className="flex items-center text-primary-700">
@@ -11,8 +44,8 @@ export default function Discover() {
       </h2>
 
       <div className="grid grid-cols-5 gap-4 mt-4">
-        {Array.from(Array(15)).map((_, index) => (
-          <BookCard key={index} />
+        {Array.isArray(books) && books.map((book) => (
+          <BookCard key={book._id} book={book}/>
         ))}
       </div>
 
