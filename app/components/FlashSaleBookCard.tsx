@@ -1,28 +1,14 @@
 import Image from 'next/image';
 import { Badge } from './ui/Badge';
 import Link from 'next/link';
-import Stars from './Stars';
 
-interface Book {
-  _id: string;
-  title: string;
-  imageUrl: string;
-  author: string;
-  // Add other properties as needed
-}
-
-export default function BookCard({ book }: { book: Book }) {
-  // Check if all specified properties of book are defined before rendering
-  if (!book || !book._id || !book.title || !book.imageUrl || !book.author) {
-    return null; // Or return a placeholder or loading state
-  }
-
+export default function FlashSaleBookCard() {
   return (
     <div className="bg-white transition hover:shadow-lg rounded-[0.625rem] overflow-hidden p-4">
       <Link href={''} className="block aspect-w-1 aspect-h-1">
         <Image
           alt=""
-          src={book.imageUrl} // Use the imageUrl from the book object
+          src="https://cdn0.fahasa.com/media/catalog/product/b/_/b_a-1-tr_n-l_n-m_i-nh_-_-kh_c-2.jpg"
           width={200}
           height={200}
           className="w-full object-contain"
@@ -30,8 +16,8 @@ export default function BookCard({ book }: { book: Book }) {
       </Link>
 
       <div className="mt-3">
-        <h3 className="font-semibold leading-5 transition hover:text-primary-700">
-          <Link href={''}>{book.title}</Link>
+        <h3 className="font-semibold leading-5">
+          <Link href={''}> Trốn Lên Mái Nhà Để Khóc - Tặng Kèm Bookmark</Link>
         </h3>
 
         <div className="flex items-center mt-2">
@@ -45,10 +31,16 @@ export default function BookCard({ book }: { book: Book }) {
           100.000đ
         </span>
 
-        <div className="flex items-center justify-between mt-3">
-          <span className="text-xs text-gray-700">Đã bán 245</span>
-
-          <Stars value={3.5} className="text-sm" />
+        <div className="h-3 bg-tower-gray-300 mt-3 relative rounded-full">
+          <div
+            style={{
+              width: '20%',
+            }}
+            className="h-3 rounded-full bg-casal-700"
+          ></div>
+          <span className="absolute text-[0.625rem] font-semibold text-white top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
+            10 đã bán
+          </span>
         </div>
       </div>
     </div>

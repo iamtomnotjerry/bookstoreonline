@@ -1,17 +1,33 @@
-// models/user.ts
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface User extends Document {
-  name: string;
+interface IUser extends Document {
+  userId: mongoose.Types.ObjectId;
+  fullname: string;
+  username: string;
   email: string;
   password: string;
-  books: string[]; // Assuming book references are stored as strings
+  address: string;
+  phoneNumber: string;
+  ownedBooks: string[]; // bookId
+  cart: [{
+    bookId: mongoose.Types.ObjectId; // bookId
+    quantity: number;
+  }];
+  isAdmin: boolean;
   resetToken?: string;
   resetTokenExpiration?: Date | number; // Allow both Date and number (timestamp)
 }
 
-const userSchema = new Schema<User>({
-  name: {
+const UserSchema = new Schema<IUser>({
+  userId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  fullname: {
+    type: String,
+    required: true,
+  },  
+  username: {
     type: String,
     required: true,
   },
@@ -24,10 +40,34 @@ const userSchema = new Schema<User>({
     type: String,
     required: true,
   },
-  books: [{
+  address: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  ownedBooks: [{
     type: String,
     ref: 'Book',
   }],
+  cart: [{
+    bookId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Book',
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      min: 1,
+      required: true,
+    }
+  }],
+  isAdmin:
+  {
+    type: Boolean,
+    default: false,
+  },
   resetToken: {
     type: String,
   },
@@ -37,6 +77,6 @@ const userSchema = new Schema<User>({
   },
 }, { timestamps: true });
 
-const UserModel = mongoose.models.User as mongoose.Model<User> || mongoose.model<User>('User', userSchema);
+const UserModel = mongoose.models.User as mongoose.Model<IUser> || mongoose.model<IUser>('User', UserSchema);
 
 export default UserModel;
