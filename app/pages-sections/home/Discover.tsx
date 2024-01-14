@@ -18,6 +18,8 @@ interface Book {
 
 export default function Discover() {
   const [books, setBooks] = useState<Book[] | null>(null);
+  const [displayedBooks, setDisplayedBooks] = useState<Book[]>([]);
+  const [displayMore, setDisplayMore] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -25,6 +27,8 @@ export default function Discover() {
       const data = await response.json();
       const booksArray = Array.isArray(data.books) ? data.books : [];
       setBooks(booksArray);
+      // Initially display the first 15 books
+      setDisplayedBooks(booksArray.slice(0, 15));
     } catch (error) {
       console.error('Error fetching books:', error);
     }
@@ -34,9 +38,16 @@ export default function Discover() {
     fetchData();
   }, []);
 
+  const handleLoadMore = () => {
+    // Display all books when "Xem thêm" (See more) is clicked
+    setDisplayMore(true);
+    setDisplayedBooks(books || []);
+  }
+
   if (books === null) {
     return <div>Loading...</div>;
   }
+
   return (
     <section className="bg-white p-4 pb-6 rounded-[0.625rem]">
       <h2 className="flex items-center text-primary-700">
@@ -45,14 +56,18 @@ export default function Discover() {
       </h2>
 
       <div className="grid grid-cols-5 gap-4 mt-4">
-        {Array.isArray(books) && books.map((book) => (
-          <BookCard key={book._id} book={book}/>
+        {displayedBooks.map((book) => (
+          <BookCard key={book._id} book={book} />
         ))}
       </div>
 
-      <div className="flex justify-center mt-8">
-        <Button variant="outline">Xem thêm</Button>
-      </div>
+      {!displayMore && (
+        <div className="flex justify-center mt-8">
+          <Button variant="outline" onClick={handleLoadMore}>
+            Xem thêm
+          </Button>
+        </div>
+      )}
     </section>
   );
 }
