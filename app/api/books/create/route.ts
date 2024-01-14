@@ -1,12 +1,9 @@
-import mongoose from 'mongoose';
 import Book from "@/app/models/book";
 import { NextRequest, NextResponse } from "next/server";
-import { parse } from "url";
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json()
         const newBook = {
-            bookId: new mongoose.Types.ObjectId(),
             title: body?.title,
             author: body?.author,
             price: body?.price,

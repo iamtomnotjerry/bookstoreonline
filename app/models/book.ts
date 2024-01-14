@@ -27,7 +27,6 @@ const RatingSchema = new Schema<IRating>({
 }, { timestamps: true });
 
 interface IBook extends Document {
-  bookId: mongoose.Types.ObjectId;
   title: string;
   author: string;
   price: number;
@@ -47,12 +46,6 @@ interface IBook extends Document {
 }
 
 const BookSchema = new Schema<IBook>({
-  bookId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    index: true,
-    unique: true,
-  },
   title: {
     type: String,
     required: true,
@@ -117,7 +110,7 @@ const BookSchema = new Schema<IBook>({
   ratings: {
     type: [RatingSchema]
   }
-}, { _id: false });
+});
 
 const BookModel = mongoose.models.Book as mongoose.Model<IBook> || mongoose.model<IBook>('Book', BookSchema);
 
