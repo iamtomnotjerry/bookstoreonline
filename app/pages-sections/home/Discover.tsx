@@ -51,9 +51,13 @@ export default function Discover() {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
-        {displayedBooks.map((book) => (
-          <BookCard key={book._id} book={book} />
-        ))}
+        {displayedBooks.length > 0
+          ? displayedBooks.map((book) => (
+              <BookCard key={book._id} book={book} />
+            ))
+          : Array.from({ length: 10 }).map((_, i) => (
+              <BookCard.Skeleton key={i} />
+            ))}
       </div>
 
       {!displayMore && (

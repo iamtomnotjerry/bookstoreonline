@@ -2,8 +2,8 @@
 import Stars from '@/app/components/Stars';
 import { Badge } from '@/app/components/ui/Badge';
 import { Button } from '@/app/components/ui/Button';
-import { StoreContext } from '@/app/context';
-import { useContext } from 'react';
+import { StoreContext } from '@/app/context/index';
+import { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
@@ -20,57 +20,86 @@ import {
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { IBook } from '@/app/models/book';
+import routes from '@/app/configs/routes';
 
 export default function Brief({ book }: { book: IBook }) {
   const router = useRouter();
   const { cartData, setCartData } = useContext(StoreContext);
+  const [count, setCount] = useState(1);
+
   const handleCart = (e: any, reason: any) => {
     e.preventDefault();
-    const newData = { ...book, type: reason };
-    if (reason === 'buy') {
-      // If the reason is 'buy', add the item to the cart and then redirect to '/cart'
-      setCartData([...cartData, newData]);
-      toast.success(`Added ${book.title} to the Cart`, {
-        autoClose: 1000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-      // Use useHistory hook to redirect to '/cart'
-      router.push('/cart');
+
+    if (cartData.find((cart) => cart.book._id === book._id)) {
+      setCartData(
+        cartData.map((cart) =>
+          cart.book._id === book._id
+            ? { ...cart, count: cart.count + count }
+            : cart,
+        ),
+      );
     } else {
-      // If the reason is 'add', simply add the item to the cart without redirecting
-      setCartData([...cartData, newData]);
-      toast.success(`Added ${book.title} to the Cart`, {
-        autoClose: 1000,
-        position: toast.POSITION.TOP_CENTER,
-      });
+      setCartData([
+        ...cartData,
+        {
+          book,
+          count,
+        },
+      ]);
     }
-  };
-  console.log(cartData);
-  const handleMinusCart = (bookId) => {
-    // Check if the book exists in the cart
-    const bookIndex = cartData.findIndex((item) => item._id === bookId);
-    if (bookIndex === -1) {
-      // Book not found in cart, display error toast and return early
-      toast.error('You do not have this book in cart', {
-        autoClose: 1000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-      return;
+    setCount(1);
+    if (reason == 'buy') {
+      router.push(routes.cart);
+    }
+    if (!(reason == 'buy')) {
+      toast.success(`Added ${book.title} to the Cart`, { autoClose: 1000 });
     }
 
-    // Remove the item from the cartData array using splice
-    const updatedCartData = [...cartData]; // Create a new array to avoid mutating the original
-    updatedCartData.splice(bookIndex, 1); // Remove 1 element at the bookIndex
-
-    // Update the state with the modified array
-    setCartData(updatedCartData);
-
-    // Show info toast for removing the book
-    toast.info(`Removed ${cartData[bookIndex].title} from the cart`, {
-      autoClose: 1000,
-      position: toast.POSITION.TOP_CENTER,
-    });
+    // const newData = { ...book, type: reason };
+    // if (reason === 'buy') {
+    //   // If the reason is 'buy', add the item to the cart and then redirect to '/cart'
+    //   setCartData([...cartData, newData]);
+    //   toast.success(`Added ${book.title} to the Cart`, {
+    //     autoClose: 1000,
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    //   // Use useHistory hook to redirect to '/cart'
+    //   router.push('/cart');
+    // } else {
+    //   // If the reason is 'add', simply add the item to the cart without redirecting
+    //   setCartData([...cartData, newData]);
+    //   toast.success(`Added ${book.title} to the Cart`, {
+    //     autoClose: 1000,
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    // }
   };
+
+  // const handleMinusCart = (bookId) => {
+  //   // Check if the book exists in the cart
+  //   const bookIndex = cartData.findIndex((item) => item._id === bookId);
+  //   if (bookIndex === -1) {
+  //     // Book not found in cart, display error toast and return early
+  //     toast.error('You do not have this book in cart', {
+  //       autoClose: 1000,
+  //       position: toast.POSITION.TOP_CENTER,
+  //     });
+  //     return;
+  //   }
+
+  //   // Remove the item from the cartData array using splice
+  //   const updatedCartData = [...cartData]; // Create a new array to avoid mutating the original
+  //   updatedCartData.splice(bookIndex, 1); // Remove 1 element at the bookIndex
+
+  //   // Update the state with the modified array
+  //   setCartData(updatedCartData);
+
+  //   // Show info toast for removing the book
+  //   toast.info(`Removed ${cartData[bookIndex].title} from the cart`, {
+  //     autoClose: 1000,
+  //     position: toast.POSITION.TOP_CENTER,
+  //   });
+  // };
 
   const images = book?.coverImage
     ? [book.coverImage, ...book.images]
@@ -78,8 +107,7 @@ export default function Brief({ book }: { book: IBook }) {
         book.imageUrl,
         'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_3-390x510.jpg',
         'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_7-390x510.jpg',
-    ];
-  
+      ];
 
   return (
     <section className="bg-white px-4 py-6 rounded-[0.625rem]">
@@ -190,16 +218,18 @@ export default function Brief({ book }: { book: IBook }) {
           <div className="flex items-center mt-6">
             <span className="font-semibold">Số lượng:</span>
             <div className="flex items-center space-x-6 ml-8">
-              <button onClick={(event) => handleCart(event, 'Add')}>
-                <PlusCircleIcon className="h-8 text-primary-700" />
-              </button>
-              <span className="text-xl font-semibold">1</span>
-              <button onClick={() => handleMinusCart(book._id)}>
+              <button onClick={() => setCount(Math.max(count - 1, 1))}>
                 <MinusCircleIcon className="h-8 text-primary-700" />
+              </button>
+              <span className="text-xl font-semibold">{count}</span>
+              <button
+                onClick={() => setCount(Math.min(count + 1, book.stock || 100))}
+              >
+                <PlusCircleIcon className="h-8 text-primary-700" />
               </button>
             </div>
             <span className="ml-4 text-gray-600 text-sm">
-              ({book.stock || 0} sản phẩm có sẵn)
+              ({book.stock || 100} sản phẩm có sẵn)
             </span>
           </div>
 
