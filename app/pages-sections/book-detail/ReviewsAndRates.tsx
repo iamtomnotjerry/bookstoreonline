@@ -24,7 +24,7 @@ import { cn } from '@/app/lib/utils';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 
-export default function ReviewsAndRates() {
+export default function ReviewsAndRates({book}) {
   return (
     <section className="bg-white rounded-[0.625rem] p-4 pb-6">
       <h3 className="font-semibold text-lg text-primary-700">Đánh giá</h3>

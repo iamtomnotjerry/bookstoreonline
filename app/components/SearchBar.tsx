@@ -1,5 +1,6 @@
 "use client";
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Button } from './ui/Button';
 import {
@@ -12,13 +13,14 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import { buttonVariants } from './ui/Button';
 import useMediaQuery from "../lib/hooks/useMediaQuery";
 import Link from 'next/link';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Drawer,
   DrawerContent,
   DrawerTrigger,
 } from "./ui/Drawer";
 import { useRouter } from 'next/navigation';
+
 
 const categoriesList = [
   {
@@ -60,10 +62,33 @@ const categoriesList = [
 ];
 
 export default function SearchBar() {
-  const { push } = useRouter();
+  const [book, setBook] = useState<Book | null>(null);
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const isLG = useMediaQuery("(min-width: 1024px)");
-
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    if (searchQuery.trim().length === 0) {
+      console.log('Please type a book name');
+      return;
+    }
+    try {
+      const bookResponse = await fetch(`/api/booksearch/${searchQuery}`);
+      if (!bookResponse.ok) {
+        toast.error('Book not found');
+        return;
+      }
+      const { id } = await bookResponse.json();
+      if (!id) {
+        toast.error('Book not found');
+        return;
+      }
+      router.push(`/books/${id}`); // Redirect to the book page
+      setSearchQuery(''); 
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   return (
     <div className="flex gap-4 max-lg:w-2/3 lg:w-2/5">
       <Popover>
@@ -110,7 +135,7 @@ export default function SearchBar() {
         />
         {
           isLG ? (
-            <Button size="xs" className="px-5" onClick={() => searchQuery.trim().length !== 0 ? push(`/search?q=${searchQuery}`) : undefined}>
+            <Button size="xs" className="px-5" onClick={handleSearch}>
               <MagnifyingGlassIcon className="h-4" />
             </Button>
           ) : (
@@ -130,7 +155,7 @@ export default function SearchBar() {
                       onChange={e => setSearchQuery(e.target.value)}
                     />
                   </div>
-                  <Button size="xs" className="mb-2 w-full h-10" onClick={() => searchQuery.trim().length !== 0 ? push(`/search?q=${searchQuery}`) : undefined}>
+                  <Button size="xs" className="mb-2 w-full h-10" onClick={handleSearch}>
                     Tìm kiếm
                   </Button>
                 </div>

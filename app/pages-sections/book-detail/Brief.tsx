@@ -14,9 +14,9 @@ import {
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 
-export default function Brief() {
+export default function Brief({book}) {
   const images = [
-    'https://cdn0.fahasa.com/media/catalog/product/9/7/9784088837857.jpg',
+    book.imageUrl,
     'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_3-390x510.jpg',
     'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_7-390x510.jpg',
   ];
@@ -65,13 +65,13 @@ export default function Brief() {
 
         <div className="flex-1">
           <h2 className="text-[1.375rem] font-semibold">
-            Dragon Ball Z (Vizbig Edition) Vol. 7 (English Edition)
+          {book.title}
           </h2>
 
           <div className="hidden grid-cols-3 mt-6 gap-3 lg:grid">
             <div className="even:col-span-2">
               <span>Tác giả: </span>
-              <span className="font-medium">Akira Toriyama</span>
+              <span className="font-medium">{book.author}</span>
             </div>
             <div className="even:col-span-2">
               <span>Nhà xuất bản: </span>
