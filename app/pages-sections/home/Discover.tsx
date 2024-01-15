@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
 import BookCard from '@/app/components/BookCard';
-import BookCardsList from '@/app/components/BookCardsList';
 import { Button } from '@/app/components/ui/Button';
 import { FireIcon } from '@heroicons/react/24/outline';
 
@@ -32,7 +31,7 @@ export default function Discover() {
     } catch (error) {
       console.error('Error fetching books:', error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -42,7 +41,7 @@ export default function Discover() {
     // Display all books when "Xem thêm" (See more) is clicked
     setDisplayMore(true);
     setDisplayedBooks(books || []);
-  }
+  };
 
   if (books === null) {
     return <div>Loading...</div>;
@@ -55,7 +54,7 @@ export default function Discover() {
         <span className="text-lg font-semibold">Khám phá</span>
       </h2>
 
-      <div className="grid grid-cols-5 gap-4 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
         {displayedBooks.map((book) => (
           <BookCard key={book._id} book={book} />
         ))}
