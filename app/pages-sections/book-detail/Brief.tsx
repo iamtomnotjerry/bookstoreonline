@@ -1,6 +1,12 @@
+'use client'
 import Stars from '@/app/components/Stars';
 import { Badge } from '@/app/components/ui/Badge';
 import { Button } from '@/app/components/ui/Button';
+import { StoreContext } from "@/app/context";
+import { useContext } from "react";
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+
 import {
   Tabs,
   TabsContent,
@@ -15,6 +21,57 @@ import {
 import Image from 'next/image';
 
 export default function Brief({book}) {
+  const router = useRouter();
+  const {cartData, setCartData} = useContext(StoreContext);
+  const handleCart = (e:any, reason:any) => {
+    e.preventDefault();
+    const newData = {...book, type: reason} 
+    if (reason === 'buy') {
+      // If the reason is 'buy', add the item to the cart and then redirect to '/cart'
+      setCartData([...cartData, newData]);
+      toast.success(`Added ${book.title} to the Cart`, {
+        autoClose: 1000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+      // Use useHistory hook to redirect to '/cart'
+      router.push('/cart');
+    } else {
+      // If the reason is 'add', simply add the item to the cart without redirecting
+      setCartData([...cartData, newData]);
+      toast.success(`Added ${book.title} to the Cart`, {
+        autoClose: 1000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    }
+    console.log(cartData)
+    const handleMinusCart = (bookId) => {
+      // Check if the book exists in the cart
+      const bookIndex = cartData.findIndex((item) => item._id === bookId);
+      if (bookIndex === -1) {
+        // Book not found in cart, display error toast and return early
+        toast.error('You do not have this book in cart', {
+          autoClose: 1000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
+    
+      // Remove the item from the cartData array using splice
+      const updatedCartData = [...cartData]; // Create a new array to avoid mutating the original
+      updatedCartData.splice(bookIndex, 1); // Remove 1 element at the bookIndex
+    
+      // Update the state with the modified array
+      setCartData(updatedCartData);
+    
+      // Show info toast for removing the book
+      toast.info(`Removed ${cartData[bookIndex].title} from the cart`, {
+        autoClose: 1000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    };
+    
+  
   const images = [
     book.imageUrl,
     'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_3-390x510.jpg',
@@ -113,11 +170,11 @@ export default function Brief({book}) {
           <div className="flex items-center mt-6">
             <span className="font-semibold">Số lượng:</span>
             <div className="flex items-center space-x-6 ml-8">
-              <button>
+              <button onClick = {(event) => handleCart(event, 'Add')}>
                 <PlusCircleIcon className="h-8 text-primary-700" />
               </button>
               <span className="text-xl font-semibold">1</span>
-              <button>
+              <button onClick={() => handleMinusCart(book._id)}>
                 <MinusCircleIcon className="h-8 text-primary-700" />
               </button>
             </div>
@@ -127,11 +184,11 @@ export default function Brief({book}) {
           </div>
 
           <div className="flex items-center space-x-4 mt-12">
-            <Button size="lg" variant="outline">
+            <Button size="lg" variant="outline" onClick = {(event) => handleCart(event, 'Add')}>
               <ShoppingCartIcon className="h-6 mr-3" />
               <span>Thêm vào giỏ hàng</span>
             </Button>
-            <Button size="lg">Mua ngay</Button>
+            <Button size="lg" onClick = {(event) => handleCart(event, 'buy')}>Mua ngay</Button>
           </div>
         </div>
       </div>

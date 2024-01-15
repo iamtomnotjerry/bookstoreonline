@@ -7,7 +7,7 @@ import NextTopLoader from 'nextjs-toploader';
 import Header from './components/Header';
 import fonts from './configs/fonts';
 import './globals.css';
-
+import StoreProvider from '@/app/provider/index'
 export const metadata: Metadata = {
   title: 'BookStoreOnline',
   description: 'An online bookstore',
@@ -26,6 +26,7 @@ export default function RootLayout({
           fonts.fontSans.className,
         )}
       >
+        <StoreProvider>
         <AuthProvider>
             <div>
               <NextTopLoader
@@ -42,6 +43,7 @@ export default function RootLayout({
             </div>
         </AuthProvider>
         <ToastContainer />
+        </StoreProvider>
       </body>
     </html>
   );

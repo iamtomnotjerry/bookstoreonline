@@ -16,8 +16,10 @@ import routes from '../configs/routes';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import SearchBar from './SearchBar';
 import { useRouter } from 'next/navigation';
-
+import {useContext} from 'react';
+import { StoreContext } from '@/app/context';
 export default function Header() {
+  const {cartData} = useContext(StoreContext);
   const { push } = useRouter();
   return (
     <header className="lg:h-16 fixed inset-x-0 top-0 z-50 bg-white flex items-center flex-wrap shadow-md shadow-gray-300/10">
@@ -135,7 +137,7 @@ export default function Header() {
             <ShoppingCartIcon className="h-6 mr-2" />
             <span className="font-semibold max-lg:hidden">Giỏ hàng</span>
             <span className="bg-casal-700 text-white font-semibold text-xs leading-4 ml-2 px-1.5 rounded-full">
-              0
+            {cartData.length}
             </span>
           </Link>
         </div>
