@@ -15,6 +15,7 @@ import SideBar from '@/app/components/AdminSideBar';
 import { DataTable } from '@/app/components/ui/DataTable';
 import { product_columns } from '@/app/lib/data-columns';
 import ProductCreateModal from '@/app/components/AdminProductCreateModal';
+import { useState, useEffect } from 'react';
 
 const categoriesList = [
   {
@@ -55,38 +56,35 @@ const categoriesList = [
   },
 ];
 
-const data = [
-  {
-      id: 1,
-      title: "Dr.Stone - Tập 23: Động cơ của tương lai",
-      price: 23750,
-      discount: false,
-      discountPercent: 0,
-      quantity: 2,
-      imageUrl: "https://cdn0.fahasa.com/media/catalog/product/d/r/dr.-stone_bia_tap-23.jpg",
-  },
-  {
-      id: 2,
-      title: "Gửi Cậu Một Cái Ôm Vì Đã Không Bỏ Cuộc",
-      price: 96000,
-      discount: false,
-      discountPercent: 27,
-      quantity: 1,
-      imageUrl: "https://cdn0.fahasa.com/media/catalog/product/9/7/9786044784694.jpg",
-  },
-  {
-      id: 3,
-      title: "Và Khi Lạc Lối - Còn Tình Thương Ở Lại",
-      price: 69000,
-      discount: true,
-      discountPercent: 10,
-      quantity: 1,
-      imageUrl: "https://cdn0.fahasa.com/media/catalog/product/9/7/9786043717549_1.jpg",
-  },
-]
-
-export default function page() {
+interface Book {
+  _id: string;
+  title: string;
+  author: string;
+  genre?: string;
+  description?: string;
+  price: number;
+  stock?: number;
+  imageUrl: string;
+}
+export default function AdminProductPage() {
   const [createModal, setCreateModal] = React.useState(false);
+  const [books, setBooks] = useState<Book[]>([]); // Initialize with an empty array
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/books');
+      const data = await response.json();
+      const booksArray = Array.isArray(data.books) ? data.books : [];
+      setBooks(booksArray);
+      // Initially display the first 15 books
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log(books)
   return (
     <div className="container grid grid-cols-7 gap-4">
         <div className="col-span-1 bg-white rounded-lg max-h-48">
@@ -139,7 +137,7 @@ export default function page() {
                 </div>
             </div>
             <div className="bg-white w-full rounded-lg">
-              <DataTable columns={product_columns} data={data} />
+              <DataTable columns={product_columns} data={books} />
             </div>
         </div>
     </div>

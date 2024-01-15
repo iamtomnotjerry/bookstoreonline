@@ -18,7 +18,8 @@ export default function ProductCreateModal() {
                 <DialogHeader>
                     <DialogTitle>Thêm sản phẩm</DialogTitle>
                 </DialogHeader>
-                <div className="grid grid-cols-2 gap-4 px-4 py-2 overflow-auto">
+                <div className="grid grid-cols-2 gap-4 px-4 py-2 overflow-auto max-h-[80vh]">
+
                     <div className="col-span-1">
                         <p className="font-bold">Thêm ảnh, bìa</p>
                         <Label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-48 border-2 border-ferra-500 border-dashed rounded-lg cursor-pointer bg-ferra-50 hover:bg-ferra-200">
