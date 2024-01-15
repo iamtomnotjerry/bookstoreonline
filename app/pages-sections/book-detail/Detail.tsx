@@ -4,7 +4,7 @@ import { Button } from '@/app/components/ui/Button';
 import { Separator } from '@/app/components/ui/Separator';
 import { useState } from 'react';
 
-export default function Detail() {
+export default function Detail({book}) {
   const [showMore, setShowMore] = useState(false);
 
   return (

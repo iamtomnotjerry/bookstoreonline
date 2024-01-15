@@ -19,7 +19,7 @@ export default function BookCard({ book }: { book: Book }) {
 
   return (
     <div className="bg-white transition hover:shadow-lg rounded-[0.625rem] overflow-hidden p-4">
-      <Link href={''} className="block aspect-w-1 aspect-h-1">
+      <Link href={`/books/${book._id}`}className="block aspect-w-1 aspect-h-1">
         <Image
           alt=""
           src={book.imageUrl} // Use the imageUrl from the book object
@@ -31,7 +31,7 @@ export default function BookCard({ book }: { book: Book }) {
 
       <div className="mt-3">
         <h3 className="font-semibold leading-5 transition hover:text-primary-700">
-          <Link href={''}>{book.title}</Link>
+          <Link href={`/books/${book._id}`}>{book.title}</Link>
         </h3>
 
         <div className="flex items-center mt-2">

@@ -2,8 +2,8 @@ import { AuthProvider } from '@/app/Provider';
 import StoreProvider from '@/app/providerr';
 import { cn } from '@/app/lib/utils';
 import type { Metadata } from 'next';
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NextTopLoader from 'nextjs-toploader';
 import Header from './components/Header';
 import fonts from './configs/fonts';
@@ -44,7 +44,7 @@ export default function RootLayout({
             </div>
           </StoreProvider>
         </AuthProvider>
-        {/* <ToastContainer /> */}
+        <ToastContainer />
       </body>
     </html>
   );
