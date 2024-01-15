@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface IUser extends Document {
+export interface IUser extends Document {
   userId: mongoose.Types.ObjectId;
   fullname: string;
   username: string;
@@ -9,74 +9,76 @@ interface IUser extends Document {
   address: string;
   phoneNumber: string;
   ownedBooks: string[]; // bookId
-  cart: [{
-    bookId: mongoose.Types.ObjectId; // bookId
-    quantity: number;
-  }];
+  cart: [
+    {
+      bookId: mongoose.Types.ObjectId; // bookId
+      quantity: number;
+    },
+  ];
   isAdmin: boolean;
   resetToken?: string;
   resetTokenExpiration?: Date | number; // Allow both Date and number (timestamp)
 }
 
-const UserSchema = new Schema<IUser>({
-  userId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-  },
-  fullname: {
-    type: String,
-    required: true,
-  },  
-  username: {
-    type: String,
-    required: false,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-  },
-  ownedBooks: [{
-    type: String,
-    ref: 'Book',
-  }],
-  cart: [{
-    bookId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Book',
+const UserSchema = new Schema<IUser>(
+  {
+    fullname: {
+      type: String,
       required: true,
     },
-    quantity: {
-      type: Number,
-      min: 1,
+    email: {
+      type: String,
       required: true,
-    }
-  }],
-  isAdmin:
-  {
-    type: Boolean,
-    default: false,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+    },
+    phoneNumber: {
+      type: String,
+      required: false,
+    },
+    ownedBooks: [
+      {
+        type: String,
+        ref: 'Book',
+      },
+    ],
+    cart: [
+      {
+        bookId: {
+          type: Schema.Types.ObjectId,
+          ref: 'Book',
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          min: 1,
+          required: true,
+        },
+      },
+    ],
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    resetToken: {
+      type: String,
+    },
+    resetTokenExpiration: {
+      type: Schema.Types.Mixed, // Allow both Date and number (timestamp)
+      get: (timestamp: number) => new Date(timestamp), // Custom getter for conversion
+    },
   },
-  resetToken: {
-    type: String,
-  },
-  resetTokenExpiration: {
-    type: Schema.Types.Mixed, // Allow both Date and number (timestamp)
-    get: (timestamp: number) => new Date(timestamp), // Custom getter for conversion
-  },
-}, { timestamps: true });
+  { timestamps: true },
+);
 
-const UserModel = mongoose.models.User as mongoose.Model<IUser> || mongoose.model<IUser>('User', UserSchema);
+const UserModel =
+  (mongoose.models.User as mongoose.Model<IUser>) ||
+  mongoose.model<IUser>('User', UserSchema);
 
 export default UserModel;

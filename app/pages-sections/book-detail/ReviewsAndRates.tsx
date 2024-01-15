@@ -8,11 +8,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/app/components/ui/Dialog';
-import { Label } from '@/app/components/ui/Label';
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -20,6 +18,7 @@ import {
 } from '@/app/components/ui/Pagination';
 import { Separator } from '@/app/components/ui/Separator';
 import { Textarea } from '@/app/components/ui/Textarea';
+import { Label } from '@/app/components/ui/Label';
 import { cn } from '@/app/lib/utils';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
@@ -148,7 +147,9 @@ export default function ReviewsAndRates({book}) {
           </PaginationItem>
 
           <PaginationItem>
-            <PaginationLink href="#" isActive>1</PaginationLink>
+            <PaginationLink href="#" isActive>
+              1
+            </PaginationLink>
           </PaginationItem>
 
           <PaginationItem>

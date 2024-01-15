@@ -106,12 +106,7 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: {
-        DEFAULT: '1rem',
-        lg: '4rem',
-        xl: '5rem',
-        '2xl': '6rem',
-      },
+      padding: '1rem',
     },
     extend: {
       keyframes: {

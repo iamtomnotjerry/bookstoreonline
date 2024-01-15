@@ -1,9 +1,9 @@
 import { AuthProvider } from '@/app/Provider';
 import { cn } from '@/app/lib/utils';
 import type { Metadata } from 'next';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import NextTopLoader from 'nextjs-toploader';
+import { ToastContainer } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import fonts from './configs/fonts';
 import './globals.css';
@@ -27,19 +27,19 @@ export default function RootLayout({
         )}
       >
         <AuthProvider>
-            <div>
-              <NextTopLoader
-                color="#508991"
-                height={4}
-                showSpinner={false}
-                easing="ease"
-                shadow="0 0 10px #508991,0 0 5px #508991"
-                zIndex={1600}
-                showAtBottom={false}
-              />
-              <Header />
-              <div className="container mt-28 mb-16">{children}</div>
-            </div>
+          <div>
+            <NextTopLoader
+              color="#508991"
+              height={4}
+              showSpinner={false}
+              easing="ease"
+              shadow="0 0 10px #508991,0 0 5px #508991"
+              zIndex={1600}
+              showAtBottom={false}
+            />
+            <Header />
+            <div className="container mt-28 mb-16">{children}</div>
+          </div>
         </AuthProvider>
         <ToastContainer />
       </body>

@@ -3,11 +3,13 @@
 import { cn } from '@/app/lib/utils';
 import {
   ArrowLeftStartOnRectangleIcon,
+  ArrowRightEndOnRectangleIcon,
   DocumentTextIcon,
   IdentificationIcon,
   LockClosedIcon,
   ShoppingCartIcon,
   UserCircleIcon,
+  UserPlusIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,9 +18,14 @@ import routes from '../configs/routes';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import SearchBar from './SearchBar';
 import { useRouter } from 'next/navigation';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+import { signOut, useSession } from 'next-auth/react';
 
 export default function Header() {
   const { push } = useRouter();
+  const { data } = useSession();
+  const user = data?.user;
   return (
     <header className="lg:h-16 fixed inset-x-0 top-0 z-50 bg-white flex items-center flex-wrap shadow-md shadow-gray-300/10">
       <Link
@@ -68,65 +75,70 @@ export default function Header() {
               </div>
             </PopoverTrigger>
             <PopoverContent
-              align="center"
+              align="end"
               sideOffset={24}
               className="rounded-lg p-0 w-60"
             >
-              <div className="px-4 py-3">
-                <p className="font-bold text-ferra-700">Admin</p>
-                <p className="text-sm text-red-700">Quản trị viên</p>
-              </div>
-              <hr />
-              <Link
-                href={routes.profile}
-                className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-ferra-400 text-sm duration-300 text-gray-500 hover:text-white"
-              >
-                <IdentificationIcon className="h-5" />
-                Hồ sơ
-              </Link>
-              <hr />
-              <Link
-                href={routes.purchase}
-                className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-ferra-400 text-sm duration-300 text-gray-500 hover:text-white"
-              >
-                <DocumentTextIcon className="h-5" />
-                Lịch sử mua hàng
-              </Link>
-              <hr />
-              <Link
-                href="/admin/products"
-                className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-casal-500 text-sm duration-300 text-gray-500 hover:text-white"
-              >
-                <LockClosedIcon className="h-5" />
-                Quản lý
-              </Link>
-              <hr />
-              <div className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-red-400 text-sm duration-300 text-gray-500 hover:text-white rounded-bl-lg rounded-br-lg">
-                <ArrowLeftStartOnRectangleIcon className="h-5" />
-                Đăng xuất
-              </div>
+              {user ? (
+                <>
+                  <div className="px-4 py-3">
+                    <p className="font-bold text-ferra-700">Admin</p>
+                    <p className="text-sm text-red-700">Quản trị viên</p>
+                  </div>
+                  <hr />
+                  <Link
+                    href={routes.profile}
+                    className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-ferra-400 text-sm duration-300 text-gray-500 hover:text-white"
+                  >
+                    <IdentificationIcon className="h-5" />
+                    Hồ sơ
+                  </Link>
+                  <hr />
+                  <Link
+                    href={routes.purchase}
+                    className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-ferra-400 text-sm duration-300 text-gray-500 hover:text-white"
+                  >
+                    <DocumentTextIcon className="h-5" />
+                    Lịch sử mua hàng
+                  </Link>
+                  <hr />
+                  {user.email === '23560004@gm.uit.edu.vn' && (
+                    <Link
+                      href="/admin/products"
+                      className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-casal-500 text-sm duration-300 text-gray-500 hover:text-white"
+                    >
+                      <LockClosedIcon className="h-5" />
+                      Quản lý
+                    </Link>
+                  )}
+                  <hr />
+                  <div
+                    onClick={() => signOut()}
+                    className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-red-400 text-sm duration-300 text-gray-500 hover:text-white rounded-bl-lg rounded-br-lg"
+                  >
+                    <ArrowLeftStartOnRectangleIcon className="h-5" />
+                    Đăng xuất
+                  </div>
+                </>
+              ) : (
+                <>
+                  <SignIn>
+                    <div className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-ferra-400 text-sm duration-300 text-gray-500 hover:text-white rounded-tl-lg rounded-tr-lg">
+                      <ArrowRightEndOnRectangleIcon className="h-5" />
+                      Đăng nhập
+                    </div>
+                  </SignIn>
+                  <hr />
+                  <SignUp>
+                    <div className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-ferra-400 text-sm duration-300 text-gray-500 hover:text-white rounded-bl-lg rounded-br-lg">
+                      <UserPlusIcon className="h-5" />
+                      Đăng ký
+                    </div>
+                  </SignUp>
+                </>
+              )}
             </PopoverContent>
           </Popover>
-
-          {/* <Popover>
-            <PopoverTrigger className="cursor-pointer flex items-center text-gray-500">
-              <div className="inline-flex items-center text-gray-500">
-                <UserCircleIcon className="h-6 mr-2" />
-                <span className="font-semibold max-lg:hidden">Tài khoản</span>
-              </div>
-            </PopoverTrigger>
-            <PopoverContent align="center" sideOffset={24} className="rounded-lg p-0 w-60">
-              <div className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-ferra-400 text-sm duration-300 text-gray-500 hover:text-white rounded-tl-lg rounded-tr-lg">
-                <ArrowRightEndOnRectangleIcon className="h-5" />
-                Đăng nhập
-              </div>
-              <hr />
-              <div className="flex gap-2 px-4 py-3 cursor-pointer hover:bg-ferra-400 text-sm duration-300 text-gray-500 hover:text-white rounded-bl-lg rounded-br-lg">
-                <UserPlusIcon className="h-5" />
-                Đăng ký
-              </div>
-            </PopoverContent>
-          </Popover> */}
 
           <Link
             href={routes.cart}

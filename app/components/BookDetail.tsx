@@ -24,15 +24,17 @@ const BookDetail: React.FC<BookDetailProps> = ({ book }) => {
       <div className="mb-2">
         <img
           className="mr-2 rounded-md"
-          src={imageUrl} 
-          alt={title} 
-          width={300} 
+          src={imageUrl}
+          alt={title}
+          width={300}
           height={300}
-          priority={true} />
+          priority={true}
+        />
       </div>
       <div className="p-2 flex flex-col items-center">
-        <p className="text-3xl">{title} by {author}</p>
-        
+        <p className="text-3xl">
+          {title} by {author}
+        </p>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Badge } from './ui/Badge';
 import Link from 'next/link';
 import Stars from './Stars';
+import { Skeleton } from './ui/Skeleton';
 
 interface Book {
   _id: string;
@@ -11,7 +12,7 @@ interface Book {
   // Add other properties as needed
 }
 
-export default function BookCard({ book }: { book: Book }) {
+function BookCard({ book }: { book: Book }) {
   // Check if all specified properties of book are defined before rendering
   if (!book || !book._id || !book.title || !book.imageUrl || !book.author) {
     return null; // Or return a placeholder or loading state
@@ -31,7 +32,7 @@ export default function BookCard({ book }: { book: Book }) {
 
       <div className="mt-3">
         <h3 className="font-semibold leading-5 transition hover:text-primary-700">
-          <Link href={`/books/${book._id}`}>{book.title}</Link>
+          <Link href={`/books/${book._id}`} className='line-clamp-2'>{book.title}</Link>
         </h3>
 
         <div className="flex items-center mt-2">
@@ -54,3 +55,26 @@ export default function BookCard({ book }: { book: Book }) {
     </div>
   );
 }
+
+BookCard.Skeleton = () => {
+  return (
+    <div className="p-4">
+      <Skeleton className="w-full aspect-w-1 aspect-h-1" />
+      <div className="mt-3">
+        <div className="space-y-1">
+          <Skeleton className="h-4 rounded-full" />
+          <Skeleton className="h-4 rounded-full w-8/12" />
+        </div>
+
+        <Skeleton className="h-5 rounded-full w-7/12 mt-2" />
+
+        <div className="flex items-center justify-between mt-3">
+          <Skeleton className="h-3 rounded-full w-16" />
+          <Skeleton className="h-3 rounded-full w-16" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default BookCard;

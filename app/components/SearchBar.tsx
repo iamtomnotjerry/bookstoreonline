@@ -1,6 +1,5 @@
-"use client";
+'use client';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Button } from './ui/Button';
 import {
@@ -11,61 +10,18 @@ import {
 } from '@heroicons/react/24/outline';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import { buttonVariants } from './ui/Button';
-import useMediaQuery from "../lib/hooks/useMediaQuery";
+import useMediaQuery from '../lib/hooks/useMediaQuery';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTrigger,
-} from "./ui/Drawer";
+import { Drawer, DrawerContent, DrawerTrigger } from './ui/Drawer';
 import { useRouter } from 'next/navigation';
-
-
-const categoriesList = [
-  {
-    name: 'Tiểu thuyết',
-  },
-  {
-    name: 'Truyện tranh',
-  },
-  {
-    name: 'Kinh tế',
-  },
-  {
-    name: 'Khoa học',
-  },
-  {
-    name: 'Văn học',
-  },
-  {
-    name: 'Lịch sử',
-  },
-  {
-    name: 'Thiếu nhi',
-  },
-  {
-    name: 'Sách giáo khoa',
-  },
-  {
-    name: 'Sách tham khảo',
-  },
-  {
-    name: 'Sách ngoại ngữ',
-  },
-  {
-    name: 'Sách chuyên ngành',
-  },
-  {
-    name: 'Sách kỹ năng sống',
-  },
-];
+import categories from '@/app/data/categories.json';
 
 export default function SearchBar() {
   const [book, setBook] = useState<Book | null>(null);
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const isLG = useMediaQuery("(min-width: 1024px)");
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const isLG = useMediaQuery('(min-width: 1024px)');
   const handleSearch = async (event) => {
     event.preventDefault();
     if (searchQuery.trim().length === 0) {
@@ -84,7 +40,7 @@ export default function SearchBar() {
         return;
       }
       router.push(`/books/${id}`); // Redirect to the book page
-      setSearchQuery(''); 
+      setSearchQuery('');
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -102,7 +58,7 @@ export default function SearchBar() {
           </h3>
 
           <ul className="grid md:grid-cols-2 gap-4">
-            {categoriesList.map(({ name }, index) => (
+            {categories.map(({ name }, index) => (
               <li key={index}>
                 <Link
                   href={''}
@@ -116,10 +72,7 @@ export default function SearchBar() {
           </ul>
 
           <div className="flex justify-end mt-6">
-            <Link
-              href={''}
-              className={buttonVariants({ variant: 'outline' })}
-            >
+            <Link href={''} className={buttonVariants({ variant: 'outline' })}>
               <span>Xem tất cả</span>
               <ArrowRightIcon className="h-4 ml-2" />
             </Link>
@@ -131,38 +84,40 @@ export default function SearchBar() {
           placeholder="Tìm kiếm sách..."
           className="max-lg:hidden border-none bg-transparent outline-none flex-1 px-4"
           value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
-        {
-          isLG ? (
-            <Button size="xs" className="px-5" onClick={handleSearch}>
-              <MagnifyingGlassIcon className="h-4" />
-            </Button>
-          ) : (
-            <Drawer>
-              <DrawerTrigger asChild>
-                <Button size="xs" className="px-5">
-                  <MagnifyingGlassIcon className="h-4" />
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent>
-                <div className="px-4 py-2 w-full">
-                  <div className="flex items-center h-11 border-[1.5px] border-gray-400 p-1.5 rounded-xl w-full mb-4">
-                    <input
-                      placeholder="Tìm kiếm sách..."
-                      className="lg:hidden bg-transparent outline-none flex-1 px-4"
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                  <Button size="xs" className="mb-2 w-full h-10" onClick={handleSearch}>
-                    Tìm kiếm
-                  </Button>
+        {isLG ? (
+          <Button size="xs" className="px-5" onClick={handleSearch}>
+            <MagnifyingGlassIcon className="h-4" />
+          </Button>
+        ) : (
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button size="xs" className="px-5">
+                <MagnifyingGlassIcon className="h-4" />
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <div className="px-4 py-2 w-full">
+                <div className="flex items-center h-11 border-[1.5px] border-gray-400 p-1.5 rounded-xl w-full mb-4">
+                  <input
+                    placeholder="Tìm kiếm sách..."
+                    className="lg:hidden bg-transparent outline-none flex-1 px-4"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                 </div>
-              </DrawerContent>
-            </Drawer>
-          )
-        }
+                <Button
+                  size="xs"
+                  className="mb-2 w-full h-10"
+                  onClick={handleSearch}
+                >
+                  Tìm kiếm
+                </Button>
+              </div>
+            </DrawerContent>
+          </Drawer>
+        )}
       </div>
     </div>
   );

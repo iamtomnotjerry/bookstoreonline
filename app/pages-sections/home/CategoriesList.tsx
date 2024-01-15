@@ -5,21 +5,22 @@ import {
 } from '@/app/components/ui/Carousel';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import categories from '@/app/data/categories.json';
 
-function CategoryItem() {
+function CategoryItem({ image, name }: (typeof categories)[0]) {
   return (
     <div className="select-none">
       <div className="aspect-w-2 aspect-h-1">
         <Image
-          alt=""
-          src="https://cdn0.fahasa.com/media/catalog/product/b/_/b_a-1-tr_n-l_n-m_i-nh_-_-kh_c-2.jpg"
+          alt={name}
+          src={image}
           width={200}
           height={200}
           className="w-full object-contain"
         />
       </div>
 
-      <h3 className="text-center mt-2">Tiểu thuyết</h3>
+      <h3 className="text-center mt-2">{name}</h3>
     </div>
   );
 }
@@ -34,12 +35,12 @@ export default function CategoriesList() {
 
       <Carousel className="mt-6">
         <CarouselContent className="-mx-2">
-          {Array.from(Array(25)).map((_, index) => (
+          {categories.map((category, index) => (
             <CarouselItem
               key={index}
               className="lg:basis-[10%] md:basis-[20%] basis-[25%] px-2"
             >
-              <CategoryItem />
+              <CategoryItem {...category} />
             </CarouselItem>
           ))}
         </CarouselContent>

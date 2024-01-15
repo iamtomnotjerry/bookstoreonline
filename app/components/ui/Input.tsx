@@ -4,11 +4,11 @@ import { cn } from '@/app/lib/utils';
 import { VariantProps, cva } from 'class-variance-authority';
 
 const inputVariants = cva(
-  'flex h-10 w-full rounded-[0.625rem] border-[1.5px] px-4 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-primary-900/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  'flex h-10 w-full rounded-[0.625rem] border-[1.25px] px-4 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'border-primary-700 bg-white focus-visible:ring-primary-500',
+        default: 'border-primary-700 bg-white focus-visible:ring-primary-900/50',
         secondary: 'border-gray-300 bg-white focus-visible:ring-gray-50',
       },
     },

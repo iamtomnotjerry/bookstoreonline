@@ -17,7 +17,10 @@ export default function FlashSaleBookCard() {
 
       <div className="mt-3">
         <h3 className="font-semibold leading-5">
-          <Link href={''}> Trốn Lên Mái Nhà Để Khóc - Tặng Kèm Bookmark</Link>
+          <Link href={''} className="line-clamp-2">
+            {' '}
+            Trốn Lên Mái Nhà Để Khóc - Tặng Kèm Bookmark
+          </Link>
         </h3>
 
         <div className="flex items-center mt-2">
