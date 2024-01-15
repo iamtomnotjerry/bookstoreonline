@@ -6,30 +6,32 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from './ui/Button';
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from './ui/Dialog';
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from './ui/Form';
 import { Input } from './ui/Input';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from './ui/Select';
 import { Textarea } from './ui/Textarea';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Vui lòng nhập tiêu đề sách'),
@@ -57,6 +59,8 @@ const formSchema = z.object({
 export default function ProductCreateModal() {
   //   const [images, setImages] = useState<ImageListType>([]);
   //   const [cover, setCover] = useState<ImageType>();
+
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -109,22 +113,26 @@ export default function ProductCreateModal() {
     //   uploadedImages.push(url);
     // }
 
-    const book = {
-      ...values,
-      dimensionsInCm: {
-        x: sizeX,
-        y: sizeY,
-        z: sizeY,
-      },
-      images: [image1, image2, image3].filter(Boolean),
-    };
-    console.log(book);
-    const res = await axios.post('/api/books/create', book);
-    console.log(res);
+    try {
+      const book = {
+        ...values,
+        dimensionsInCm: {
+          x: sizeX,
+          y: sizeY,
+          z: sizeY,
+        },
+        images: [image1, image2, image3].filter(Boolean),
+      };
+      const res = await axios.post('/api/books/create', book);
+      setOpen(false);
+      toast.success('Thêm sản phẩm thành công');
+    } catch (error) {
+      toast.error('Thêm sản phẩm thất bại! Vui lòng thử lại sau');
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="xs" className="right-0">
           <PlusIcon className="h-5" />

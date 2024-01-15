@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
         y: body?.dimensionsInCm?.y,
         z: body?.dimensionsInCm?.z,
       },
+      stock: body?.stock,
     };
     const book = await Book.create(newBook);
     return NextResponse.json({ book }, { status: 200 });

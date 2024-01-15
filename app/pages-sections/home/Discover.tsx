@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
 import BookCard from '@/app/components/BookCard';
 import { Button } from '@/app/components/ui/Button';
@@ -42,10 +42,6 @@ export default function Discover() {
     setDisplayMore(true);
     setDisplayedBooks(books || []);
   };
-
-  if (books === null) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <section className="bg-white p-4 pb-6 rounded-[0.625rem]">

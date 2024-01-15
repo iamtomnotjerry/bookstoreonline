@@ -52,7 +52,7 @@ export default function Detail({ book }: { book: IBook }) {
                 <td className="font-medium pr-28 py-1.5">Kích thước:</td>
                 <td>
                   {book?.dimensionsInCm &&
-                    `${book.dimensionsInCm.x} x ${book.dimensionsInCm.y} x{' '}
+                    `${book.dimensionsInCm.x} x ${book.dimensionsInCm.y} x
                       ${book.dimensionsInCm.z} cm`}
                 </td>
               </tr>

@@ -51,81 +51,84 @@ export interface IBook extends Document {
   stock: number;
 }
 
-const BookSchema = new Schema<IBook>({
-  title: {
-    type: String,
-    required: true,
+const BookSchema = new Schema<IBook>(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number,
+      required: false,
+    },
+    description: {
+      type: String,
+      default: '',
+    },
+    provider: {
+      type: String,
+      required: false,
+    },
+    publisher: {
+      type: String,
+      required: true,
+    },
+    publishYear: {
+      type: Number,
+      required: true,
+    },
+    language: {
+      type: String,
+      required: true,
+    },
+    weight: {
+      type: Number,
+      required: true,
+    },
+    dimensionsInCm: {
+      type: { x: Number, y: Number, z: Number },
+      required: true,
+    },
+    pageCount: {
+      type: Number,
+      required: true,
+    },
+    coverType: {
+      type: String,
+      required: true,
+      enum: ['soft', 'hard'],
+    },
+    coverImage: {
+      type: String,
+      required: true,
+    },
+    images: {
+      type: [String],
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+      // ref: 'Genre',
+    },
+    ratings: {
+      type: [RatingSchema],
+    },
+    stock: {
+      type: Number,
+      required: true,
+    },
   },
-  author: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  discount: {
-    type: Number,
-    required: false,
-  },
-  description: {
-    type: String,
-    default: '',
-  },
-  provider: {
-    type: String,
-    required: false,
-  },
-  publisher: {
-    type: String,
-    required: true,
-  },
-  publishYear: {
-    type: Number,
-    required: true,
-  },
-  language: {
-    type: String,
-    required: true,
-  },
-  weight: {
-    type: Number,
-    required: true,
-  },
-  dimensionsInCm: {
-    type: { x: Number, y: Number, z: Number },
-    required: true,
-  },
-  pageCount: {
-    type: Number,
-    required: true,
-  },
-  coverType: {
-    type: String,
-    required: true,
-    enum: ['soft', 'hard'],
-  },
-  coverImage: {
-    type: String,
-    required: true,
-  },
-  images: {
-    type: [String],
-    required: true,
-  },
-  category: {
-    type: String,
-    required: true,
-    // ref: 'Genre',
-  },
-  ratings: {
-    type: [RatingSchema],
-  },
-  stock: {
-    type: Number,
-    required: true,
-  },
-});
+  { timestamps: true },
+);
 
 const BookModel =
   (mongoose.models.Book as mongoose.Model<IBook>) ||
