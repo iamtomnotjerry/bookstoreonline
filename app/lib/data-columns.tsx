@@ -103,9 +103,7 @@ export const product_columns: ColumnDef<Products>[] = [
             return (
                 <>
                     <p>{((product.price * (100 - product.discountPercent) / 100) * product.quantity).toLocaleString("vi-VN")} đ</p>
-                    <p className="line-through text-gray-400">
-  {product.price !== undefined ? product.price.toLocaleString("vi-VN") + " đ" : "0 đ"}
-</p>
+                    <p className="line-through text-gray-400">{product.price.toLocaleString("vi-VN")} đ</p>
                 </>
             )
         },

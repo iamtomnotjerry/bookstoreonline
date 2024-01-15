@@ -34,7 +34,7 @@ const data = [
     },
 ]
 
-export default function AdminOrderPage() {
+export default function page() {
     const [createModal, setCreateModal] = React.useState(false);
     return (
     <div className="container grid grid-cols-7 gap-4">
