@@ -3,10 +3,12 @@ import { cn } from '@/app/lib/utils';
 import type { Metadata } from 'next';
 import NextTopLoader from 'nextjs-toploader';
 import { ToastContainer } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import fonts from './configs/fonts';
 import './globals.css';
+import StoreProvider from '@/app/provider/index'
+import { connectMongoDB } from './lib/mongodb-connection-module';
 
 export const metadata: Metadata = {
   title: 'BookStoreOnline',
@@ -18,6 +20,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  connectMongoDB();
   return (
     <html lang="en">
       <body
@@ -26,6 +29,7 @@ export default function RootLayout({
           fonts.fontSans.className,
         )}
       >
+        <StoreProvider>
         <AuthProvider>
           <div>
             <NextTopLoader
@@ -42,6 +46,7 @@ export default function RootLayout({
           </div>
         </AuthProvider>
         <ToastContainer />
+        </StoreProvider>
       </body>
     </html>
   );

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET(req: any) {
   try {
     await connectMongoDB();
-    const books = await Book.find({});
+    const books = await Book.find();
     return NextResponse.json({ books }, { status: 200 });
   } catch (error) {
     console.error('Error fetching books:', error);

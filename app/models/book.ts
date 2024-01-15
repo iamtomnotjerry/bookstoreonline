@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 enum CoverType {
-  Soft = "soft",
-  Hard = "hard",
+  Soft = 'soft',
+  Hard = 'hard',
 }
 
 interface IRating extends Document {
@@ -10,39 +10,45 @@ interface IRating extends Document {
   content: string;
   starRating: number;
 }
-const RatingSchema = new Schema<IRating>({
-  authorId: {
-    type: Schema.Types.ObjectId,
-    required: true,
+const RatingSchema = new Schema<IRating>(
+  {
+    authorId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+    content: {
+      type: String,
+    },
+    starRating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5,
+    },
   },
-  content: {
-    type: String,
-  },
-  starRating: {
-    type: Number,
-    required: true,
-    min: 1,
-    max: 5,
-  },
-}, { timestamps: true });
+  { timestamps: true },
+);
 
-interface IBook extends Document {
+export interface IBook extends Document {
   title: string;
   author: string;
   price: number;
-  discountPrice: number;
+  discount: number;
   description: string;
   provider: string;
   publisher: string;
   publishYear: number;
   language: string;
   weight: number;
-  dimensionsInCm: { x: number, y: number, z:number }
+  dimensionsInCm: { x: number; y: number; z: number };
   pageCount: number;
   coverType: CoverType;
-  coverImageUrl: string;
-  genres: string[];
+  coverImage: string;
+  images: string[];
+  // genres: string[];
+  category: string;
   ratings: [IRating];
+  stock: number;
 }
 
 const BookSchema = new Schema<IBook>({
@@ -58,17 +64,17 @@ const BookSchema = new Schema<IBook>({
     type: Number,
     required: true,
   },
-  discountPrice: {
+  discount: {
     type: Number,
     required: false,
   },
   description: {
     type: String,
-    required: true,
+    default: '',
   },
   provider: {
     type: String,
-    required: true,
+    required: false,
   },
   publisher: {
     type: String,
@@ -97,21 +103,32 @@ const BookSchema = new Schema<IBook>({
   coverType: {
     type: String,
     required: true,
-    enum: [ "soft", "hard" ],
+    enum: ['soft', 'hard'],
   },
-  coverImageUrl: {
+  coverImage: {
     type: String,
     required: true,
   },
-  genres: {
+  images: {
     type: [String],
-    ref: 'Genre'
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+    // ref: 'Genre',
   },
   ratings: {
-    type: [RatingSchema]
-  }
+    type: [RatingSchema],
+  },
+  stock: {
+    type: Number,
+    required: true,
+  },
 });
 
-const BookModel = mongoose.models.Book as mongoose.Model<IBook> || mongoose.model<IBook>('Book', BookSchema);
+const BookModel =
+  (mongoose.models.Book as mongoose.Model<IBook>) ||
+  mongoose.model<IBook>('Book', BookSchema);
 
 export default BookModel;

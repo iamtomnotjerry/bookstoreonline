@@ -3,27 +3,20 @@ import { Badge } from './ui/Badge';
 import Link from 'next/link';
 import Stars from './Stars';
 import { Skeleton } from './ui/Skeleton';
+import { IBook } from '../models/book';
 
-interface Book {
-  _id: string;
-  title: string;
-  imageUrl: string;
-  author: string;
-  // Add other properties as needed
-}
-
-function BookCard({ book }: { book: Book }) {
+function BookCard({ book }: { book: IBook }) {
   // Check if all specified properties of book are defined before rendering
-  if (!book || !book._id || !book.title || !book.imageUrl || !book.author) {
+  if (!book) {
     return null; // Or return a placeholder or loading state
   }
 
   return (
     <div className="bg-white transition hover:shadow-lg rounded-[0.625rem] overflow-hidden p-4">
-      <Link href={`/books/${book._id}`}className="block aspect-w-1 aspect-h-1">
+      <Link href={`/books/${book._id}`} className="block aspect-w-1 aspect-h-1">
         <Image
           alt=""
-          src={book.imageUrl} // Use the imageUrl from the book object
+          src={book.coverImage || book.imageUrl} // Use the imageUrl from the book object
           width={200}
           height={200}
           className="w-full object-contain"
@@ -32,18 +25,26 @@ function BookCard({ book }: { book: Book }) {
 
       <div className="mt-3">
         <h3 className="font-semibold leading-5 transition hover:text-primary-700">
-          <Link href={`/books/${book._id}`} className='line-clamp-2'>{book.title}</Link>
+          <Link href={`/books/${book._id}`} className="line-clamp-2">
+            {book.title}
+          </Link>
         </h3>
 
         <div className="flex items-center mt-2">
-          <span className="text-primary-700 font-bold text-lg">75.000đ</span>
+          <span className="text-primary-700 font-bold text-lg">
+            {book?.price
+              ? (book.price - book.discount).toLocaleString('vi-VN')
+              : '75.000đ'}
+          </span>
           <Badge size="sm" className="ml-2">
-            -10%
+            -
+            {book.discount ? Math.ceil((book.discount / book.price) * 100) : 10}
+            %
           </Badge>
         </div>
 
         <span className="text-tower-gray-300 line-through font-semibold">
-          100.000đ
+          {(book?.price || 100000).toLocaleString('vi-VN')}đ
         </span>
 
         <div className="flex items-center justify-between mt-3">

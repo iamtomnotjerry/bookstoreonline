@@ -49,7 +49,7 @@ export default function BookDetailPage() {
       fetchBook();
     }
   }, [id]);
-  if (!book || !book._id || !book.title || !book.imageUrl || !book.author) {
+  if (!book) {
     return null; // Or return a placeholder or loading state
   }
   return (

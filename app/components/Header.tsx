@@ -21,8 +21,11 @@ import { useRouter } from 'next/navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { signOut, useSession } from 'next-auth/react';
+import {useContext} from 'react';
+import { StoreContext } from '@/app/context';
 
 export default function Header() {
+  const {cartData} = useContext(StoreContext);
   const { push } = useRouter();
   const { data } = useSession();
   const user = data?.user;
@@ -147,7 +150,7 @@ export default function Header() {
             <ShoppingCartIcon className="h-6 mr-2" />
             <span className="font-semibold max-lg:hidden">Giỏ hàng</span>
             <span className="bg-casal-700 text-white font-semibold text-xs leading-4 ml-2 px-1.5 rounded-full">
-              0
+            {cartData.length}
             </span>
           </Link>
         </div>

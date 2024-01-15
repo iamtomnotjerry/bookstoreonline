@@ -1,6 +1,12 @@
+'use client';
 import Stars from '@/app/components/Stars';
 import { Badge } from '@/app/components/ui/Badge';
 import { Button } from '@/app/components/ui/Button';
+import { StoreContext } from '@/app/context';
+import { useContext } from 'react';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+
 import {
   Tabs,
   TabsContent,
@@ -13,13 +19,67 @@ import {
   ShoppingCartIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import { IBook } from '@/app/models/book';
 
-export default function Brief({book}) {
-  const images = [
-    book.imageUrl,
-    'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_3-390x510.jpg',
-    'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_7-390x510.jpg',
-  ];
+export default function Brief({ book }: { book: IBook }) {
+  const router = useRouter();
+  const { cartData, setCartData } = useContext(StoreContext);
+  const handleCart = (e: any, reason: any) => {
+    e.preventDefault();
+    const newData = { ...book, type: reason };
+    if (reason === 'buy') {
+      // If the reason is 'buy', add the item to the cart and then redirect to '/cart'
+      setCartData([...cartData, newData]);
+      toast.success(`Added ${book.title} to the Cart`, {
+        autoClose: 1000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+      // Use useHistory hook to redirect to '/cart'
+      router.push('/cart');
+    } else {
+      // If the reason is 'add', simply add the item to the cart without redirecting
+      setCartData([...cartData, newData]);
+      toast.success(`Added ${book.title} to the Cart`, {
+        autoClose: 1000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+  console.log(cartData);
+  const handleMinusCart = (bookId) => {
+    // Check if the book exists in the cart
+    const bookIndex = cartData.findIndex((item) => item._id === bookId);
+    if (bookIndex === -1) {
+      // Book not found in cart, display error toast and return early
+      toast.error('You do not have this book in cart', {
+        autoClose: 1000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+
+    // Remove the item from the cartData array using splice
+    const updatedCartData = [...cartData]; // Create a new array to avoid mutating the original
+    updatedCartData.splice(bookIndex, 1); // Remove 1 element at the bookIndex
+
+    // Update the state with the modified array
+    setCartData(updatedCartData);
+
+    // Show info toast for removing the book
+    toast.info(`Removed ${cartData[bookIndex].title} from the cart`, {
+      autoClose: 1000,
+      position: toast.POSITION.TOP_CENTER,
+    });
+  };
+
+  const images = book?.coverImage
+    ? [book.coverImage, ...book.images]
+    : [
+        book.imageUrl,
+        'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_3-390x510.jpg',
+        'https://cdn0.fahasa.com/media/flashmagazine/images/page_images/one_piece_107/2023_12_25_16_54_05_7-390x510.jpg',
+    ];
+  
 
   return (
     <section className="bg-white px-4 py-6 rounded-[0.625rem]">
@@ -49,7 +109,11 @@ export default function Brief({book}) {
           </TabsList>
 
           {images.map((url, index) => (
-            <TabsContent key={index} value={`${index}`} className="xl:flex-1 w-full">
+            <TabsContent
+              key={index}
+              value={`${index}`}
+              className="xl:flex-1 w-full"
+            >
               <div className="aspect-w-4 aspect-h-3">
                 <Image
                   alt=""
@@ -64,9 +128,7 @@ export default function Brief({book}) {
         </Tabs>
 
         <div className="flex-1">
-          <h2 className="text-[1.375rem] font-semibold">
-          {book.title}
-          </h2>
+          <h2 className="text-[1.375rem] font-semibold">{book.title}</h2>
 
           <div className="hidden grid-cols-3 mt-6 gap-3 lg:grid">
             <div className="even:col-span-2">
@@ -75,23 +137,26 @@ export default function Brief({book}) {
             </div>
             <div className="even:col-span-2">
               <span>Nhà xuất bản: </span>
-              <span className="font-medium">NXB Kim Đồng</span>
+              <span className="font-medium">{book.publisher}</span>
             </div>
             <div className="even:col-span-2">
               <span>Năm xuất bản: </span>
-              <span className="font-medium">2024</span>
+              <span className="font-medium">{book.publishYear}</span>
             </div>
             <div className="even:col-span-2">
               <span>Hình thức bìa: </span>
-              <span className="font-medium">Mềm</span>
+              <span className="font-medium">
+                {book.coverType == 'soft' ? 'Mềm' : 'Cứng'}
+              </span>
             </div>
           </div>
 
           <div className="items-center mt-3 lg:flex hidden">
             <span>Danh mục: </span>
             <div className="flex items-center space-x-2 ml-3">
-              <Badge variant="secondary">Truyện tranh</Badge>
-              <Badge variant="secondary">Trẻ em</Badge>
+              {book.category && (
+                <Badge variant="secondary">{book.category}</Badge>
+              )}
             </div>
           </div>
 
@@ -102,36 +167,54 @@ export default function Brief({book}) {
 
           <div className="flex items-center space-x-4 mt-7">
             <span className="text-3xl font-bold text-primary-700">
-              405.000đ
+              {book?.price && book?.discount
+                ? (book.price - book.discount).toLocaleString('vi-VN')
+                : (504500).toLocaleString('vi-VN')}
+              đ
             </span>
             <span className="line-through text-lg font-semibold text-gray-400">
-              450.000đ
+              {book.discount
+                ? book.discount.toLocaleString('vi-VN')
+                : (600000).toLocaleString('vi-VN')}
+              đ
             </span>
-            <Badge size="lg">-10%</Badge>
+            <Badge size="lg">
+              -
+              {book?.discount
+                ? Math.ceil((book.discount / book.price) * 100)
+                : 10}
+              %
+            </Badge>
           </div>
 
           <div className="flex items-center mt-6">
             <span className="font-semibold">Số lượng:</span>
             <div className="flex items-center space-x-6 ml-8">
-              <button>
+              <button onClick={(event) => handleCart(event, 'Add')}>
                 <PlusCircleIcon className="h-8 text-primary-700" />
               </button>
               <span className="text-xl font-semibold">1</span>
-              <button>
+              <button onClick={() => handleMinusCart(book._id)}>
                 <MinusCircleIcon className="h-8 text-primary-700" />
               </button>
             </div>
             <span className="ml-4 text-gray-600 text-sm">
-              (120 sản phẩm có sẵn)
+              ({book.stock || 0} sản phẩm có sẵn)
             </span>
           </div>
 
           <div className="flex items-center space-x-4 mt-12">
-            <Button size="lg" variant="outline">
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={(event) => handleCart(event, 'Add')}
+            >
               <ShoppingCartIcon className="h-6 mr-3" />
               <span>Thêm vào giỏ hàng</span>
             </Button>
-            <Button size="lg">Mua ngay</Button>
+            <Button size="lg" onClick={(event) => handleCart(event, 'buy')}>
+              Mua ngay
+            </Button>
           </div>
         </div>
       </div>
