@@ -1,5 +1,4 @@
 import { AuthProvider } from '@/app/Provider';
-import StoreProvider from '@/app/provider';
 import { cn } from '@/app/lib/utils';
 import type { Metadata } from 'next';
 import { ToastContainer } from 'react-toastify';
@@ -28,7 +27,6 @@ export default function RootLayout({
         )}
       >
         <AuthProvider>
-          <StoreProvider>
             <div>
               <NextTopLoader
                 color="#508991"
@@ -42,7 +40,6 @@ export default function RootLayout({
               <Header />
               <div className="container mt-28 mb-16">{children}</div>
             </div>
-          </StoreProvider>
         </AuthProvider>
         <ToastContainer />
       </body>
