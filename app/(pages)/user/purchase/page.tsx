@@ -62,11 +62,11 @@ export default function OrderPage() {
         ) : orders.length === 0 ? (
           <p>No orders found.</p>
         ) : (
-          <>
+          <div className='mt-6'>
             {orders.map((order) => (
               <div key={order._id}>
                 <div className="flex items-center justify-between">
-                  <h4 className="font-semibold uppercase">#{order._id}</h4>
+                  <h4 className="font-medium uppercase">#{order._id}</h4>
                   <span className="text-donkey-brown-500 font-medium">
                     {order.status}
                   </span>
@@ -74,14 +74,14 @@ export default function OrderPage() {
 
                 <div className="space-y-4 mt-3">
                   {order.items.map((item, index) => (
-                    <OrderedBook key={index} book={item.book} count={item.quantity} />
+                    <OrderedBook key={index} id={item.book} count={item.quantity} />
                   ))}
                 </div>
 
                 <Separator className="my-8" />
               </div>
             ))}
-          </>
+          </div>
         )}
 
         <Pagination className="mt-8">

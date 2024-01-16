@@ -1,9 +1,12 @@
 import categories from '@/app/data/categories.json';
-import { PlusIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import * as z from 'zod';
+import { IBook } from '../models/book';
 import { Button } from './ui/Button';
 import {
   Dialog,
@@ -30,8 +33,6 @@ import {
   SelectValue,
 } from './ui/Select';
 import { Textarea } from './ui/Textarea';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Vui lòng nhập tiêu đề sách'),
@@ -56,47 +57,46 @@ const formSchema = z.object({
   image3: z.string().optional(),
 });
 
-export default function ProductCreateModal() {
-  //   const [images, setImages] = useState<ImageListType>([]);
-  //   const [cover, setCover] = useState<ImageType>();
+interface ProductCreateModalProps {
+  defaultValues?: IBook;
+  action?: 'create' | 'update';
+  children?: React.ReactNode;
+}
 
+export default function ProductCreateModal({
+  action = 'create',
+  children,
+  defaultValues,
+}: ProductCreateModalProps) {
   const [open, setOpen] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      author: '',
-      category: '',
-      description: '',
-      discount: 0,
-      language: '',
-      pageCount: 0,
-      price: 0,
-      publishYear: 0,
-      publisher: '',
-      sizeX: 0,
-      sizeY: 0,
-      sizeZ: 0,
-      stock: 0,
-      weight: 0,
-      coverType: '',
-      coverImage: '',
-      image1: '',
-      image2: '',
-      image3: '',
+      title: defaultValues?.title || '',
+      author: defaultValues?.author || '',
+      category: defaultValues?.category || '',
+      description: defaultValues?.description || '',
+      discount: defaultValues?.discount || 0,
+      language: defaultValues?.language || '',
+      pageCount: defaultValues?.pageCount || 0,
+      price: defaultValues?.price || 0,
+      publishYear: defaultValues?.publishYear || 0,
+      publisher: defaultValues?.publisher || '',
+      sizeX: defaultValues?.dimensionsInCm?.x || 0,
+      sizeY: defaultValues?.dimensionsInCm?.y || 0,
+      sizeZ: defaultValues?.dimensionsInCm?.z || 0,
+      stock: defaultValues?.stock || 0,
+      weight: defaultValues?.weight || 0,
+      coverType: defaultValues?.coverType || '',
+      coverImage: defaultValues?.coverImage || '',
+      image1: defaultValues?.images[0] || '',
+      image2: defaultValues?.images[1] || '',
+      image3: defaultValues?.images[2] || '',
     },
   });
-
-  //   const onChange = (imageList: ImageListType) => {
-  //     form.clearErrors('images');
-  //     form.setValue(
-  //       'images',
-  //       imageList.map((image) => image['data_url']) as [string, ...string[]],
-  //     );
-  //     setImages(imageList);
-  //     if (!cover) setCover(imageList[0]);
-  //   };
 
   async function onSubmit({
     sizeX,
@@ -107,12 +107,6 @@ export default function ProductCreateModal() {
     image3,
     ...values
   }: z.infer<typeof formSchema>) {
-    // let uploadedImages = [];
-    // for (let i = 0; i < images.length; i++) {
-    //   const url = await uploadImage(images[i].file as File);
-    //   uploadedImages.push(url);
-    // }
-
     try {
       const book = {
         ...values,
@@ -123,21 +117,32 @@ export default function ProductCreateModal() {
         },
         images: [image1, image2, image3].filter(Boolean),
       };
-      const res = await axios.post('/api/books/create', book);
+      if (action === 'create') {
+        console.log(book);
+        await axios.post('/api/books/create', book);
+        toast.success('Thêm sản phẩm thành công');
+      } else {
+        const res = await axios.patch<{ book: IBook }>(
+          `/api/books/${defaultValues?._id}`,
+          book,
+        );
+        toast.success('Cập nhật sản phẩm thành công');
+        queryClient.invalidateQueries({
+          queryKey: ['books/' + res.data.book._id],
+        });
+      }
       setOpen(false);
-      toast.success('Thêm sản phẩm thành công');
+      queryClient.invalidateQueries({ queryKey: ['books'] });
     } catch (error) {
-      toast.error('Thêm sản phẩm thất bại! Vui lòng thử lại sau');
+      if (action === 'create')
+        toast.error('Thêm sản phẩm thất bại! Vui lòng thử lại sau');
+      else toast.error('Cập nhật sản phẩm thất bại! Vui lòng thử lại sau');
     }
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="xs" className="right-0">
-          <PlusIcon className="h-5" />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent className="lg:max-w-4xl max-w-[calc(100vw-1rem)]">
         <DialogHeader>
@@ -383,108 +388,6 @@ export default function ProductCreateModal() {
             </div>
 
             <div className="col-span-1 space-y-2">
-              {/* <FormField
-                control={form.control}
-                name="images"
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel>Thêm ảnh, bìa</FormLabel>
-                    <ImageUploading
-                      multiple
-                      value={images}
-                      onChange={onChange}
-                      maxNumber={5}
-                      dataURLKey="data_url"
-                    >
-                      {({
-                        imageList,
-                        onImageUpload,
-                        onImageRemove,
-                        dragProps,
-                      }) => (
-                        <>
-                          <div
-                            onClick={() => {
-                              onImageUpload();
-                            }}
-                            {...dragProps}
-                            className="flex flex-col items-center justify-center w-full h-48 border-2 border-ferra-500 border-dashed rounded-lg cursor-pointer bg-ferra-50 hover:bg-ferra-200"
-                          >
-                            <div className="flex flex-col items-center justify-center pt-4 pb-4">
-                              <PhotoIcon
-                                width={48}
-                                height={48}
-                                className="text-ferra-500"
-                              />
-                              <p className="mt-6 text-sm flex gap-2 items-center justify-center">
-                                <ArrowUpTrayIcon className="h-5 text-ferra-700" />
-                                <span>
-                                  Kéo và thả ảnh vào đây, hoặc{' '}
-                                  <span className="text-ferra-700">Duyệt</span>
-                                </span>
-                              </p>
-                            </div>
-                            <Input
-                              id="dropzone-file"
-                              type="file"
-                              className="hidden"
-                              multiple
-                            />
-                          </div>
-
-                          <div className="overflow-y-auto max-h-[250px] py-2">
-                            {imageList.map((image, index) => (
-                              <div
-                                key={index}
-                                className="flex max-w-full p-2 border-[1px] mt-2 rounded-lg hover:border-casal-400 hover:bg-casal-50 justify-between gap-2"
-                              >
-                                <Image
-                                  height={50}
-                                  width={50}
-                                  alt=""
-                                  src={image['data_url']}
-                                  className="w-12 h-12 object-cover"
-                                />
-                                <div className="flex-1">
-                                  <p className="text-[14px] font-semibold">
-                                    {image.file?.name.slice(0, 20)}
-                                    {(image.file?.name.length || 0) > 20 &&
-                                      '...'}
-                                  </p>
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-[12px] text-gray-500">
-                                      {Math.ceil(
-                                        (image.file?.size || 0) / 1000,
-                                      )}{' '}
-                                      KB
-                                    </span>
-                                    <div className="flex items-center gap-1 clear-start text-xs text-gray-500">
-                                      <Checkbox
-                                        checked={cover == image}
-                                        onCheckedChange={() => setCover(image)}
-                                        className="scale-75 origin-center"
-                                      />
-                                      <span>Đặt làm ảnh bìa</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <button
-                                  onClick={() => onImageRemove(index)}
-                                  className="flex items-center"
-                                >
-                                  <TrashIcon className="h-6 text-gray-400 hover:text-red-400" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </>
-                      )}
-                    </ImageUploading>
-                    
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 control={form.control}
                 name="coverImage"
@@ -612,7 +515,9 @@ export default function ProductCreateModal() {
             />
 
             <DialogFooter className="col-span-2 mt-4">
-              <Button type="submit">Đăng</Button>
+              <Button type="submit">
+                {action === 'create' ? 'Thêm sản phẩm' : 'Cập nhật sản phẩm'}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

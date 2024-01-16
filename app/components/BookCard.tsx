@@ -34,7 +34,7 @@ function BookCard({ book }: { book: IBook }) {
           <span className="text-primary-700 font-bold text-lg">
             {book?.price
               ? (book.price - book.discount).toLocaleString('vi-VN')
-              : '75.000đ'}
+              : '75.000đ'}đ
           </span>
           <Badge size="sm" className="ml-2">
             -

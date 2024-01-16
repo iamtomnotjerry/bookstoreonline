@@ -9,6 +9,7 @@ import fonts from './configs/fonts';
 import './globals.css';
 import StoreProvider from '@/app/provider/index';
 import { connectMongoDB } from './lib/mongodb-connection-module';
+import QueryProvider from './provider/QueryProvider';
 
 export const metadata: Metadata = {
   title: 'BookStoreOnline',
@@ -31,19 +32,21 @@ export default async function RootLayout({
       >
         <StoreProvider>
           <AuthProvider>
-            <div>
-              <NextTopLoader
-                color="#508991"
-                height={4}
-                showSpinner={false}
-                easing="ease"
-                shadow="0 0 10px #508991,0 0 5px #508991"
-                zIndex={1600}
-                showAtBottom={false}
-              />
-              <Header />
-              <div className="container mt-28 mb-16">{children}</div>
-            </div>
+            <QueryProvider>
+              <div>
+                <NextTopLoader
+                  color="#508991"
+                  height={4}
+                  showSpinner={false}
+                  easing="ease"
+                  shadow="0 0 10px #508991,0 0 5px #508991"
+                  zIndex={1600}
+                  showAtBottom={false}
+                />
+                <Header />
+                <div className="container mt-28 mb-16">{children}</div>
+              </div>
+            </QueryProvider>
           </AuthProvider>
           <ToastContainer />
         </StoreProvider>
