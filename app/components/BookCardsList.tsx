@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { IBook } from '../models/book';
 import BookCard from './BookCard';
 

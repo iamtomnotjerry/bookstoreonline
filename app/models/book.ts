@@ -49,6 +49,7 @@ export interface IBook extends Document {
   category: string;
   ratings: [IRating];
   stock: number;
+  imageUrl: string
 }
 
 const BookSchema = new Schema<IBook>(

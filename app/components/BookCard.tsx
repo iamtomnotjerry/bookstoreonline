@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import Image from 'next/image';
 import { Badge } from './ui/Badge';
 import Link from 'next/link';
@@ -57,7 +58,10 @@ function BookCard({ book }: { book: IBook }) {
   );
 }
 
-BookCard.Skeleton = () => {
+// Set the displayName property of the function
+BookCard.displayName = 'BookCard';
+
+BookCard.Skeleton = ()=>{
   return (
     <div className="p-4">
       <Skeleton className="w-full aspect-w-1 aspect-h-1" />
