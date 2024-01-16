@@ -18,24 +18,10 @@ import { order_columns } from '@/app/lib/data-columns';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
 const data = [
-    {
-        id: '#1',
-        quantity: 2,
-        date: 1705226276,
-        sum_price: 123000,
-        status: 'delivered',
-    },
-    {
-        id: '#2',
-        quantity: 1,
-        date: 1705226276,
-        sum_price: 47500,
-        status: 'pending',
-    },
+    
 ]
 
 export default function page() {
-    const [createModal, setCreateModal] = React.useState(false);
     return (
     <div className="container grid grid-cols-7 gap-4">
         <div className="col-span-1 max-lg:col-span-7 bg-white rounded-lg max-h-48">
@@ -73,7 +59,7 @@ export default function page() {
                 </div>
             </div>
             <div className="bg-white w-full rounded-lg">
-              <DataTable columns={order_columns} data={data} />
+              {/* <DataTable columns={order_columns} data={data} /> */}
             </div>
         </div>
     </div>

@@ -7,14 +7,16 @@ import { EyeIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outlin
 import UpdateCreateModal from "../components/AdminUpdateMode";
 
 type Products = {
+    _id: string;
     id: number,
-    title: string,
-    quantity: number,
-    price: number,
-    discount: boolean,
-    discountPercent: number,
-    imageUrl: string,
-    coverImage:string
+    title: string;
+    author: string;
+    genre?: string;
+    description?: string;
+    price: number;
+    stock?: number;
+    imageUrl: string;
+    coverImage: string;
 }
 
 type Status = "pending" | "delivered" | "cancelled";
@@ -53,10 +55,10 @@ export const product_columns: ColumnDef<Products>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "imageUrl",
+        accessorKey: "coverImage",
         header: "Ảnh bìa",
         cell: ({ row }) => {
-            const imageSrc = row.original.coverImage !== undefined ? row.original.coverImage : row.original.imageUrl;
+            const imageSrc = row.original.imageUrl !== undefined ? row.original.imageUrl : row.original.coverImage;
             return <Image alt="" width={80} height={80} src={imageSrc} />;
         },
     }
@@ -77,7 +79,7 @@ export const product_columns: ColumnDef<Products>[] = [
         cell: ({ row }) => <div>{row.getValue("title")}</div>,
     },
     {
-        accessorKey: "quantity",
+        accessorKey: "stock",
         header: ({ column }) => {
             return (
             <div
@@ -105,32 +107,35 @@ export const product_columns: ColumnDef<Products>[] = [
         },
         cell: ({ row }) => {
             const product = row.original;
-            if (product.discountPercent == 0) return <p>{product.price.toLocaleString("vi-VN")} đ</p>
             return (
-                <>
-                    <p>{((product.price * (100 - product.discountPercent) / 100) * product.quantity).toLocaleString("vi-VN")} đ</p>
-                    <p className="line-through text-gray-400">
-  {product.price !== undefined ? product.price.toLocaleString("vi-VN") + " đ" : "0 đ"}
-</p>
-                </>
+                <p>{product.price ? product.price.toLocaleString("vi-VN") : "NaN"} đ</p>
             )
+            // if (product.discountPercent == 0) return <p>{product.price.toLocaleString("vi-VN")} đ</p>
+            // return (
+            //     <>
+            //         <p>{((product.price * (100 - product.discountPercent) / 100) * product.quantity).toLocaleString("vi-VN")} đ</p>
+            //         <p className="line-through text-gray-400">
+            //             {product.price !== undefined ? product.price.toLocaleString("vi-VN") + " đ" : "0 đ"}
+            //         </p>
+            //     </>
+            // )
         },
     },
-    {
-        accessorKey: "discountPercent",
-        header: ({ column }) => {
-            return (
-            <div
-                className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-                Giảm giá
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </div>
-            )
-        },
-        cell: ({ row }) => <div>{row.getValue("discountPercent")}%</div>,
-    },
+    // {
+    //     accessorKey: "discountPercent",
+    //     header: ({ column }) => {
+    //         return (
+    //         <div
+    //             className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
+    //             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //         >
+    //             Giảm giá
+    //             <ArrowUpDown className="ml-2 h-4 w-4" />
+    //         </div>
+    //         )
+    //     },
+    //     cell: ({ row }) => <div>{row.getValue("discountPercent")}%</div>,
+    // },
     {
         accessorKey: "action",
         header: "",
@@ -255,9 +260,6 @@ export const order_columns: ColumnDef<Orders>[] = [
                 <div className="flex items-center gap-2">
                     <Link href={`/books/${product.id}`}>
                         <EyeIcon className="h-6 text-gray-500 hover:text-ferra-700" />
-                    </Link>
-                    <Link href={`/books/${product.id}`}>
-                        <PencilSquareIcon className="h-6 text-gray-500 hover:text-casal-700" />
                     </Link>
                     <Link href={`/books/${product.id}`}>
                         <TrashIcon className="h-6 text-gray-500 hover:text-red-700" />
