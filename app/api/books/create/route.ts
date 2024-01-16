@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       weight: body?.weight,
       pageCount: body?.pageCount,
       coverType: body?.coverType,
-      coverImage: body?.coverImage,
+      imageUrl: body?.coverImage,
       images: body?.images,
       category: body?.category,
       dimensionsInCm: {

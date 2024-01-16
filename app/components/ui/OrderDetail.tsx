@@ -20,7 +20,13 @@ export default function OrderDetail() {
           <div key={i} className="flex items-center gap-4 mb-4">
             <Checkbox id={`check-${data._id}`} checked={data.isChecked} className="h-5 w-5 border-gray-500 border-opacity-80 checked:bg-ferra-700 rounded-sm" />
             <div className="flex items-center gap-4 flex-grow">
-            {<Image height={120} width={120} alt="" src={data.imageUrl} loading="lazy" />}
+            {<Image
+              height={120}
+              width={120}
+              alt=""
+              src={data.coverImage !== undefined && data.coverImage !== null ? data.coverImage : data.imageUrl}
+              loading="lazy"
+            />}
               <div className="flex flex-col">
                 <p className="text-sm">{data.title}</p>
                 <div className="flex items-center gap-2">

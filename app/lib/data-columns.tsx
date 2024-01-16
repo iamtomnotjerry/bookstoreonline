@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 import { EyeIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import UpdateCreateModal from "../components/AdminUpdateMode";
 
 type Products = {
     id: number,
@@ -13,6 +14,7 @@ type Products = {
     discount: boolean,
     discountPercent: number,
     imageUrl: string,
+    coverImage:string
 }
 
 type Status = "pending" | "delivered" | "cancelled";
@@ -53,8 +55,12 @@ export const product_columns: ColumnDef<Products>[] = [
     {
         accessorKey: "imageUrl",
         header: "Ảnh bìa",
-        cell: ({ row }) => <Image alt="" width={80} height={80} src={row.getValue("imageUrl")} />,
-    },
+        cell: ({ row }) => {
+            const imageSrc = row.original.coverImage !== undefined ? row.original.coverImage : row.original.imageUrl;
+            return <Image alt="" width={80} height={80} src={imageSrc} />;
+        },
+    }
+    ,
     {
         accessorKey: "title",
         header: ({ column }) => {
@@ -103,7 +109,9 @@ export const product_columns: ColumnDef<Products>[] = [
             return (
                 <>
                     <p>{((product.price * (100 - product.discountPercent) / 100) * product.quantity).toLocaleString("vi-VN")} đ</p>
-                    <p className="line-through text-gray-400">{product.price.toLocaleString("vi-VN")} đ</p>
+                    <p className="line-through text-gray-400">
+  {product.price !== undefined ? product.price.toLocaleString("vi-VN") + " đ" : "0 đ"}
+</p>
                 </>
             )
         },
@@ -131,13 +139,14 @@ export const product_columns: ColumnDef<Products>[] = [
   
             return (
                 <div className="flex items-center gap-2">
-                    <Link href={`/books/${product.id}`}>
+                    <Link href={`/books/${product._id}`}>
                         <EyeIcon className="h-6 text-gray-500 hover:text-ferra-700" />
                     </Link>
-                    <Link href={`/books/${product.id}`}>
+                    {/* <Link href={`/books/${product._id}`}>
                         <PencilSquareIcon className="h-6 text-gray-500 hover:text-casal-700" />
-                    </Link>
-                    <Link href={`/books/${product.id}`}>
+                    </Link> */}
+                    <UpdateCreateModal product={product}/>
+                    <Link href={`/books/${product._id}`}>
                         <TrashIcon className="h-6 text-gray-500 hover:text-red-700" />
                     </Link>
                 </div>
