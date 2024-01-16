@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import Thanhtoan from '@/app/components/ui/thanhtoan'
+import Thanhtoan from '@/app/components/ui/Thanhtoan'
 import OrderDetail from '@/app/components/ui/OrderDetail'
 
 

@@ -11,12 +11,12 @@ export default function OrderDetail() {
 
   return (
     <div className="col-span-full lg:col-span-6 rounded-xl">
-      <div className="flex bg-white px-4 py-3 rounded-xl mb-4 items-center">
+      <div className="flex bg-white px-4 py-3 rounded-xl mb-4 gap-2 items-center">
         <Checkbox id="check-all" className="h-5 w-5 border-gray-500 border-opacity-80 checked:bg-ferra-700 rounded-sm" />
-        <span className="text-sm">Select all ({cartData.length})</span>
+        <span className="text-sm">Chọn tất cả ({cartData.length})</span>
       </div>
       <div className="bg-white px-4 py-4 rounded-xl">
-        {cartData.map((data, i) => (
+        {cartData.map((data: any, i: number) => (
           <div key={i} className="flex items-center gap-4 mb-4">
             <Checkbox id={`check-${data._id}`} checked={data.isChecked} className="h-5 w-5 border-gray-500 border-opacity-80 checked:bg-ferra-700 rounded-sm" />
             <div className="flex items-center gap-4 flex-grow">

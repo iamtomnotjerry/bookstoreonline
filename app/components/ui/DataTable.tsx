@@ -1,10 +1,13 @@
 "use client"
 
 import {
+  Column,
+  Table as TanTable,
   ColumnDef,
   SortingState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -41,6 +44,7 @@ const [sorting, setSorting] = React.useState<SortingState>([])
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
     },

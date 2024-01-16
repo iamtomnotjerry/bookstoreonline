@@ -61,9 +61,9 @@ export const product_columns: ColumnDef<Products>[] = [
             const imageSrc = row.original.imageUrl !== undefined ? row.original.imageUrl : row.original.coverImage;
             return <Image alt="" width={80} height={80} src={imageSrc} />;
         },
-    }
-    ,
+    },
     {
+        id: "title",
         accessorKey: "title",
         header: ({ column }) => {
             return (

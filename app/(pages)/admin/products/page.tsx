@@ -16,7 +16,6 @@ import { DataTable } from '@/app/components/ui/DataTable';
 import { product_columns } from '@/app/lib/data-columns';
 import ProductCreateModal from '@/app/components/AdminProductCreateModal';
 import { useState, useEffect } from 'react';
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/app/components/ui/Pagination';
 
 const categoriesList = [
   {
@@ -71,7 +70,6 @@ interface Book {
 }
 export default function AdminProductPage() {
   const [books, setBooks] = useState<Book[]>([]);
-  const [size, setSize] = useState<number>(10);
   const fetchData = async () => {
     try {
       const response = await fetch('/api/books');
@@ -107,9 +105,9 @@ export default function AdminProductPage() {
                             <SelectLabel>Danh mục</SelectLabel>
                             {
                                 categoriesList.map((d,i) => {
-                                    return (
-                                        <SelectItem value={`${i}`} key={i}>{d.name}</SelectItem>
-                                    )
+                                  return (
+                                    <SelectItem value={`${i}`} key={i}>{d.name}</SelectItem>
+                                  )
                                 })
                             }
                             </SelectGroup>
@@ -120,6 +118,7 @@ export default function AdminProductPage() {
                     <input
                       placeholder="Tìm kiếm sách..."
                       className="bg-transparent outline-none text-sm border px-4 rounded-md flex-1"
+
                     />
                     <ProductCreateModal />
                 </div>
