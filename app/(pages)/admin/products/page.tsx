@@ -16,6 +16,7 @@ import { DataTable } from '@/app/components/ui/DataTable';
 import { product_columns } from '@/app/lib/data-columns';
 import ProductCreateModal from '@/app/components/AdminProductCreateModal';
 import { useState, useEffect } from 'react';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/app/components/ui/Pagination';
 
 const categoriesList = [
   {
@@ -58,6 +59,7 @@ const categoriesList = [
 
 interface Book {
   _id: string;
+  id: number,
   title: string;
   author: string;
   genre?: string;
@@ -65,10 +67,11 @@ interface Book {
   price: number;
   stock?: number;
   imageUrl: string;
+  coverImage: string;
 }
 export default function AdminProductPage() {
-  const [createModal, setCreateModal] = React.useState(false);
-  const [books, setBooks] = useState<Book[]>([]); // Initialize with an empty array
+  const [books, setBooks] = useState<Book[]>([]);
+  const [size, setSize] = useState<number>(10);
   const fetchData = async () => {
     try {
       const response = await fetch('/api/books');
@@ -84,32 +87,17 @@ export default function AdminProductPage() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(books)
   return (
     <div className="container grid grid-cols-7 gap-4">
-        <div className="col-span-1 bg-white rounded-lg max-h-48">
+        <div className="col-span-1 max-lg:col-span-7 bg-white rounded-lg max-h-48">
             <SideBar />
         </div>
-        <div className="col-span-6">
+        <div className="col-span-6 max-lg:col-span-7">
             <span className="text-sm font-semibold text-ferra-700">
                 Home / Admin / Products
             </span>
             <div className="bg-white w-full px-4 py-3 rounded-lg mb-4 flex gap-2 justify-between">
                 <div className="flex gap-2">
-                    <Select>
-                        <SelectTrigger className="h-8 w-16">
-                            <SelectValue placeholder="5" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                            <SelectLabel>Hiển thị</SelectLabel>
-                            <SelectItem value="5">5</SelectItem>
-                            <SelectItem value="10">10</SelectItem>
-                            <SelectItem value="20">20</SelectItem>
-                            <SelectItem value="50">50</SelectItem>
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
                     <Select>
                         <SelectTrigger className="h-8 w-48">
                             <SelectValue placeholder="Danh mục" />
@@ -136,7 +124,7 @@ export default function AdminProductPage() {
                     <ProductCreateModal />
                 </div>
             </div>
-            <div className="bg-white w-full rounded-lg">
+            <div className="bg-white w-full pb-2 rounded-lg">
               <DataTable columns={product_columns} data={books} />
             </div>
         </div>
