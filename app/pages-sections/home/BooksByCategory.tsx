@@ -1,10 +1,21 @@
-import BookCard from '@/app/components/BookCard';
+'use client'
+
 import BookCardsList from '@/app/components/BookCardsList';
 import { Button } from '@/app/components/ui/Button';
-import { ChevronRightIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { IBook } from '@/app/models/book';
+import { ArrowRightIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import Link from 'next/link';
 
 export default function BooksByCategory() {
+  const { data } = useQuery({
+    queryKey: ['books'],
+    queryFn: () => axios.get<{ books: IBook[] }>('/api/books'),
+  });
+
+  const books = data?.data.books;
+
   return (
     <section className="bg-white p-4 pb-6 rounded-[0.625rem]">
       <div className="flex items-center justify-between">
@@ -24,7 +35,11 @@ export default function BooksByCategory() {
       </div>
 
       <div className="mt-4">
-        <BookCardsList />
+        {books ? (
+          <BookCardsList data={books.slice(0,10)} />
+        ) : (
+          <BookCardsList.Skeleton />
+        )}
       </div>
 
       <div className="flex justify-center mt-8">

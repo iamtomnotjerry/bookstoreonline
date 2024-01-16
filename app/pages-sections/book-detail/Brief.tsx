@@ -202,7 +202,7 @@ export default function Brief({ book }: { book: IBook }) {
             </span>
             <span className="line-through text-lg font-semibold text-gray-400">
               {book.discount
-                ? book.discount.toLocaleString('vi-VN')
+                ? book.price.toLocaleString('vi-VN')
                 : (600000).toLocaleString('vi-VN')}
               đ
             </span>

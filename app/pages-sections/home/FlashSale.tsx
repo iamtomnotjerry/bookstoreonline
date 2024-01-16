@@ -1,7 +1,20 @@
+'use client';
+
+import BookCardsList from '@/app/components/BookCardsList';
 import FlashSaleBookCard from '@/app/components/FlashSaleBookCard';
+import { IBook } from '@/app/models/book';
 import { BoltIcon } from '@heroicons/react/24/solid';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default function FlashSale() {
+  const { data } = useQuery({
+    queryKey: ['books'],
+    queryFn: () => axios.get<{ books: IBook[] }>('/api/books'),
+  });
+
+  const books = data?.data.books;
+
   return (
     <section className="bg-donkey-brown-400 w-full relative">
       <div className="container pt-6 pb-10 mx-auto">
@@ -18,11 +31,15 @@ export default function FlashSale() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10">
-          <FlashSaleBookCard />
-          <FlashSaleBookCard />
-          <FlashSaleBookCard />
-          <FlashSaleBookCard />
-          <FlashSaleBookCard />
+          {books ? (
+            books
+              .slice(0, 5)
+              .map((book, index) => (
+                <FlashSaleBookCard key={index} book={book} />
+              ))
+          ) : (
+            <BookCardsList.Skeleton length={5} />
+          )}
         </div>
       </div>
     </section>

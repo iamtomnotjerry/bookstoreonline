@@ -3,45 +3,26 @@ import { useState, useEffect } from 'react';
 import BookCard from '@/app/components/BookCard';
 import { Button } from '@/app/components/ui/Button';
 import { FireIcon } from '@heroicons/react/24/outline';
-
-interface Book {
-  _id: string;
-  title: string;
-  author: string;
-  genre?: string;
-  description?: string;
-  price: number;
-  stock?: number;
-  imageUrl: string;
-}
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { IBook } from '@/app/models/book';
+import { toast } from 'react-toastify';
 
 export default function Discover() {
-  const [books, setBooks] = useState<Book[] | null>(null);
-  const [displayedBooks, setDisplayedBooks] = useState<Book[]>([]);
-  const [displayMore, setDisplayMore] = useState(false);
+  const [show, setShow] = useState(30);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/api/books');
-      const data = await response.json();
-      const booksArray = Array.isArray(data.books) ? data.books : [];
-      setBooks(booksArray);
-      // Initially display the first 15 books
-      setDisplayedBooks(booksArray.slice(0, 15));
-    } catch (error) {
-      console.error('Error fetching books:', error);
-    }
-  };
+  const { data, error } = useQuery({
+    queryKey: ['books'],
+    queryFn: () => axios.get<{ books: IBook[] }>('/api/books'),
+  });
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (error) {
+      toast.error('Lỗi khi tải dữ liệu');
+    }
+  }, [error]);
 
-  const handleLoadMore = () => {
-    // Display all books when "Xem thêm" (See more) is clicked
-    setDisplayMore(true);
-    setDisplayedBooks(books || []);
-  };
+  const books = data?.data.books;
 
   return (
     <section className="bg-white p-4 pb-6 rounded-[0.625rem]">
@@ -51,18 +32,18 @@ export default function Discover() {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
-        {displayedBooks.length > 0
-          ? displayedBooks.map((book) => (
-              <BookCard key={book._id} book={book} />
-            ))
+        {books
+          ? books
+              .slice(0, show)
+              .map((book) => <BookCard key={book._id} book={book} />)
           : Array.from({ length: 10 }).map((_, i) => (
               <BookCard.Skeleton key={i} />
             ))}
       </div>
 
-      {!displayMore && (
+      {books && show < books.length && (
         <div className="flex justify-center mt-8">
-          <Button variant="outline" onClick={handleLoadMore}>
+          <Button variant="outline" onClick={() => setShow(show + 20)}>
             Xem thêm
           </Button>
         </div>

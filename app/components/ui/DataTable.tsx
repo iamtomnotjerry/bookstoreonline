@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   ColumnDef,
@@ -8,8 +8,27 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table';
 
+import { cn } from '@/app/lib/utils';
+import {
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
+import React from 'react';
+import { Button } from './Button';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from './Select';
 import {
   Table,
   TableBody,
@@ -17,23 +36,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./Table"
-import React from "react"
-import { Button } from "./Button"
-import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon, TrashIcon } from "@heroicons/react/24/outline"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./Select"
-import { cn } from "@/app/lib/utils"
+} from './Table';
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[],
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
@@ -44,7 +58,7 @@ const [sorting, setSorting] = React.useState<SortingState>([])
     state: {
       sorting,
     },
-  })
+  });
 
   return (
     <div className="rounded-md border-none">
@@ -59,10 +73,10 @@ const [sorting, setSorting] = React.useState<SortingState>([])
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -72,7 +86,7 @@ const [sorting, setSorting] = React.useState<SortingState>([])
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -122,7 +136,9 @@ const [sorting, setSorting] = React.useState<SortingState>([])
             <ChevronLeftIcon className="h-4" />
           </Button>
         </div>
-        <span>{table.getState().pagination.pageIndex + 1} / {table.getPageCount()}</span>
+        <span>
+          {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+        </span>
         <div className="flex gap-1">
           <Button
             size="sm"
@@ -139,7 +155,15 @@ const [sorting, setSorting] = React.useState<SortingState>([])
             <ChevronDoubleRightIcon className="h-4" />
           </Button>
         </div>
-        <div className={cn("absolute bottom-4 right-4", table.getIsSomePageRowsSelected() || table.getIsAllPageRowsSelected() ? "visible" : "hidden")}>
+        <div
+          className={cn(
+            'absolute bottom-4 right-4',
+            table.getIsSomePageRowsSelected() ||
+              table.getIsAllPageRowsSelected()
+              ? 'visible'
+              : 'hidden',
+          )}
+        >
           <Button
             size="sm"
             variant="outline"
@@ -150,5 +174,5 @@ const [sorting, setSorting] = React.useState<SortingState>([])
         </div>
       </div>
     </div>
-  )
+  );
 }

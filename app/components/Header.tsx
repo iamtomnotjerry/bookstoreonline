@@ -21,11 +21,11 @@ import { useRouter } from 'next/navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { signOut, useSession } from 'next-auth/react';
-import {useContext} from 'react';
+import { useContext } from 'react';
 import { StoreContext } from '@/app/context/index';
 
 export default function Header() {
-  const {cartData} = useContext(StoreContext);
+  const { cartData } = useContext(StoreContext);
   const { push } = useRouter();
   const { data } = useSession();
   const user = data?.user;
@@ -85,8 +85,14 @@ export default function Header() {
               {user ? (
                 <>
                   <div className="px-4 py-3">
-                    <p className="font-bold text-ferra-700">Admin</p>
-                    <p className="text-sm text-red-700">Quản trị viên</p>
+                    <p className="font-bold text-ferra-700">
+                      {user.email === '23560004@gm.uit.edu.vn'
+                        ? 'Admin'
+                        : 'Khách hàng'}
+                    </p>
+                    {user.email === '23560004@gm.uit.edu.vn' && (
+                      <p className="text-sm text-red-700">Quản trị viên</p>
+                    )}
                   </div>
                   <hr />
                   <Link
@@ -150,7 +156,7 @@ export default function Header() {
             <ShoppingCartIcon className="h-6 mr-2" />
             <span className="font-semibold max-lg:hidden">Giỏ hàng</span>
             <span className="bg-casal-700 text-white font-semibold text-xs leading-4 ml-2 px-1.5 rounded-full">
-            {cartData.length}
+              {cartData.length}
             </span>
           </Link>
         </div>

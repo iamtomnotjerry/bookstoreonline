@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import { Badge } from './ui/Badge';
 import Link from 'next/link';
+import { IBook } from '../models/book';
 
-export default function FlashSaleBookCard() {
+export default function FlashSaleBookCard({ book }: { book: IBook }) {
   return (
     <div className="bg-white transition hover:shadow-lg rounded-[0.625rem] overflow-hidden p-4">
       <Link href={''} className="block aspect-w-1 aspect-h-1">
         <Image
           alt=""
-          src="https://cdn0.fahasa.com/media/catalog/product/b/_/b_a-1-tr_n-l_n-m_i-nh_-_-kh_c-2.jpg"
+          src={book.coverImage || book.imageUrl}
           width={200}
           height={200}
           className="w-full object-contain"
@@ -18,20 +19,24 @@ export default function FlashSaleBookCard() {
       <div className="mt-3">
         <h3 className="font-semibold leading-5">
           <Link href={''} className="line-clamp-2">
-            {' '}
-            Trốn Lên Mái Nhà Để Khóc - Tặng Kèm Bookmark
+            {book.title}
           </Link>
         </h3>
 
         <div className="flex items-center mt-2">
-          <span className="text-primary-700 font-bold text-lg">75.000đ</span>
+          <span className="text-primary-700 font-bold text-lg">
+            {((book.price || 100000) - (book.discount || 1000)).toLocaleString(
+              'vi-VN',
+            )}
+            đ
+          </span>
           <Badge size="sm" className="ml-2">
-            -10%
+            -{book.price ? Math.ceil((book.discount / book.price) * 100) : 0}%
           </Badge>
         </div>
 
         <span className="text-tower-gray-300 line-through font-semibold">
-          100.000đ
+          {(book.price || 100000).toLocaleString('vi-VN')}đ
         </span>
 
         <div className="h-3 bg-tower-gray-300 mt-3 relative rounded-full">

@@ -11,63 +11,67 @@ export default function Thanhtoan({ selected }: { selected: CartData[] }) {
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const router = useRouter();
   const { data } = useSession();
-  const user: {
-    name?: string | null | undefined;
-    email?: string | null | undefined;
-    image?: string | null | undefined;
-} | undefined = data?.user;
-const handlePayment = async () => {
-  try {
-    setPaymentProcessing(true);
-    if (!user?.email) {
-      toast.error('Please log in to proceed with the payment.');
-      return; // Exit early if the user is not logged in
-    }
-    if (selected.length === 0) {
-      toast.warn('Please add items to your cart before proceeding with the payment.');
-      return; // Exit early if there are no items in the cart
-    }
-    const response = await fetch('/api/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user: user.email,
-        items: selected.map(item => ({
-          book: item.book._id,
-          quantity: item.count,
-        })),
-        totalPrice: selected.reduce(
-          (acc, cur) =>
-            acc +
-            (cur.book.price
-              ? (cur.book.price - cur.book.discount) * cur.count
-              : 100000 * cur.count),
-          0,
-        ),
-        status: 'Pending',
-      }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Order created:', data.order);
-      
-      // Clear the cart data after successful order creation
-      setCartData([]);
+  const user:
+    | {
+        name?: string | null | undefined;
+        email?: string | null | undefined;
+        image?: string | null | undefined;
+      }
+    | undefined = data?.user;
+  const handlePayment = async () => {
+    try {
+      setPaymentProcessing(true);
+      if (!user?.email) {
+        toast.error('Please log in to proceed with the payment.');
+        return; // Exit early if the user is not logged in
+      }
+      if (selected.length === 0) {
+        toast.warn(
+          'Please add items to your cart before proceeding with the payment.',
+        );
+        return; // Exit early if there are no items in the cart
+      }
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user: user.email,
+          items: selected.map((item) => ({
+            book: item.book._id,
+            quantity: item.count,
+          })),
+          totalPrice: selected.reduce(
+            (acc, cur) =>
+              acc +
+              (cur.book.price
+                ? (cur.book.price - cur.book.discount) * cur.count
+                : 100000 * cur.count),
+            0,
+          ),
+          status: 'Pending',
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Order created:', data.order);
 
-      // Redirect to the /user/purchase route after successful order creation
-      router.push('/user/purchase');
-    } else {
-      throw new Error('Failed to create order');
+        // Clear the cart data after successful order creation
+        setCartData(cartData.filter((item) => !selected.includes(item)));
+
+        // Redirect to the /user/purchase route after successful order creation
+        router.push('/user/purchase');
+      } else {
+        throw new Error('Failed to create order');
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      // Handle error, e.g., show an error message to the user
+    } finally {
+      setPaymentProcessing(false);
     }
-  } catch (error) {
-    console.error('Error creating order:', error);
-    // Handle error, e.g., show an error message to the user
-  } finally {
-    setPaymentProcessing(false);
-  }
-};
+  };
 
   return (
     <div className="sticky max-lg:left-0 max-lg:bottom-0 lg:top-20 max-lg:bg-donkey-brown-100 max-h-40 bg-white col-span-full lg:col-span-3 px-4 py-3 rounded-xl">
@@ -90,7 +94,11 @@ const handlePayment = async () => {
             .toLocaleString()}
         </p>
       </div>
-      <Button className="w-full" onClick={handlePayment} disabled={paymentProcessing}>
+      <Button
+        className="w-full"
+        onClick={handlePayment}
+        disabled={paymentProcessing}
+      >
         {paymentProcessing ? 'Processing...' : 'Thanh toán'}
       </Button>
     </div>
