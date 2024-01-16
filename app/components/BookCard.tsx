@@ -35,12 +35,11 @@ function BookCard({ book }: { book: IBook }) {
           <span className="text-primary-700 font-bold text-lg">
             {book?.price
               ? (book.price - book.discount).toLocaleString('vi-VN')
-              : '75.000đ'}đ
+              : '75.000'}
+            đ
           </span>
           <Badge size="sm" className="ml-2">
-            -
-            {book.price ? Math.ceil((book.discount / book.price) * 100) : 10}
-            %
+            -{book.price ? Math.ceil((book.discount / book.price) * 100) : 10}%
           </Badge>
         </div>
 

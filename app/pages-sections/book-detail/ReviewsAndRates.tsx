@@ -22,8 +22,9 @@ import { Label } from '@/app/components/ui/Label';
 import { cn } from '@/app/lib/utils';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import { IBook } from '@/app/models/book';
 
-export default function ReviewsAndRates({book}) {
+export default function ReviewsAndRates({ book }: { book: IBook }) {
   return (
     <section className="bg-white rounded-[0.625rem] p-4 pb-6">
       <h3 className="font-semibold text-lg text-primary-700">Đánh giá</h3>

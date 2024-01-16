@@ -30,17 +30,15 @@ export default function FlashSale() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10">
-          {books ? (
-            books
-              .slice(0, 5)
-              .map((book, index) => (
-                <FlashSaleBookCard key={index} book={book} />
-              ))
-          ) : (
-            <BookCardsList.Skeleton length={5} />
-          )}
-        </div>
+        {books ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10">
+            {books.slice(0, 5).map((book, index) => (
+              <FlashSaleBookCard key={index} book={book} />
+            ))}
+          </div>
+        ) : (
+          <BookCardsList.Skeleton length={5} />
+        )}
       </div>
     </section>
   );

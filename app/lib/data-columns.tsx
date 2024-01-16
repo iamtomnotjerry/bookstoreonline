@@ -10,16 +10,9 @@ import { toast } from 'react-toastify';
 import ProductCreateModal from '../components/AdminProductCreateModal';
 import { Checkbox } from '../components/ui/Checkbox';
 import { IBook } from '../models/book';
+import { IOrder } from '../models/order';
 
 type Status = 'pending' | 'delivered' | 'cancelled';
-
-type Orders = {
-  id: string;
-  quantity: number;
-  date: number;
-  sum_price: number;
-  status: Status;
-};
 
 export const product_columns: ColumnDef<IBook>[] = [
   {
@@ -174,7 +167,7 @@ export const product_columns: ColumnDef<IBook>[] = [
   },
 ];
 
-export const order_columns: ColumnDef<Orders>[] = [
+export const order_columns: ColumnDef<IOrder<IBook>>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -202,7 +195,7 @@ export const order_columns: ColumnDef<Orders>[] = [
   {
     accessorKey: 'id',
     header: 'Mã đơn',
-    cell: ({ row }) => <div>{row.getValue('id')}</div>,
+    cell: ({ row }) => <div>{row.original._id}</div>,
   },
   {
     accessorKey: 'quantity',
@@ -217,7 +210,7 @@ export const order_columns: ColumnDef<Orders>[] = [
         </div>
       );
     },
-    cell: ({ row }) => <div>{row.getValue('quantity')}</div>,
+    cell: ({ row }) => <div>{row.original.items.length}</div>,
   },
   {
     accessorKey: 'date',
@@ -232,7 +225,9 @@ export const order_columns: ColumnDef<Orders>[] = [
         </div>
       );
     },
-    cell: ({ row }) => <div>{row.getValue('date')}</div>,
+    cell: ({ row }) => (
+      <div>{new Date(row.original.createdAt).toLocaleDateString('vi-VN')}</div>
+    ),
   },
   {
     accessorKey: 'sum_price',
@@ -247,7 +242,19 @@ export const order_columns: ColumnDef<Orders>[] = [
         </div>
       );
     },
-    cell: ({ row }) => <div>{row.getValue('sum_price')}</div>,
+    cell: ({ row }) => (
+      <div>
+        {row.original.items
+          .reduce(
+            (acc, item) =>
+              acc +
+              ((item.book.price || 100000) - (item.book.discount || 0)) *
+                item.quantity,
+            0,
+          )
+          .toLocaleString('vi-VN')}
+      </div>
+    ),
   },
   {
     accessorKey: 'status',
@@ -262,9 +269,7 @@ export const order_columns: ColumnDef<Orders>[] = [
         </div>
       );
     },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('status')}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">Thành công</div>,
   },
   {
     accessorKey: 'action',

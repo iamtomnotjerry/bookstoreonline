@@ -7,25 +7,27 @@ export default function FlashSaleBookCard({ book }: { book: IBook }) {
   return (
     <div className="bg-white transition hover:shadow-lg rounded-[0.625rem] overflow-hidden p-4">
       <Link href={''} className="block aspect-w-1 aspect-h-1">
-        <Image
-          alt=""
-          src={book.coverImage || book.imageUrl}
-          width={200}
-          height={200}
-          className="w-full object-contain"
-        />
+        <Link href={'/books/' + book._id}>
+          <Image
+            alt=""
+            src={book.coverImage || book.imageUrl}
+            width={200}
+            height={200}
+            className="w-full object-contain"
+          />
+        </Link>
       </Link>
 
       <div className="mt-3">
         <h3 className="font-semibold leading-5">
-          <Link href={''} className="line-clamp-2">
+          <Link href={'/books/' + book._id} className="line-clamp-2">
             {book.title}
           </Link>
         </h3>
 
         <div className="flex items-center mt-2">
           <span className="text-primary-700 font-bold text-lg">
-            {((book.price || 100000) - (book.discount || 1000)).toLocaleString(
+            {((book.price || 100000) - (book.discount ?? 1000)).toLocaleString(
               'vi-VN',
             )}
             đ

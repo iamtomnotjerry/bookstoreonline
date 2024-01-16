@@ -1,7 +1,9 @@
+import dbConnect from '@/app/lib/mongodb-connection-module';
 import Book from '@/app/models/book';
 import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
+    await dbConnect();
     const body = await req.json();
     const newBook = {
       title: body?.title,

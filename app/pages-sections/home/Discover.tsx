@@ -24,6 +24,8 @@ export default function Discover() {
 
   const books = data?.data.books;
 
+  console.log(books);
+
   return (
     <section className="bg-white p-4 pb-6 rounded-[0.625rem]">
       <h2 className="flex items-center text-primary-700">

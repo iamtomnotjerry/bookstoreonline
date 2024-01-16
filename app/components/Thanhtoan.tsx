@@ -59,7 +59,7 @@ export default function Thanhtoan({ selected }: { selected: CartData[] }) {
 
         // Clear the cart data after successful order creation
         setCartData(cartData.filter((item) => !selected.includes(item)));
-
+        toast.success('Thanh toán thành công');
         // Redirect to the /user/purchase route after successful order creation
         router.push('/user/purchase');
       } else {

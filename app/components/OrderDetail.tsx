@@ -1,13 +1,11 @@
-import React from 'react';
 import { Checkbox } from '@/app/components/ui/Checkbox';
 import { Input } from '@/app/components/ui/Input';
+import { StoreContext } from '@/app/context';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import { StoreContext } from '@/app/context';
-import { useContext } from 'react';
-import { set } from 'mongoose';
-import { CartData } from '../provider/index';
 import Link from 'next/link';
+import React, { useContext } from 'react';
+import { CartData } from '../provider/index';
 
 export default function OrderDetail({
   selected,

@@ -24,7 +24,7 @@ export default function Page() {
 
         <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {Array.from({ length: 12 }).map((_, index) => (
-            <BookCard key={index} />
+            <BookCard.Skeleton key={index} />
           ))}
         </div>
 

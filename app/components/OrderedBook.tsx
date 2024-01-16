@@ -1,25 +1,15 @@
 'use client';
 import Image from 'next/image';
-import { Badge } from './ui/Badge';
-import React, { useState, useEffect } from 'react';
 import { IBook } from '../models/book';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { Badge } from './ui/Badge';
 
 export default function OrderedBook({
-  id,
+  book,
   count,
 }: {
-  id: string;
+  book: IBook;
   count: number;
 }) {
-  const { data } = useQuery({
-    queryKey: ['books/', id],
-    queryFn: () => axios.get<{ book: IBook }>(`/api/books/${id}`),
-  });
-
-  const book = data?.data.book;
-
   return (
     book && (
       <div className="flex space-x-1 items-center">

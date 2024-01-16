@@ -1,3 +1,5 @@
+'use client';
+
 import ActiveLink from '@/app/components/ActiveLink';
 import {
   Avatar,
@@ -12,7 +14,9 @@ import {
   UserIcon,
 } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function Sidebar() {
   return (
@@ -73,7 +77,10 @@ export function Sidebar() {
           <span>Đơn mua</span>
         </ActiveLink>
 
-        <button className="flex items-center font-medium">
+        <button
+          onClick={() => signOut()}
+          className="flex items-center font-medium"
+        >
           <ArrowRightEndOnRectangleIcon className="h-6 mr-4 text-donkey-brown-400" />
           <span>Đăng xuất</span>
         </button>
@@ -83,6 +90,13 @@ export function Sidebar() {
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const { data } = useSession();
+  const router = useRouter();
+
+  if (!data?.user) {
+    return null
+  }
+
   return (
     <div className="grid lg:grid-cols-12 gap-4">
       <div className="lg:col-span-3">

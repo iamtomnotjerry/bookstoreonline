@@ -1,6 +1,5 @@
-'use client'
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+'use client';
+import OrderedBook from '@/app/components/OrderedBook';
 import { Button } from '@/app/components/ui/Button';
 import { Input } from '@/app/components/ui/Input';
 import {
@@ -12,41 +11,25 @@ import {
   PaginationPrevious,
 } from '@/app/components/ui/Pagination';
 import { Separator } from '@/app/components/ui/Separator';
-import OrderedBook from '@/app/components/OrderedBook';
+import { IBook } from '@/app/models/book';
+import { IOrder } from '@/app/models/order';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { useSession } from 'next-auth/react';
 
 export default function OrderPage() {
   const { data } = useSession();
-  const router = useRouter();
   const user = data?.user;
 
-  const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: ordersData, isLoading } = useQuery({
+    queryKey: ['orders/' + user?.email],
+    queryFn: () =>
+      axios.get<{ orders: IOrder<IBook>[] }>('/api/orders/' + user?.email),
+    enabled: !!user?.email,
+  });
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`/api/orders/${user?.email}`);
-        if (response.ok) {
-          const data = await response.json();
-          setOrders(data.orders);
-        } else {
-          throw new Error('Failed to fetch orders');
-        }
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const orders = ordersData?.data.orders;
 
-    if (user?.email) {
-      fetchOrders();
-    } else {
-      setIsLoading(false);
-    }
-  }, [user?.email]);
-  
   return (
     <main className="bg-white rounded-[0.625rem] p-4 pb-8">
       <h2 className="mb-4 text-lg font-semibold text-primary-700">Đơn mua</h2>
@@ -59,11 +42,11 @@ export default function OrderPage() {
 
         {isLoading ? (
           <p>Loading...</p>
-        ) : orders.length === 0 ? (
+        ) : orders?.length === 0 ? (
           <p>No orders found.</p>
         ) : (
-          <div className='mt-6'>
-            {orders.map((order) => (
+          <div className="mt-6">
+            {orders?.map((order) => (
               <div key={order._id}>
                 <div className="flex items-center justify-between">
                   <h4 className="font-medium uppercase">#{order._id}</h4>
@@ -74,7 +57,11 @@ export default function OrderPage() {
 
                 <div className="space-y-4 mt-3">
                   {order.items.map((item, index) => (
-                    <OrderedBook key={index} id={item.book} count={item.quantity} />
+                    <OrderedBook
+                      key={index}
+                      book={item.book}
+                      count={item.quantity}
+                    />
                   ))}
                 </div>
 

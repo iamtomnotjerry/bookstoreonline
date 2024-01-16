@@ -1,12 +1,12 @@
+import { authOptions } from '@/app/configs/auth-options';
+import dbConnect from '@/app/lib/mongodb-connection-module';
 import Book from '@/app/models/book';
 import User from '@/app/models/user';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { connectMongoDB } from '@/app/lib/mongodb-connection-module';
 
 async function authorizeAdmin(): Promise<NextResponse | null> {
-  await connectMongoDB();
+  await dbConnect();
   const session = await getServerSession(authOptions);
   if (session?.user?.email == null) {
     return NextResponse.json(
@@ -35,8 +35,8 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
+  await dbConnect();
   const id = params.id;
-
   try {
     const book = await Book.findById(id);
     if (!book) {

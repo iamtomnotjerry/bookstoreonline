@@ -54,52 +54,7 @@ export default function Brief({ book }: { book: IBook }) {
     if (!(reason == 'buy')) {
       toast.success(`Added ${book.title} to the Cart`, { autoClose: 1000 });
     }
-
-    // const newData = { ...book, type: reason };
-    // if (reason === 'buy') {
-    //   // If the reason is 'buy', add the item to the cart and then redirect to '/cart'
-    //   setCartData([...cartData, newData]);
-    //   toast.success(`Added ${book.title} to the Cart`, {
-    //     autoClose: 1000,
-    //     position: toast.POSITION.TOP_CENTER,
-    //   });
-    //   // Use useHistory hook to redirect to '/cart'
-    //   router.push('/cart');
-    // } else {
-    //   // If the reason is 'add', simply add the item to the cart without redirecting
-    //   setCartData([...cartData, newData]);
-    //   toast.success(`Added ${book.title} to the Cart`, {
-    //     autoClose: 1000,
-    //     position: toast.POSITION.TOP_CENTER,
-    //   });
-    // }
   };
-
-  // const handleMinusCart = (bookId) => {
-  //   // Check if the book exists in the cart
-  //   const bookIndex = cartData.findIndex((item) => item._id === bookId);
-  //   if (bookIndex === -1) {
-  //     // Book not found in cart, display error toast and return early
-  //     toast.error('You do not have this book in cart', {
-  //       autoClose: 1000,
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //     return;
-  //   }
-
-  //   // Remove the item from the cartData array using splice
-  //   const updatedCartData = [...cartData]; // Create a new array to avoid mutating the original
-  //   updatedCartData.splice(bookIndex, 1); // Remove 1 element at the bookIndex
-
-  //   // Update the state with the modified array
-  //   setCartData(updatedCartData);
-
-  //   // Show info toast for removing the book
-  //   toast.info(`Removed ${cartData[bookIndex].title} from the cart`, {
-  //     autoClose: 1000,
-  //     position: toast.POSITION.TOP_CENTER,
-  //   });
-  // };
 
   const images = book?.coverImage
     ? [book.coverImage, ...book.images]
@@ -195,22 +150,20 @@ export default function Brief({ book }: { book: IBook }) {
 
           <div className="flex items-center space-x-4 mt-7">
             <span className="text-3xl font-bold text-primary-700">
-              {book?.price && book?.discount
+              {book?.price
                 ? (book.price - book.discount).toLocaleString('vi-VN')
                 : (504500).toLocaleString('vi-VN')}
               đ
             </span>
             <span className="line-through text-lg font-semibold text-gray-400">
-              {book.discount
+              {book.price
                 ? book.price.toLocaleString('vi-VN')
                 : (600000).toLocaleString('vi-VN')}
               đ
             </span>
             <Badge size="lg">
               -
-              {book?.discount
-                ? Math.ceil((book.discount / book.price) * 100)
-                : 10}
+              {book?.price ? Math.ceil((book.discount / book.price) * 100) : 10}
               %
             </Badge>
           </div>

@@ -12,17 +12,18 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import { buttonVariants } from './ui/Button';
 import useMediaQuery from '../lib/hooks/useMediaQuery';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { Drawer, DrawerContent, DrawerTrigger } from './ui/Drawer';
 import { useRouter } from 'next/navigation';
 import categories from '@/app/data/categories.json';
+import { IBook } from '../models/book';
 
 export default function SearchBar() {
-  const [book, setBook] = useState<Book | null>(null);
+  const [book, setBook] = useState<IBook | null>(null);
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const isLG = useMediaQuery('(min-width: 1024px)');
-  const handleSearch = async (event) => {
+  const handleSearch: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
     if (searchQuery.trim().length === 0) {
       console.log('Please type a book name');
@@ -45,6 +46,7 @@ export default function SearchBar() {
       console.error('Error fetching data:', error);
     }
   };
+
   return (
     <div className="flex gap-4 max-lg:w-2/3 lg:w-2/5">
       <Popover>

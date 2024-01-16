@@ -1,5 +1,6 @@
 import { AuthProvider } from '@/app/Provider';
 import { cn } from '@/app/lib/utils';
+import StoreProvider from '@/app/provider/index';
 import type { Metadata } from 'next';
 import NextTopLoader from 'nextjs-toploader';
 import { ToastContainer } from 'react-toastify';
@@ -7,8 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import fonts from './configs/fonts';
 import './globals.css';
-import StoreProvider from '@/app/provider/index';
-import { connectMongoDB } from './lib/mongodb-connection-module';
 import QueryProvider from './provider/QueryProvider';
 
 export const metadata: Metadata = {
@@ -21,7 +20,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await connectMongoDB();
   return (
     <html lang="en">
       <body

@@ -10,7 +10,7 @@ export async function GET(
     const email = params.email;
     
     try {
-        const orders = await Order.find({ user: email }).sort('-createdAt');
+        const orders = await Order.find({ user: email }).populate('items.book').sort('-createdAt');
       
       if (!orders) {
         return NextResponse.json({ error: 'Book not found' }, { status: 404 });
