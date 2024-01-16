@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import User from '@/app/models/user';
 import { NextAuthOptions } from 'next-auth';
 
-export const authOptions : NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialProvider({
       name: 'credentials',
@@ -46,7 +46,7 @@ export const authOptions : NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET!,
   pages: {
     signIn: '/signin',
   },
@@ -54,4 +54,5 @@ export const authOptions : NextAuthOptions = {
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST };
+export const GET = handler;
+export const POST = handler;
