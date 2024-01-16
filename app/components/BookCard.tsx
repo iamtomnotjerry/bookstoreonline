@@ -38,7 +38,7 @@ function BookCard({ book }: { book: IBook }) {
           </span>
           <Badge size="sm" className="ml-2">
             -
-            {book.discount ? Math.ceil((book.discount / book.price) * 100) : 10}
+            {book.price ? Math.ceil((book.discount / book.price) * 100) : 10}
             %
           </Badge>
         </div>

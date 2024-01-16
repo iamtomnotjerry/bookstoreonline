@@ -1,5 +1,5 @@
 import categories from '@/app/data/categories.json';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
@@ -135,7 +135,7 @@ export default function UpdateCreateModal({product}) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="xs" className="right-0">
-          <PlusIcon className="h-5" />
+          <PencilIcon className="h-5" />
         </Button>
       </DialogTrigger>
 

@@ -22,7 +22,7 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { signOut, useSession } from 'next-auth/react';
 import {useContext} from 'react';
-import { StoreContext } from '@/app/context';
+import { StoreContext } from '@/app/context/index';
 
 export default function Header() {
   const {cartData} = useContext(StoreContext);
