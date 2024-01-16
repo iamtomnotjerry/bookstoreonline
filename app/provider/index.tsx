@@ -15,14 +15,16 @@ export default function StoreProvider({
   children: React.ReactNode;
 }) {
   const [cartData, setCartData_] = useState<CartData[]>([]);
-
+  console.log(cartData);
   useEffect(() => {
-    setCartData(
-      localStorage.getItem('cart')
-        ? JSON.parse(localStorage.getItem('cart') as string)
-        : [],
-    );
-  }, [localStorage]);
+    if (localStorage) {
+      setCartData(
+        localStorage.getItem('cart')
+          ? JSON.parse(localStorage.getItem('cart') as string)
+          : [],
+      );
+    }
+  }, []);
 
   const setCartData: Dispatch<SetStateAction<CartData[]>> = (data) => {
     localStorage.setItem('cart', JSON.stringify(data));

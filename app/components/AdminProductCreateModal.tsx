@@ -39,7 +39,7 @@ const formSchema = z.object({
   publisher: z.string().min(1, 'Vui lòng nhập nhà phát hành'),
   publishYear: z.coerce.number().min(1, 'Vui lòng nhập năm phát hành'),
   price: z.coerce.number().min(1, 'Vui lòng nhập giá'),
-  discount: z.coerce.number().min(1, 'Vui lòng nhập tiền giảm giá'),
+  discount: z.coerce.number().min(0, 'Vui lòng nhập tiền giảm giá'),
   weight: z.coerce.number().min(1, 'Vui lòng nhập trọng lượng'),
   stock: z.coerce.number().min(1, 'Vui lòng nhập số lượng'),
   language: z.string().min(1, 'Vui lòng nhập ngôn ngữ'),
@@ -612,7 +612,7 @@ export default function ProductCreateModal() {
             />
 
             <DialogFooter className="col-span-2 mt-4">
-              <Button type="submit">Xuất bản</Button>
+              <Button type="submit">Đăng</Button>
             </DialogFooter>
           </form>
         </Form>
