@@ -11,7 +11,7 @@ import ProductCreateModal from '../components/AdminProductCreateModal';
 import { Checkbox } from '../components/ui/Checkbox';
 import { IBook } from '../models/book';
 import { IOrder } from '../models/order';
-import { ViewOrder } from '../(pages)/admin/orders/page';
+import { ViewOrder } from '@/app/components/ui/ViewOrder';
 
 type Status = 'pending' | 'delivered' | 'cancelled';
 
