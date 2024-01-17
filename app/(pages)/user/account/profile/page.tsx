@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { Button } from '@/app/components/ui/Button';
 import { Input } from '@/app/components/ui/Input';
 import { Label } from '@/app/components/ui/Label';
@@ -11,12 +11,8 @@ import {
 } from '@/app/components/ui/Avatar';
 import React from 'react';
 import { Separator } from '@/app/components/ui/Separator';
-import { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: "Hồ sơ",
-  description: "Hồ sơ người dùng"
-}
+
 
 interface IUser {
   name: string;
