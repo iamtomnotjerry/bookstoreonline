@@ -7,7 +7,7 @@ export const revalidate = 0;
 export async function GET(req: any) {
   try {
     await dbConnect();
-    const books = await Book.find({}).sort('-createdAt').limit(100);
+    const books = await Book.find({}).sort({ createdAt: -1 }).limit(100);
     return NextResponse.json({ books }, { status: 200 });
   } catch (error) {
     console.error('Error fetching books:', error);
