@@ -9,7 +9,7 @@ import { IBook } from '@/app/models/book';
 import { toast } from 'react-toastify';
 
 export default function Discover() {
-  const [show, setShow] = useState(30);
+  const [show, setShow] = useState(20);
 
   const { data, error } = useQuery({
     queryKey: ['books'],
