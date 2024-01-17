@@ -7,6 +7,10 @@ export interface IUser extends Document {
   email: string;
   password: string;
   address: string;
+  imageUrl: string;
+  country: string;
+  city: string;
+  specificLocal: string;
   phoneNumber: string;
   ownedBooks: string[]; // bookId
   cart: [
@@ -23,6 +27,22 @@ export interface IUser extends Document {
 
 const UserSchema = new Schema<IUser>(
   {
+    imageUrl:{
+      type: String,
+      required: false,
+    },
+    country:{
+      type: String,
+      required: false,
+    },
+    city:{
+      type: String,
+      required: false,
+    },
+    specificLocal:{
+      type: String,
+      required: false,
+    },
     fullname: {
       type: String,
       required: true,
