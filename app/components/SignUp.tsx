@@ -20,6 +20,7 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-toastify';
 import * as z from 'zod';
 import { IUser } from '../models/user';
+import { randomQuotation } from '../lib/book-quotations';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Vui lòng nhập tên'),
@@ -75,6 +76,8 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
       setIsSigningUp(false); // Reset loading state after sign-up attempt
     }
   }
+
+  const bookQuote = randomQuotation();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -152,8 +155,9 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
           <div className="mt-4 text-white">
             <blockquote className="italic text-center">
               “Như thế nào là một thể xác không có tâm hồn? Đó là một căn phòng không có nổi một quyển sách.”
+              “{bookQuote.quote}”
             </blockquote>
-            <div className="text-right">– Cicero</div>
+            <div className="text-right">– {bookQuote.author}</div>
           </div>
         </div>
       </DialogContent>

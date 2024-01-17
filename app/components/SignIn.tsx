@@ -13,6 +13,7 @@ import { Button } from './ui/Button';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, Form } from './ui/Form';
 import { Input } from './ui/Input';
+import { randomQuotation } from '../lib/book-quotations';
 
 const formSchema = z.object({
   email: z.string().min(1, 'Vui lòng nhập email').email('Email không hợp lệ'),
@@ -52,6 +53,8 @@ export default function SignIn({ children }: { children: React.ReactNode }) {
       setIsSigningIn(false); // Reset loading state after sign-in attempt
     }
   }
+
+  const bookQuote = randomQuotation();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -134,10 +137,9 @@ export default function SignIn({ children }: { children: React.ReactNode }) {
 
           <div className="mt-4 text-white">
             <blockquote className="italic text-center">
-              “Như thế nào là một thể xác không có tâm hồn? Đó là một căn phòng
-              không có nổi một quyển sách.”
+              “{bookQuote.quote}”
             </blockquote>
-            <div className="text-right">– Cicero</div>
+            <div className="text-right">– {bookQuote.author}</div>
           </div>
         </div>
       </DialogContent>

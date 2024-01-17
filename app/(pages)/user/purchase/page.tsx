@@ -16,6 +16,7 @@ import { IOrder } from '@/app/models/order';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
 export default function OrderPage() {
   const { data } = useSession();
@@ -29,6 +30,10 @@ export default function OrderPage() {
   });
 
   const orders = ordersData?.data.orders;
+
+  useEffect(() => {
+    document.title = "Đơn mua";
+  }, [])
 
   return (
     <main className="bg-white rounded-[0.625rem] p-4 pb-8">
