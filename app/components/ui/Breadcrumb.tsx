@@ -11,13 +11,13 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <div className="flex items-center space-x-2 font-semibold text-sm text-primary-700">
+    <div className="flex items-center space-x-2 whitespace-nowrap text-ellipsis overflow-hidden font-semibold text-sm text-primary-700">
       {items.map(({ href, label }, index) => (
         <span key={index}>
           <Link key={index} href={href}>
             {label}
           </Link>
-          {index < items.length - 1 && <span className='ml-2'>/</span>}
+          {index < items.length - 1 && <span className="ml-2">/</span>}
         </span>
       ))}
     </div>

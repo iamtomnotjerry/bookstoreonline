@@ -2,6 +2,8 @@ import dbConnect from '@/app/lib/mongodb-connection-module';
 import Book from '@/app/models/book';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 0; // important
+
 export async function GET(req: any) {
   try {
     await dbConnect();
