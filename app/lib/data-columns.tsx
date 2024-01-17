@@ -11,6 +11,7 @@ import ProductCreateModal from '../components/AdminProductCreateModal';
 import { Checkbox } from '../components/ui/Checkbox';
 import { IBook } from '../models/book';
 import { IOrder } from '../models/order';
+import { ViewOrder } from '../(pages)/admin/orders/page';
 
 type Status = 'pending' | 'delivered' | 'cancelled';
 
@@ -196,21 +197,6 @@ export const order_columns: ColumnDef<IOrder<IBook>>[] = [
     cell: ({ row }) => <div>{row.original._id}</div>,
   },
   {
-    accessorKey: 'quantity',
-    header: ({ column }) => {
-      return (
-        <div
-          className="flex items-center cursor-pointer font-semibold hover:text-ferra-700"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Số lượng
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      );
-    },
-    cell: ({ row }) => <div>{row.original.items.length}</div>,
-  },
-  {
     accessorKey: 'date',
     header: ({ column }) => {
       return (
@@ -228,7 +214,7 @@ export const order_columns: ColumnDef<IOrder<IBook>>[] = [
     ),
   },
   {
-    accessorKey: 'sum_price',
+    accessorKey: 'totalPrice',
     header: ({ column }) => {
       return (
         <div
@@ -240,19 +226,8 @@ export const order_columns: ColumnDef<IOrder<IBook>>[] = [
         </div>
       );
     },
-    cell: ({ row }) => (
-      <div>
-        {row.original.items
-          .reduce(
-            (acc, item) =>
-              acc +
-              ((item.book.price || 100000) - (item.book.discount || 0)) *
-                item.quantity,
-            0,
-          )
-          .toLocaleString('vi-VN')}
-      </div>
-    ),
+    cell: ({ row }) => <div>{row.original.totalPrice.toLocaleString("vi-VN")} đ</div>
+    ,
   },
   {
     accessorKey: 'status',
@@ -274,15 +249,11 @@ export const order_columns: ColumnDef<IOrder<IBook>>[] = [
     header: 'Action',
     cell: ({ row }) => {
       const product = row.original;
-
       return (
         <div className="flex items-center gap-2">
-          <Link href={`/books/${product.id}`}>
+          <ViewOrder product={product}>
             <EyeIcon className="h-6 text-gray-500 hover:text-ferra-700" />
-          </Link>
-          <Link href={`/books/${product.id}`}>
-            <TrashIcon className="h-6 text-gray-500 hover:text-red-700" />
-          </Link>
+          </ViewOrder>
         </div>
       );
     },

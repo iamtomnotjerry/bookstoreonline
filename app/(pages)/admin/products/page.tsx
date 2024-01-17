@@ -23,12 +23,19 @@ import { IBook } from '@/app/models/book';
 import { useState, useEffect } from 'react';
 
 export default function AdminProductPage() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['books'],
     queryFn: () => axios.get<{ books: IBook[] }>(`/api/books`),
   });
 
   const books = data?.data?.books;
+
+  if (isLoading)
+    return (
+      <div className="container h-[300px] flex items-center justify-center">
+        <div className="lds-ripple"><div></div><div></div></div>
+      </div>
+    )
 
   return (
     books && (
