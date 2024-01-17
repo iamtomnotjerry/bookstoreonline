@@ -1,12 +1,10 @@
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
+// SignUp.js
+
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import Image from 'next/image';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import * as z from 'zod';
-import { IUser } from '../models/user';
 import { Button } from './ui/Button';
 import { Dialog, DialogContent, DialogTrigger } from './ui/Dialog';
 import {
@@ -18,6 +16,10 @@ import {
   FormMessage,
 } from './ui/Form';
 import { Input } from './ui/Input';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-toastify';
+import * as z from 'zod';
+import { IUser } from '../models/user';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Vui lòng nhập tên'),
@@ -30,6 +32,7 @@ const formSchema = z.object({
 
 export default function SignUp({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false); // Track sign-up loading state
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,6 +49,7 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
     password,
   }: z.infer<typeof formSchema>) {
     try {
+      setIsSigningUp(true); // Set loading state to true during sign-up
       const userExist = await axios.post<{ user: IUser | null }>(
         '/api/auth/check-exist',
         {
@@ -67,6 +71,8 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
       }
     } catch {
       toast.error('Đăng ký thất bại. Vui lòng thử lại sau');
+    } finally {
+      setIsSigningUp(false); // Reset loading state after sign-up attempt
     }
   }
 
@@ -86,11 +92,9 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Tên</FormLabel>
-
                     <FormControl>
                       <Input placeholder="Nhập tên của bạn" {...field} />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -101,7 +105,6 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
-
                     <FormControl>
                       <Input
                         type="email"
@@ -109,7 +112,6 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -127,13 +129,12 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full !mt-8">
-                <span>Đăng kí</span>
+              <Button type="submit" className="w-full !mt-8" disabled={isSigningUp}>
+                <span>{isSigningUp ? 'Đang Đăng Ký...' : 'Đăng ký'}</span>
                 <ChevronRightIcon className="h-4 ml-3" />
               </Button>
             </form>
@@ -148,11 +149,9 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
             height={200}
             className="w-48 h-auto"
           />
-
           <div className="mt-4 text-white">
             <blockquote className="italic text-center">
-              “Như thế nào là một thể xác không có tâm hồn? Đó là một căn phòng
-              không có nổi một quyển sách.”
+              “Như thế nào là một thể xác không có tâm hồn? Đó là một căn phòng không có nổi một quyển sách.”
             </blockquote>
             <div className="text-right">– Cicero</div>
           </div>
