@@ -5,8 +5,10 @@ import { CartData } from '../provider/index';
 import { StoreContext } from '@/app/context';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Thanhtoan({ selected }: { selected: CartData[] }) {
+  const queryClient = useQueryClient();
   const { cartData, setCartData } = useContext(StoreContext);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const router = useRouter();
@@ -56,7 +58,7 @@ export default function Thanhtoan({ selected }: { selected: CartData[] }) {
       if (response.ok) {
         const data = await response.json();
         console.log('Order created:', data.order);
-
+        queryClient.invalidateQueries({ queryKey: ['orders/' + user.email] });
         // Clear the cart data after successful order creation
         setCartData(cartData.filter((item) => !selected.includes(item)));
         toast.success('Thanh toán thành công');
@@ -91,7 +93,8 @@ export default function Thanhtoan({ selected }: { selected: CartData[] }) {
                   : 100000 * cur.count),
               0,
             )
-            .toLocaleString("vi-VN")} đ
+            .toLocaleString('vi-VN')}{' '}
+          đ
         </p>
       </div>
       <Button

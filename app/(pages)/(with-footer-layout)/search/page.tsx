@@ -21,6 +21,7 @@ export default function Page() {
       axios
         .get<{ books: IBook[] }>('/api/booksearch/' + query)
         .then((res) => res.data),
+    enabled: !!query,
   });
 
   const books = data?.books;
