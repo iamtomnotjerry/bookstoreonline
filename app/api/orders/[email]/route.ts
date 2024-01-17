@@ -6,7 +6,6 @@ export async function GET(
     req: NextRequest,
     { params }: { params: { email: string }})
   {
-    console.log(params)
     const email = params.email;
     
     try {

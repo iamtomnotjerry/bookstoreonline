@@ -6,16 +6,14 @@ import { IBook } from '../models/book';
 export default function FlashSaleBookCard({ book }: { book: IBook }) {
   return (
     <div className="bg-white transition hover:shadow-lg rounded-[0.625rem] overflow-hidden p-4">
-      <Link href={''} className="block aspect-w-1 aspect-h-1">
-        <Link href={'/books/' + book._id}>
-          <Image
-            alt=""
-            src={book.coverImage || book.imageUrl}
-            width={200}
-            height={200}
-            className="w-full object-contain"
-          />
-        </Link>
+      <Link href={'/books/' + book._id} className="block aspect-w-1 aspect-h-1">
+        <Image
+          alt=""
+          src={book.coverImage || book.imageUrl}
+          width={200}
+          height={200}
+          className="w-full object-contain"
+        />
       </Link>
 
       <div className="mt-3">

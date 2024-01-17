@@ -42,7 +42,7 @@ export default function ReviewsAndRates({ book }: { book: IBook }) {
             <span className="text-sm text-gray-500 mt-2">(65 đánh giá)</span>
           </div>
 
-          <div className="text-sm space-y-1">
+          <div className="text-sm max-sm:hidden space-y-1">
             <div className="flex items-center space-x-2">
               <span>5 sao</span>
               <div className="bg-gray-300 h-1 w-64">

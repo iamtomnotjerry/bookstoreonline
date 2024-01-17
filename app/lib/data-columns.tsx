@@ -246,7 +246,7 @@ export const order_columns: ColumnDef<IOrder<IBook>>[] = [
           .reduce(
             (acc, item) =>
               acc +
-              ((item.book.price || 100000) - (item.book.discount || 0)) *
+              ((item.book?.price || 100000) - (item.book?.discount || 0)) *
                 item.quantity,
             0,
           )
