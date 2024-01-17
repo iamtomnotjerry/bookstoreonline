@@ -20,14 +20,21 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { IBook } from '@/app/models/book';
+import { useState, useEffect } from 'react';
 
 export default function AdminProductPage() {
-  const { data } = useQuery({
-    queryKey: ['books'],
-    queryFn: () => axios.get<{ books: IBook[] }>(`/api/books`),
-  });
-
-  const books = data?.data?.books;
+  const [books, setBooks] = useState<Book[]>([]);
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/books');
+      const data = await response.json();
+      const booksArray = Array.isArray(data.books) ? data.books : [];
+      setBooks(booksArray);
+      // Initially display the first 15 books
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  };
 
   return (
     books && (

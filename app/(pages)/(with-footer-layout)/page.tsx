@@ -6,11 +6,17 @@
 // import SearchBar from '@/app/components/SearchBar';
 // import { useSession } from 'next-auth/react';
 
+import { Metadata } from 'next';
 import Banner from '../../pages-sections/home/Banner';
 import BooksByCategory from '../../pages-sections/home/BooksByCategory';
 import CategoriesList from '../../pages-sections/home/CategoriesList';
 import Discover from '../../pages-sections/home/Discover';
 import FlashSale from '../../pages-sections/home/FlashSale';
+
+export const metadata: Metadata = {
+  title: 'Trang chủ BookStore',
+  description: 'Nhà sách trực tuyến BookStore.',
+};
 
 // interface Book {
 //   _id: string; // assuming id is a string based on mongoose ObjectId
