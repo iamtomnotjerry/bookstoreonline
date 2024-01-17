@@ -24,12 +24,11 @@ export default function Footer() {
   }
   return (
     <footer className="w-screen relative left-[calc(-50vw+50%)] -mb-16 mt-32">
-      <div className="relative min-w-[700px] -z-10 -mb-1 min-h-[177px] max-h-[400px]">
-        <FooterWave colour="#f7e4b2" className="absolute bottom-6" />
-        <FooterWave colour="#b09c85" className="absolute bottom-4" />
-        <FooterWave colour="#d4a5a5" className="absolute bottom-2" />
-        <FooterWave colour="#774c50" className="absolute" />
-        <FooterWave colour="#fff" className="opacity-0" />
+      <div className="relative -z-10 -mb-1">
+        <div className="bg-banana-mania-100 w-full h-[12.29166666667vw] [mask:url(/footer-mask.png)] [mask-size:cover] absolute bottom-6"></div>
+        <div className="bg-donkey-brown-400 w-full h-[12.29166666667vw] [mask:url(/footer-mask.png)] [mask-size:cover] absolute bottom-4"></div>
+        <div className="bg-eunry-400 w-full h-[12.29166666667vw] [mask:url(/footer-mask.png)] [mask-size:cover] absolute bottom-2"></div>
+        <div className="bg-primary-700 w-full h-[12.29166666667vw] [mask:url(/footer-mask.png)] [mask-size:cover]"></div>
       </div>
 
       <div className="bg-primary-700">

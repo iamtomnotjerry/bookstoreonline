@@ -118,6 +118,7 @@ export default function ProductCreateModal({
         images: [image1, image2, image3].filter(Boolean),
       };
       if (action === 'create') {
+        console.log(book);
         await axios.post('/api/books/create', book);
         toast.success('Thêm sản phẩm thành công');
       } else {
@@ -126,12 +127,12 @@ export default function ProductCreateModal({
           book,
         );
         toast.success('Cập nhật sản phẩm thành công');
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({
           queryKey: ['books/' + res.data.book._id],
         });
       }
       setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ['books'] });
+      queryClient.refetchQueries({ queryKey: ['books'] });
     } catch (error) {
       if (action === 'create')
         toast.error('Thêm sản phẩm thất bại! Vui lòng thử lại sau');
