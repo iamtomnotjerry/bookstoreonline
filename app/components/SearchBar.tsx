@@ -1,50 +1,31 @@
 'use client';
-import { toast } from 'react-toastify';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { Button } from './ui/Button';
+import categories from '@/app/data/categories.json';
 import {
   ArrowRightIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  MagnifyingGlassIcon,
   SquaresPlusIcon,
 } from '@heroicons/react/24/outline';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
-import { buttonVariants } from './ui/Button';
-import useMediaQuery from '../lib/hooks/useMediaQuery';
 import Link from 'next/link';
-import React, { MouseEventHandler, useEffect, useState } from 'react';
-import { Drawer, DrawerContent, DrawerTrigger } from './ui/Drawer';
 import { useRouter } from 'next/navigation';
-import categories from '@/app/data/categories.json';
-import { IBook } from '../models/book';
+import { MouseEventHandler, useState } from 'react';
+import { Button, buttonVariants } from './ui/Button';
+import { Drawer, DrawerContent, DrawerTrigger } from './ui/Drawer';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 
 export default function SearchBar() {
-  const [book, setBook] = useState<IBook | null>(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const isLG = useMediaQuery('(min-width: 1024px)');
   const handleSearch: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
     if (searchQuery.trim().length === 0) {
       console.log('Please type a book name');
       return;
     }
-    try {
-      const bookResponse = await fetch(`/api/booksearch/${searchQuery}`);
-      if (!bookResponse.ok) {
-        toast.error('Book not found');
-        return;
-      }
-      const { id } = await bookResponse.json();
-      if (!id) {
-        toast.error('Book not found');
-        return;
-      }
-      router.push(`/books/${id}`); // Redirect to the book page
-      setSearchQuery('');
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+    router.push(`/search?q=${searchQuery}`);
+    setOpenDrawer(false);
   };
 
   return (
@@ -88,12 +69,13 @@ export default function SearchBar() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        {isLG ? (
-          <Button size="xs" className="px-5" onClick={handleSearch}>
-            <MagnifyingGlassIcon className="h-4" />
-          </Button>
-        ) : (
-          <Drawer>
+
+        <Button size="xs" className="px-5 max-lg:hidden" onClick={handleSearch}>
+          <MagnifyingGlassIcon className="h-4" />
+        </Button>
+
+        <div className="lg:hidden">
+          <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
             <DrawerTrigger asChild>
               <Button size="xs" className="px-5">
                 <MagnifyingGlassIcon className="h-4" />
@@ -119,7 +101,7 @@ export default function SearchBar() {
               </div>
             </DrawerContent>
           </Drawer>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import { StoreContext } from '@/app/context/index';
 import { cn } from '@/app/lib/utils';
 import {
   ArrowLeftStartOnRectangleIcon,
@@ -11,18 +12,16 @@ import {
   UserCircleIcon,
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useContext } from 'react';
 import fonts from '../configs/fonts';
 import routes from '../configs/routes';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import SearchBar from './SearchBar';
-import { useRouter } from 'next/navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import { signOut, useSession } from 'next-auth/react';
-import { useContext } from 'react';
-import { StoreContext } from '@/app/context/index';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 
 export default function Header() {
   const { cartData } = useContext(StoreContext);
