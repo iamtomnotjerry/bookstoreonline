@@ -14,45 +14,7 @@ import {
   SelectValue,
 } from '@/app/components/ui/Select';
 import { MinusIcon } from '@heroicons/react/24/outline';
-
-const categoriesList = [
-  {
-    name: 'Tiểu thuyết',
-  },
-  {
-    name: 'Truyện tranh',
-  },
-  {
-    name: 'Kinh tế',
-  },
-  {
-    name: 'Khoa học',
-  },
-  {
-    name: 'Văn học',
-  },
-  {
-    name: 'Lịch sử',
-  },
-  {
-    name: 'Thiếu nhi',
-  },
-  {
-    name: 'Sách giáo khoa',
-  },
-  {
-    name: 'Sách tham khảo',
-  },
-  {
-    name: 'Sách ngoại ngữ',
-  },
-  {
-    name: 'Sách chuyên ngành',
-  },
-  {
-    name: 'Sách kỹ năng sống',
-  },
-];
+import categories from '@/app/data/categories.json';
 
 export default function Sidebar() {
   return (
@@ -71,7 +33,7 @@ export default function Sidebar() {
                   <SelectValue placeholder="Chọn danh mục" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categoriesList.map(({ name }, index) => (
+                  {categories.map(({ name }, index) => (
                     <SelectItem key={index} value={`${index}`}>
                       {name}
                     </SelectItem>
