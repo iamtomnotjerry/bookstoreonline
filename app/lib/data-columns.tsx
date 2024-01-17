@@ -145,9 +145,7 @@ export const product_columns: ColumnDef<IBook>[] = [
           toast.error('Xóa sách thất bại');
         },
       });
-
       const product = row.original;
-
       return (
         <div className="flex items-center gap-2">
           <Link href={`/books/${product._id}`}>

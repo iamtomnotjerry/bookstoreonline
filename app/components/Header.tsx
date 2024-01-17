@@ -26,7 +26,6 @@ import { StoreContext } from '@/app/context/index';
 
 export default function Header() {
   const { cartData } = useContext(StoreContext);
-  const { push } = useRouter();
   const { data } = useSession();
   const user = data?.user;
   return (

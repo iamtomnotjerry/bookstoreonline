@@ -1,5 +1,5 @@
-'use client';
-
+'use client'
+import React, { useEffect, useState } from 'react';
 import BookCardsList from '@/app/components/BookCardsList';
 import FlashSaleBookCard from '@/app/components/FlashSaleBookCard';
 import { IBook } from '@/app/models/book';
@@ -15,6 +15,24 @@ export default function FlashSale() {
 
   const books = data?.data.books;
 
+  const [timeRemaining, setTimeRemaining] = useState(0);
+
+  useEffect(() => {
+    const currentTime = new Date().getTime();
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+    const targetEndTime = currentTime + oneDayInMilliseconds;
+
+    const intervalId = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const remaining = targetEndTime - currentTime;
+      setTimeRemaining(Math.max(0, remaining));
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const formattedTime = new Date(timeRemaining).toISOString().substr(11, 8);
+
   return (
     <section className="bg-donkey-brown-400 w-screen relative left-[calc(-50vw+50%)]">
       <div className="container pt-6 pb-10 mx-auto">
@@ -24,12 +42,10 @@ export default function FlashSale() {
             <BoltIcon className="h-7 text-banana-mania-200 -mr-1" />
             <span>ALE</span>
           </div>
-
           <div className="ml-10 font-bold text-lg tracking-widest">
-            23:01:59
+            {formattedTime}
           </div>
         </div>
-
         {books ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10">
             {books.slice(0, 5).map((book, index) => (

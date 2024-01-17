@@ -20,6 +20,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { IBook } from '@/app/models/book';
+import { useState, useEffect } from 'react';
 
 export default function AdminProductPage() {
   const { data } = useQuery({
@@ -42,26 +43,15 @@ export default function AdminProductPage() {
           <div className="bg-white w-full px-4 py-3 rounded-lg mb-4 flex gap-2 justify-between">
             <div className="flex gap-2">
               <Select>
-                <SelectTrigger className="h-8 w-16">
-                  <SelectValue placeholder="5" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Hiển thị</SelectLabel>
-                    <SelectItem value="5">5</SelectItem>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="20">20</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Select>
                 <SelectTrigger className="h-8 w-48">
                   <SelectValue placeholder="Danh mục" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Danh mục</SelectLabel>
+                      <SelectItem className="text-gray-500" value="-1" defaultChecked>
+                        Không danh mục
+                      </SelectItem>
                     {categories.map((d, i) => {
                       return (
                         <SelectItem value={`${i}`} key={i}>

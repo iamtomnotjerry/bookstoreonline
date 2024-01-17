@@ -1,6 +1,9 @@
+"use client"
 import { Button } from '@/app/components/ui/Button';
 import { Input } from '@/app/components/ui/Input';
 import { Label } from '@/app/components/ui/Label';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import {
   Avatar,
   AvatarFallback,
@@ -9,7 +12,69 @@ import {
 import React from 'react';
 import { Separator } from '@/app/components/ui/Separator';
 
+
+
+interface IUser {
+  name: string;
+  fullname: string;
+  email: string;
+  phoneNumber: string;
+}
+
 export default function Profile() {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState('');
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleImageSelect = (imageUrl: string) => {
+    setSelectedImageUrl(imageUrl);
+  };
+  const { data } = useSession();
+  const email = data?.user?.email;
+  const [user, setUser] = useState<IUser | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (email) {
+      // Fetch user data from the API
+      fetch(`/api/profile/${email}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('User not found');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setUser(data.user);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(error.message);
+          setLoading(false);
+        });
+    }
+  }, [email]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!user) {
+    return <div>User not found</div>;
+  }
+  console.log(user.name)
   return (
     <main className="bg-white rounded-[0.62rem] p-4 pb-8">
       <h2 className="mb-4 text-lg font-semibold text-primary-700">Hồ sơ</h2>
@@ -26,7 +91,7 @@ export default function Profile() {
                   <Input
                     className="w-full"
                     placeholder="Nhập tên của bạn"
-                    defaultValue={'Nguyễn Văn A'}
+                    defaultValue={user.name}
                   />
                 </td>
               </tr>
@@ -38,7 +103,7 @@ export default function Profile() {
                   <Input
                     className="w-full"
                     placeholder="Nhập số điện thoại của bạn"
-                    defaultValue={'0382718306'}
+                    defaultValue={user.phoneNumber}
                   />
                 </td>
               </tr>
@@ -50,7 +115,7 @@ export default function Profile() {
                   <Input
                     className="w-full"
                     placeholder="Nhập số điện thoại của bạn"
-                    defaultValue={'example@gmail.com'}
+                    defaultValue={user.email}
                     disabled
                   />
                 </td>
@@ -63,18 +128,18 @@ export default function Profile() {
                   <div className="flex items-center space-x-3">
                     <div className="grid w-full items-center gap-1.5">
                       <Label>Quốc gia:</Label>
-                      <Input placeholder="Quốc gia" />
+                      <Input placeholder="Quốc gia" defaultValue={'Việt Nam'}/>
                     </div>
 
                     <div className="grid w-full items-center gap-1.5">
                       <Label>Tỉnh/Thành phố:</Label>
-                      <Input placeholder="Tỉnh/Thành phố" />
+                      <Input placeholder="Tỉnh/Thành phố" defaultValue={'Thành Phố Hồ Chí Minh'}/>
                     </div>
                   </div>
 
                   <div className="grid mt-3 w-full items-center gap-1.5">
                     <Label>Địa chỉ cụ thể:</Label>
-                    <Input className="w-full" placeholder="Địa chỉ cụ thể" />
+                    <Input className="w-full" placeholder="Địa chỉ cụ thể" defaultValue={'Đại Học Công Nghệ Thông Tin UIT'}/>
                   </div>
                 </td>
               </tr>
@@ -100,6 +165,7 @@ export default function Profile() {
             Chọn hình ảnh
           </Button>
         </div>
+        
       </div>
     </main>
   );

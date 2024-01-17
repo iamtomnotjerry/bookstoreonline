@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from '@/app/lib/utils';
 import Image from 'next/image';
 import fonts from '../configs/fonts';
@@ -7,15 +9,26 @@ import {
   MapPinIcon,
   PhoneIcon,
 } from '@heroicons/react/24/outline';
+import mask from "@/public/footer-mask.png";
+import SignIn from './SignIn';
+import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
+import SignUp from './SignUp';
 
 export default function Footer() {
+  const { data } = useSession();
+  const user = data?.user;
+
+  const signInWarning = () => {
+    toast.error('Bạn hiện tại đã đăng nhập rồi!');
+  }
   return (
     <footer className="w-screen relative left-[calc(-50vw+50%)] -mb-16 mt-32">
       <div className="relative -z-10 -mb-1">
-        <div className="bg-banana-mania-100 w-full h-[12.29166666667vw] [mask-image:url(/footer-mask.png)] [mask-size:100%] absolute bottom-6"></div>
-        <div className="bg-donkey-brown-400 w-full h-[12.29166666667vw] [mask-image:url(/footer-mask.png)] [mask-size:100%] absolute bottom-4"></div>
-        <div className="bg-eunry-400 w-full h-[12.29166666667vw] [mask-image:url(/footer-mask.png)] [mask-size:100%] absolute bottom-2"></div>
-        <div className="bg-primary-700 w-full h-[12.29166666667vw] [mask-image:url(/footer-mask.png)] [mask-size:100%]"></div>
+        <div className="bg-banana-mania-100 w-full h-[12.29166666667vw] [mask-image:url(/footer-mask.png)] [mask-size:cover] absolute bottom-6"></div>
+        <div className="bg-donkey-brown-400 w-full h-[12.29166666667vw] [mask-image:url(/footer-mask.png)] [mask-size:cover] absolute bottom-4"></div>
+        <div className="bg-eunry-400 w-full h-[12.29166666667vw] [mask-image:url(/footer-mask.png)] [mask-size:cover] absolute bottom-2"></div>
+        <div className="bg-primary-700 w-full h-[12.29166666667vw] [mask-image:url(/footer-mask.png)] [mask-size:cover]"></div>
       </div>
 
       <div className="bg-primary-700">
@@ -84,24 +97,49 @@ export default function Footer() {
                   </h3>
                   <ul className="text-white mt-3 text-sm space-y-2 grid lg:justify-items-start justify-items-center">
                     <li>
-                      <Link
-                        href={''}
-                        className="transition hover:text-banana-mania-100"
-                      >
-                        Đăng kí
-                      </Link>
+                    {
+                      user ? (
+                        <span
+                          className="cursor-pointer transition hover:text-banana-mania-100"
+                          onClick={signInWarning}
+                        >
+                          Đăng kí
+                        </span>
+                      ) : (
+                      <SignUp>
+                        <span
+                          className="cursor-pointer transition hover:text-banana-mania-100"
+                        >
+                          Đăng kí
+                        </span>
+                      </SignUp>
+                      )
+                    }
+                    </li>
+                    <li>
+                    {
+                      user ? (
+                        <span
+                          className="cursor-pointer transition hover:text-banana-mania-100"
+                          onClick={signInWarning}
+                        >
+                          Đăng nhập
+                        </span>
+                      ) : (
+                      <SignIn>
+                        <span
+                          className="cursor-pointer transition hover:text-banana-mania-100"
+                        >
+                          Đăng nhập
+                        </span>
+                      </SignIn>
+                      )
+                    }
+                      
                     </li>
                     <li>
                       <Link
-                        href={''}
-                        className="transition hover:text-banana-mania-100"
-                      >
-                        Đăng nhập
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href={''}
+                        href="/user/account/profile"
                         className="transition hover:text-banana-mania-100"
                       >
                         Hồ sơ
@@ -109,7 +147,7 @@ export default function Footer() {
                     </li>
                     <li>
                       <Link
-                        href={''}
+                        href="/user/purchase"
                         className="transition hover:text-banana-mania-100"
                       >
                         Lịch sử mua hàng
@@ -135,7 +173,7 @@ export default function Footer() {
                     <li className="flex items-center space-x-3">
                       <EnvelopeIcon className="h-5" />
                       <Link
-                        href={''}
+                        href="mailto:support@example.com"
                         className="transition hover:text-banana-mania-100"
                       >
                         support@example.com
@@ -144,7 +182,8 @@ export default function Footer() {
                     <li className="flex items-start space-x-3">
                       <MapPinIcon className="h-5" />
                       <Link
-                        href={''}
+                        href="https://webdevstudios.org"
+                        target="_blank"
                         className="transition hover:text-banana-mania-100"
                       >
                         Webdev Studios - UIT
@@ -159,4 +198,25 @@ export default function Footer() {
       </div>
     </footer>
   );
+}
+
+interface HexColour {
+  colour: `#${string}`,
+  className: string
+}
+
+function FooterWave({ colour, ...props }: HexColour) {
+  return (
+    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 1440 177" 
+      width="100%" 
+      height="100%" 
+      preserveAspectRatio="xMidYMax meet"
+      {...props}
+    >
+      <g transform="translate(0,177) scale(0.1,-0.1)" fill={colour} stroke="none">
+        <path d="M2510 1760 c-400 -17 -768 -72 -1202 -181 -198 -50 -271 -73 -940 -305 l-368 -127 0 -573 0 -574 7200 0 7200 0 0 215 c0 118 -4 215 -8 215 -5 0 -231 45 -503 100 -1286 259 -2125 349 -2964 320 -414 -15 -624 -36 -1485 -150 -625 -82 -968 -110 -1360 -110 -447 0 -707 32 -1158 140 -300 73 -582 159 -1318 405 -826 276 -1162 380 -1485 459 -559 138 -1054 189 -1609 166z"/>
+      </g>
+    </svg>
+  )
 }

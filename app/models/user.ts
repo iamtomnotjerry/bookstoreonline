@@ -16,6 +16,7 @@ export interface IUser extends Document {
     },
   ];
   isAdmin: boolean;
+  name: string;
   resetToken?: string;
   resetTokenExpiration?: Date | number; // Allow both Date and number (timestamp)
 }
@@ -25,6 +26,10 @@ const UserSchema = new Schema<IUser>(
     fullname: {
       type: String,
       required: true,
+    },
+    name: {
+      type: String,
+      required: false,
     },
     email: {
       type: String,

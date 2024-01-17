@@ -8,11 +8,12 @@ import ReviewsAndRates from '@/app/pages-sections/book-detail/ReviewsAndRates';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useParams } from 'next/navigation'; // Changed from 'next/navigation' to 'next/router'
+import { useEffect } from 'react';
 
 export default function BookDetailPage() {
   const { id } = useParams();
 
-  const { data, error } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: ['books/' + id],
     queryFn: () => axios.get(`/api/books/${id}`),
     enabled: !!id,
@@ -20,9 +21,20 @@ export default function BookDetailPage() {
 
   const book = data?.data?.book;
 
+  useEffect(() => {
+    if (!isLoading) document.title = book.title;
+  }, [])
+
+  if (isLoading)
+    return (
+      <div className="container h-[300px] flex items-center justify-center">
+        <div className="lds-ripple"><div></div><div></div></div>
+      </div>
+    )
+
   return (
     book && (
-      <main>
+      <>
         <Breadcrumb
           items={[
             {
@@ -39,14 +51,13 @@ export default function BookDetailPage() {
             },
           ]}
         />
-
         <div className="mt-4 space-y-6">
           <Brief book={book} />
           <Detail book={book} />
           <RelatedBooks />
           <ReviewsAndRates book={book} />
         </div>
-      </main>
+      </>
     )
   );
 }

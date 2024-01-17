@@ -22,7 +22,7 @@ export default function Thanhtoan({ selected }: { selected: CartData[] }) {
     try {
       setPaymentProcessing(true);
       if (!user?.email) {
-        toast.error('Please log in to proceed with the payment.');
+        toast.error('Vui lòng đăng nhập trước khi thanh toán!');
         return; // Exit early if the user is not logged in
       }
       if (selected.length === 0) {
@@ -91,13 +91,13 @@ export default function Thanhtoan({ selected }: { selected: CartData[] }) {
                   : 100000 * cur.count),
               0,
             )
-            .toLocaleString()}
+            .toLocaleString("vi-VN")} đ
         </p>
       </div>
       <Button
         className="w-full"
         onClick={handlePayment}
-        disabled={paymentProcessing}
+        disabled={paymentProcessing || selected.length == 0}
       >
         {paymentProcessing ? 'Processing...' : 'Thanh toán'}
       </Button>

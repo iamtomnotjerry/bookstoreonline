@@ -14,10 +14,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
     <div className="flex items-center whitespace-nowrap text-ellipsis overflow-hidden space-x-2 font-semibold text-sm text-primary-700">
       {items.map(({ href, label }, index) => (
         <span key={index}>
-          <Link
-            key={index}
-            href={href}
-          >
+          <Link key={index} href={href}>
             {label}
           </Link>
           {index < items.length - 1 && <span className="ml-2">/</span>}
