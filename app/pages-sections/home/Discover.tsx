@@ -9,7 +9,7 @@ import { IBook } from '@/app/models/book';
 import { toast } from 'react-toastify';
 
 export default function Discover() {
-  const [show, setShow] = useState(30);
+  const [show, setShow] = useState(20);
 
   const { data, error } = useQuery({
     queryKey: ['books'],
@@ -23,8 +23,6 @@ export default function Discover() {
   }, [error]);
 
   const books = data?.data.books;
-
-  console.log(books);
 
   return (
     <section className="bg-white p-4 pb-6 rounded-[0.625rem]">

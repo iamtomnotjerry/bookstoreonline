@@ -15,7 +15,6 @@ export default function StoreProvider({
   children: React.ReactNode;
 }) {
   const [cartData, setCartData_] = useState<CartData[]>([]);
-  console.log(cartData);
   useEffect(() => {
     if (localStorage) {
       setCartData(
