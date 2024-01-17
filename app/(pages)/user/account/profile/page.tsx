@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import { Button } from '@/app/components/ui/Button';
 import { Input } from '@/app/components/ui/Input';
 import { Label } from '@/app/components/ui/Label';
@@ -11,31 +11,32 @@ import {
 } from '@/app/components/ui/Avatar';
 import React from 'react';
 import { Separator } from '@/app/components/ui/Separator';
-
-
+import ImageModal from '@/app/components/ImageModel';
 
 interface IUser {
   name: string;
   fullname: string;
   email: string;
   phoneNumber: string;
+  imageUrl:string;
+  country:string;
+  city:string;
+  specificLocal:string;
 }
 
 export default function Profile() {
   const [showModal, setShowModal] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState('');
-
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleImageSelect = (imageUrl: string) => {
-    setSelectedImageUrl(imageUrl);
-  };
+  const [formData, setFormData] = useState<IUser>({
+    name: '',
+    fullname: '',
+    email: '',
+    phoneNumber: '',
+    imageUrl: '',
+    country: '',
+    city: '',
+    specificLocal: '',
+  });
   const { data } = useSession();
   const email = data?.user?.email;
   const [user, setUser] = useState<IUser | null>(null);
@@ -44,16 +45,11 @@ export default function Profile() {
 
   useEffect(() => {
     if (email) {
-      // Fetch user data from the API
       fetch(`/api/profile/${email}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('User not found');
-          }
-          return response.json();
-        })
+        .then((response) => response.json())
         .then((data) => {
           setUser(data.user);
+          setFormData(data.user); // Populate formData with user data
           setLoading(false);
         })
         .catch((error) => {
@@ -62,6 +58,35 @@ export default function Profile() {
         });
     }
   }, [email]);
+
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  const handleImageSelect = (imageUrl: string) => setSelectedImageUrl(imageUrl);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      const response = await fetch(`/api/profile/${email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update user data');
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -74,7 +99,6 @@ export default function Profile() {
   if (!user) {
     return <div>User not found</div>;
   }
-  console.log(user.name)
   return (
     <main className="bg-white rounded-[0.62rem] p-4 pb-8">
       <h2 className="mb-4 text-lg font-semibold text-primary-700">Hồ sơ</h2>
@@ -128,18 +152,18 @@ export default function Profile() {
                   <div className="flex items-center space-x-3">
                     <div className="grid w-full items-center gap-1.5">
                       <Label>Quốc gia:</Label>
-                      <Input placeholder="Quốc gia" defaultValue={'Việt Nam'}/>
+                      <Input placeholder="Quốc gia" defaultValue={'Việt Nam'} />
                     </div>
 
                     <div className="grid w-full items-center gap-1.5">
                       <Label>Tỉnh/Thành phố:</Label>
-                      <Input placeholder="Tỉnh/Thành phố" defaultValue={'Thành Phố Hồ Chí Minh'}/>
+                      <Input placeholder="Tỉnh/Thành phố" defaultValue={'Thành Phố Hồ Chí Minh'} />
                     </div>
                   </div>
 
                   <div className="grid mt-3 w-full items-center gap-1.5">
                     <Label>Địa chỉ cụ thể:</Label>
-                    <Input className="w-full" placeholder="Địa chỉ cụ thể" defaultValue={'Đại Học Công Nghệ Thông Tin UIT'}/>
+                    <Input className="w-full" placeholder="Địa chỉ cụ thể" defaultValue={'Đại Học Công Nghệ Thông Tin UIT'} />
                   </div>
                 </td>
               </tr>
@@ -147,7 +171,7 @@ export default function Profile() {
               <tr className="md:table-row flex flex-col items-start">
                 <td></td>
                 <td className="text-right w-full pt-8">
-                  <Button>Lưu thay đổi</Button>
+                  <Button onClick={handleSaveChanges}>Lưu thay đổi</Button>
                 </td>
               </tr>
             </tbody>
@@ -158,14 +182,17 @@ export default function Profile() {
 
         <div className="xl:col-span-4 xl:order-2 order-1 flex flex-col items-center">
           <Avatar className="w-36 h-36">
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={selectedImageUrl || 'https://github.com/shadcn.png'} />
             <AvatarFallback>VA</AvatarFallback>
           </Avatar>
-          <Button variant="outline" size="sm" className="mt-8">
+          <Button variant="outline" size="sm" className="mt-8" onClick={handleOpenModal}>
             Chọn hình ảnh
           </Button>
         </div>
-        
+
+        {showModal && (
+          <ImageModal onClose={handleCloseModal} onSubmit={handleImageSelect} />
+        )}
       </div>
     </main>
   );
