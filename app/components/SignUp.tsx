@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from './ui/Form';
 import { Input } from './ui/Input';
+import { randomQuotation } from '../lib/book-quotations';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Vui lòng nhập tên'),
@@ -69,6 +70,8 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
       toast.error('Đăng ký thất bại. Vui lòng thử lại sau');
     }
   }
+
+  const bookQuote = randomQuotation();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -151,10 +154,9 @@ export default function SignUp({ children }: { children: React.ReactNode }) {
 
           <div className="mt-4 text-white">
             <blockquote className="italic text-center">
-              “Như thế nào là một thể xác không có tâm hồn? Đó là một căn phòng
-              không có nổi một quyển sách.”
+              “{bookQuote.quote}”
             </blockquote>
-            <div className="text-right">– Cicero</div>
+            <div className="text-right">– {bookQuote.author}</div>
           </div>
         </div>
       </DialogContent>

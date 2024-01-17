@@ -1,5 +1,11 @@
 import { Button } from '@/app/components/ui/Button';
 import { Input } from '@/app/components/ui/Input';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Đổi mật khẩu",
+  description: "Đổi mật khẩu tài khoản"
+}
 
 export default function ChangePassword() {
   return (

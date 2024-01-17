@@ -8,6 +8,12 @@ import {
 } from '@/app/components/ui/Avatar';
 import React from 'react';
 import { Separator } from '@/app/components/ui/Separator';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Hồ sơ",
+  description: "Hồ sơ người dùng"
+}
 
 export default function Profile() {
   return (

@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from '@/app/lib/utils';
 import Image from 'next/image';
 import fonts from '../configs/fonts';
@@ -8,15 +10,21 @@ import {
   PhoneIcon,
 } from '@heroicons/react/24/outline';
 import mask from "@/public/footer-mask.png";
+import SignIn from './SignIn';
+import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
+import SignUp from './SignUp';
 
 export default function Footer() {
+  const { data } = useSession();
+  const user = data?.user;
+
+  const signInWarning = () => {
+    toast.error('Bạn hiện tại đã đăng nhập rồi!');
+  }
   return (
     <footer className="w-screen relative left-[calc(-50vw+50%)] -mb-16 mt-32">
       <div className="relative min-w-[700px] -z-10 -mb-1 min-h-[177px] max-h-[400px]">
-        {/* <div className="bg-banana-mania-100 w-full h-[12.29166666667vw] [mask:url(/footer-mask.svg)] [mask-size:cover] absolute bottom-6"></div>
-        <div className="bg-donkey-brown-400 w-full h-[12.29166666667vw] [mask:url(/footer-mask.svg)] [mask-size:cover] absolute bottom-4"></div>
-        <div className="bg-eunry-400 w-full h-[12.29166666667vw] [mask:url(/footer-mask.svg)] [mask-size:cover] absolute bottom-2"></div>
-        <div className="bg-primary-700 w-full h-[12.29166666667vw] [mask:url(/footer-mask.svg)]"></div> */}
         <FooterWave colour="#f7e4b2" className="absolute bottom-6" />
         <FooterWave colour="#b09c85" className="absolute bottom-4" />
         <FooterWave colour="#d4a5a5" className="absolute bottom-2" />
@@ -90,24 +98,49 @@ export default function Footer() {
                   </h3>
                   <ul className="text-white mt-3 text-sm space-y-2 grid lg:justify-items-start justify-items-center">
                     <li>
-                      <Link
-                        href={''}
-                        className="transition hover:text-banana-mania-100"
-                      >
-                        Đăng kí
-                      </Link>
+                    {
+                      user ? (
+                        <span
+                          className="cursor-pointer transition hover:text-banana-mania-100"
+                          onClick={signInWarning}
+                        >
+                          Đăng kí
+                        </span>
+                      ) : (
+                      <SignUp>
+                        <span
+                          className="cursor-pointer transition hover:text-banana-mania-100"
+                        >
+                          Đăng kí
+                        </span>
+                      </SignUp>
+                      )
+                    }
+                    </li>
+                    <li>
+                    {
+                      user ? (
+                        <span
+                          className="cursor-pointer transition hover:text-banana-mania-100"
+                          onClick={signInWarning}
+                        >
+                          Đăng nhập
+                        </span>
+                      ) : (
+                      <SignIn>
+                        <span
+                          className="cursor-pointer transition hover:text-banana-mania-100"
+                        >
+                          Đăng nhập
+                        </span>
+                      </SignIn>
+                      )
+                    }
+                      
                     </li>
                     <li>
                       <Link
-                        href={''}
-                        className="transition hover:text-banana-mania-100"
-                      >
-                        Đăng nhập
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href={''}
+                        href="/user/account/profile"
                         className="transition hover:text-banana-mania-100"
                       >
                         Hồ sơ
@@ -115,7 +148,7 @@ export default function Footer() {
                     </li>
                     <li>
                       <Link
-                        href={''}
+                        href="/user/purchase"
                         className="transition hover:text-banana-mania-100"
                       >
                         Lịch sử mua hàng
@@ -141,7 +174,7 @@ export default function Footer() {
                     <li className="flex items-center space-x-3">
                       <EnvelopeIcon className="h-5" />
                       <Link
-                        href={''}
+                        href="mailto:support@example.com"
                         className="transition hover:text-banana-mania-100"
                       >
                         support@example.com
@@ -150,7 +183,8 @@ export default function Footer() {
                     <li className="flex items-start space-x-3">
                       <MapPinIcon className="h-5" />
                       <Link
-                        href={''}
+                        href="https://webdevstudios.org"
+                        target="_blank"
                         className="transition hover:text-banana-mania-100"
                       >
                         Webdev Studios - UIT
